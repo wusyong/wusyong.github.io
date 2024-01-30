@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Rust 錯誤處理函式庫推薦：Anyhow + thiserror
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Rust 錯誤處理函式庫推薦：Anyhow + thiserror
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2019-11-22T12:04:23+08:00">November 22, 2019</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>7 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1238 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>在開始講解前我想開門見山講結論，Rust 在針對錯誤處理已經有 <code>Result&lt;T&gt;</code> 這個非常好用的型態，而且在 <a href="https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html">TRPL 中也有一章</a>在專門講解了。如果只是要寫個簡單的測試你可以只定義一個基本的 <code>enum</code>，而如果是正式的專案也更推薦定義好屬於自己的錯誤型態，依賴第三方的函式庫總是會發生不可預期的狀況出現。但有時候在錯誤處理方面的確會遇到一些障礙是我們得花時間特別去解決的，如果這是一個普遍的問題通常大家便會用些方便的依賴來解決。在過去一兩年我想最常用的就是 <a href="https://crates.io/crates/failure"><code>failure</code></a> 了，而過去幾年這類型的 crate 更是如雨後春筍般冒出來，再過不久大概就能像 go 和 npm 有上百萬種錯誤處理的函示庫了(笑)。總之目前更好更方便的選擇就是這次要講的 <code>anyhow</code> + <code>thierror</code>。</p>
+<h2 id="anyhow"><a href="https://crates.io/crates/anyhow">anyhow</a></h2>
+<p><code>anyhow</code> 首次公開於 2019 年十月，它主要是一個能夠讓我們方便傳遞錯誤的函示庫，就像 <code>failure</code> 的訴求之一一樣。不同於 <code>failure</code> 用了自己定義的 trait <code>Fail</code>，<code>anyhow</code> 定義的形態和 trait 都是基於標準函式庫的 <code>std::error::Error</code>，除此之外無其他依賴，所以他也同時號稱是更好的 <code>Box&lt;dyn Error&gt;</code>。不過也因如此 <code>anyhow</code> 用到了 <a href="https://github.com/rust-lang/rfcs/blob/master/text/2504-fix-error.md">RFC 2504</a> 的一些改進，所以會需要 Rust 1.34+ 以上&gt;。</p>
+<p>首先最重要的當然就是更方便的錯誤型態 <a href="https://docs.rs/anyhow/1.0.21/anyhow/struct.Error.html"><code>Result&lt;T, anyhow::Error&gt;</code></a> 或者也等同於 <a href="https://docs.rs/anyhow/1.0.21/anyhow/type.Result.html"><code>anyhow::Result&lt;T&gt;</code></a>，只要在函式內有實作 <code>std::error::Error</code> trait 的型態，都能夠只使用 <code>?</code> 來回傳：</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">use </span><span>anyhow::Result;
+</span><span>
+</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">get_cluster_info</span><span>() -&gt; Result&lt;ClusterMap&gt; {
+</span><span>    </span><span style="color:#b48ead;">let</span><span> config = std::fs::read_to_string(&quot;</span><span style="color:#a3be8c;">cluster.json</span><span>&quot;)?;
+</span><span>    </span><span style="color:#b48ead;">let</span><span> map: ClusterMap = serde_json::from_str(&amp;config)?;
+</span><span>    Ok(map)
+</span><span>}
+</span></code></pre>
+<p>再來 <code>anyhow</code> 也提供了擴展 <code>Result</code> 增加更多 <a href="https://docs.rs/anyhow/1.0.23/anyhow/trait.Context.html"><code>Context</code></a>(上下文) 的功能。要是遇到錯誤時我們只能看到 &quot;No such file or directory&quot; 的話還是很難知道錯在哪。<code>Context</code> 能提供更高階的錯誤形式來幫助 debug。</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">use </span><span>anyhow::{Context, Result};
+</span><span>
+</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span>() -&gt; Result&lt;()&gt; {
+</span><span>    ...
+</span><span>    it.</span><span style="color:#96b5b4;">detach</span><span>().</span><span style="color:#96b5b4;">context</span><span>(&quot;</span><span style="color:#a3be8c;">Failed to detach the important thing</span><span>&quot;)?;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">let</span><span> content = std::fs::read(path)
+</span><span>        .</span><span style="color:#96b5b4;">with_context</span><span>(|| format!(&quot;</span><span style="color:#a3be8c;">Failed to read instrs from </span><span style="color:#d08770;">{}</span><span>&quot;, path))?;
+</span><span>    ...
+</span><span>}
+</span></code></pre>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">Error:</span><span> Failed to read instrs from ./path/to/instrs.json
+</span><span>
+</span><span style="color:#bf616a;">Caused</span><span> by:
+</span><span>    </span><span style="color:#bf616a;">No</span><span> such file or directory (os error 2)
+</span></code></pre>
+<p><code>anyhow</code> 也有 Downcasting 能夠用 call by value, shared reference, mutable reference 等方式取得。除此之外還有 <a href="https://docs.rs/anyhow/1.0.23/anyhow/struct.Chain.html"><code>Chain</code></a> 能夠方便迭代出結果</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">underlying_io_error_kind</span><span>(</span><span style="color:#bf616a;">error</span><span>: &amp;Error) -&gt; Option&lt;io::ErrorKind&gt; {
+</span><span>    </span><span style="color:#b48ead;">for</span><span> cause in error.</span><span style="color:#96b5b4;">chain</span><span>() {
+</span><span>        </span><span style="color:#b48ead;">if let </span><span>Some(io_error) = cause.downcast_ref::&lt;io::Error&gt;() {
+</span><span>            </span><span style="color:#b48ead;">return </span><span>Some(io_error.</span><span style="color:#96b5b4;">kind</span><span>());
+</span><span>        }
+</span><span>    }
+</span><span>    None
+</span><span>}
+</span></code></pre>
+<p>最後我們常見的各式錯誤處理 macro 也都有提供，像是 <a href="https://docs.rs/anyhow/1.0.23/anyhow/macro.bail.html"><code>bail!</code></a>, <a href="https://docs.rs/anyhow/1.0.23/anyhow/macro.ensure.html"><code>ensure!</code></a> 以及將字串轉換成錯誤的 <a href="https://docs.rs/anyhow/1.0.21/anyhow/macro.anyhow.html"><code>anyhow!</code></a>(相當於 <code>format_err!</code>)：</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">return </span><span>Err(anyhow!(&quot;</span><span style="color:#a3be8c;">Missing attribute: {}</span><span>&quot;, missing));
+</span></code></pre>
+<h2 id="thiserror"><a href="https://docs.rs/thiserror/1.0.6/thiserror/">thiserror</a></h2>
+<p>不過這樣只涵蓋到了動態錯誤處理的部份，如果你想要用外部依賴來定義出架構完善的錯誤的話，那麼就是使用 <code>thiserror</code> 的時候了。它和 <code>anyhow</code> 都是由 <a href="https://github.com/dtolnay/">dtolnay</a> 在同時間釋出的，某方面來說可以把它們想成是原本 <code>faiure</code> 拆開來後並改善後的版本。<code>thiserror</code> 最主要的功能就是透過 <code>#[derive(Error)]</code> 來幫你的型態實作 <code>std::error::Error</code>:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">use </span><span>thiserror::Error;
+</span><span>
+</span><span>#[</span><span style="color:#bf616a;">derive</span><span>(Error, Debug)]
+</span><span style="color:#b48ead;">pub enum </span><span>DataStoreError {
+</span><span>    #[</span><span style="color:#bf616a;">error</span><span>(&quot;</span><span style="color:#a3be8c;">data store disconnected</span><span>&quot;)]
+</span><span>    Disconnect(#[</span><span style="color:#bf616a;">from</span><span>] io::Error),
+</span><span>    #[</span><span style="color:#bf616a;">error</span><span>(&quot;</span><span style="color:#a3be8c;">the data for key `{0}` is not available</span><span>&quot;)]
+</span><span>    Redaction(String),
+</span><span>    #[</span><span style="color:#bf616a;">error</span><span>(&quot;</span><span style="color:#a3be8c;">invalid header (expected {expected:?}, found {found:?})</span><span>&quot;)]
+</span><span>    InvalidHeader {
+</span><span>        expected: String,
+</span><span>        found: String,
+</span><span>    },
+</span><span>    #[</span><span style="color:#bf616a;">error</span><span>(&quot;</span><span style="color:#a3be8c;">unknown data store error</span><span>&quot;)]
+</span><span>    Unknown,
+</span><span>}
+</span></code></pre>
+<h2 id="std-error-error"><a href="https://doc.rust-lang.org/std/error/trait.Error.html">std::error::Error</a></h2>
+<p>最後的最後筆者覺得還是講一下標準函示庫裡最基本的 <code>Error</code> 比較好，在一開始學習實在完全不清楚的情況下，的確都過第三方依賴能夠輕鬆解決錯誤處理，而這也是大多數社群會推薦的。但隨著經驗累積後不免會發現一些負擔，如果時間充裕當然推薦親自實作在標準函式庫內的錯誤型態。而 <code>Error</code> trait 隨著這幾年也有一些轉變，以下是值得注意的改變：</p>
+<ul>
+<li><code>Error::description</code> 已經被半棄用中，因為直接 <code>impl Display</code> 會更好</li>
+<li><code>Error::cause</code> 已被棄用，因為有了 <code>Error::source</code></li>
+<li><code>Error::iter_chain</code> 和 <code>Error::iter_sources</code> 可在 nightly 上使用了</li>
+<li><code>Error::backtrace</code> 以及 <code>module</code> 模組也能在 nightly 上使用了</li>
+</ul>
+<p>除了 <code>Error</code> 外再加上原本的 <code>Result</code>、<code>?</code> 到詳盡的錯誤代碼。這是筆者覺得 Rust 在錯誤處理做得十分不錯的地方，雖然對於一個通用的錯誤處理函示庫該有什麼樣的功能，社群仍在摸索當中。但底層的基本架構的確是非常的穩固完善。</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+               
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;dst-zst&#x2F;">
+              DST 和 ZST 兩種願望一次滿足<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Webassembly 與它們的產地
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Webassembly 與它們的產地
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2020-11-17T16:55:00+08:00">November 17, 2020</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>9 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1787 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>最近看到大家又再討論 Webassembly，讓我想起以前就想寫篇總結了。這篇是我目前接觸 Webassembly 社群大致上的見解，希望可以讓大家能更清楚 Webassembly 的全貌並排除掉一些錯誤的見解。</p>
+<h2 id="suo-yi-shi-mo-shi-webassembly">所以什麼是 Webassembly？</h2>
+<p>Webassembly 簡稱 wasm 是個可攜式的位元組碼（bytecode），讓開發者可以用自己喜歡的程式語言編譯然後能在不同的系統或平台上快速且安全地執行，而且現在已經能用各大瀏覽器的虛擬機引擎執行。</p>
+<p>坦白說這當然不是什麼新點子，同樣的事情 JVM 與 .NET 都做過了，而且都已有一定的影響力並都在自己的市場站穩了腳步。那為何又要重造輪子一次呢？首先來看 JVM 的話，它已經有超過 20 年的歷史了，它原本是為了處理一個程式語言 Java 而設計的，而且是在網路的樣子成熟之前就出來的，當時有很多的設計思維與現在多少有些許的落差，當時甚至不確定 Garbage Collection 的設計對於現在高階且高效的程式會這麼有影響力。至於 .NET 我覺得就真的有點微妙，它在各方面的確做得很好，而且最近又出了 .NET 5 速度與效能又更好了。也許是因為它被微軟的開發生態綁死在一起了吧，就像 Apple 的 Swift 或 Cocoa 框架那樣。</p>
+<p>所以有不少原因與動力，況且也沒真的有人阻止大家再去定義出一個更通用、不被特定財閥綁架、且兼容於各個語言的 bytecode 系統與 JIT 編譯器。另外 Webassembly 也有不少優點，像是它不像前者一定需要 Garbage Collector，它沒有許多複雜的型別概念像是 generic 、 class 甚至是 structure，還有更簡單的命名空間（namespace）與連結/讀取模型。所以可以看到它比 JVM 或 .NET 還更像是機器語言。讓其他相對低階的語言像是 C/C++ 和 Rust 也能編譯成其目標（理論上）也不會有 overhead。</p>
+<p>經過社群多年的努力，現在所有瀏覽器都支援 Webassembly 了，我也看到不少專案甚至是企業將負擔較重的程式碼段落，像是運算或解析，轉成使用 wasm module 了。而且更棒的是 Webassembly 不只能用在瀏覽器上，別忘了 Webassembly 本來就是 bytecode。它當然可以 port 並跑在任何系統的沙盒上。能讓執行檔與函式庫以 bytecode 形式發布並在不同的平台本地端編譯可以說是最吸引我的賣點了。這對我來說這幾乎能直接取代發布特定系統執行檔這樣的方式。（當然沒人阻止你直接拿原始碼編譯，不過這是另一個話題了）隨著系統架構越來越多元，各領域的開發者們越來越需要考慮到不同平台的支援，這樣的點子我覺得會在近未來成為顯學。Docker 創辦人 Solomon Hykes 甚至<a href="https://twitter.com/solomonstre/status/1111004913222324225">發過推</a>說如果 WASM/WASI 在 2008 年就問世的話，根本就不需要有 Ｄocker 了。</p>
+<p>不過當然 Webassembly 也不是沒有讓人困擾的地方，像是它是從 32 位元開始的，我有點不解為何不一開始就將 64 位元也考慮進去。許多基本的元件像是 interface type 也還在擬稿中。對於系統的介面支援 wasi 也還在進行中，所以只有 Webassembly 是無法呼叫執行緒或開啟檔案等等的。不過先撇除這些瑣碎的不便之處，Webassembly 真的已經開始在真實世界使用了！</p>
+<h2 id="suo-yi-gai-zen-mo-xie-webassembly-bing-shi-yong-ni">所以該怎麼寫 Webassembly 並使用呢？</h2>
+<p>我想到目前為止對 Webassembly 有興趣的大部分應該都是網路開發者，所以壞消息是你還是得寫 javascript XD，不過你可以直接匯入 Webassembly 來在程式碼內使用。至於要用什麼語言寫就見仁見智了，C/C++ 可以透過 emscripten，其他語言也應該都有對應的工具，但我覺得最簡單的方式還是用 Rust 了，它的社群提供了非常多超好用且簡單的工具可以讓你輕鬆就編譯出 Webassembly 並馬上使用。基本上你會用到的工具有：</p>
+<ul>
+<li><code>wasm_pack</code> 是建立 Webassembly 專案最簡單的 CLI，使用起來也十分直觀，甚至還能將你的 wasm module 發布到 npm 等 registry。</li>
+<li><code>wasm-bindgen</code> 是串接 rust 與 javascript 的函式庫，簡單來說你只要在所有的型別與函式上方加上 <code>#[wasm_bingen]</code> 就完成了。</li>
+<li><code>web-sys</code> 與 <code>js-sys</code> 分別提供 Web 與 Js 相關的 API。</li>
+</ul>
+<p>要開始入門試試的話，我非常推薦 Rust 寫的 <a href="https://rustwasm.github.io/docs/book/">Webassembly 入門教學</a>，一天內絕對看得完。想更快瞭解的話，<a href="https://developer.mozilla.org/en-US/docs/WebAssembly/Rust_to_wasm">MDN</a> 也有提供更簡短的文章說明。</p>
+<h2 id="wo-zhi-de-shi-zhen-de-webassembly">我指的是「真的」Webassembly</h2>
+<p>上述的工具與建出來的 wasm module 是特別針對給前端來使用的，Webassembly 當然可以產生完整的應用程式並來執行。每個語言的社群應該都有開發出些編譯器來編譯，像剛剛講的 C/C++ 就是用 emscripton，C# 則有 Blazor 等等。Rust 的話交叉編譯（Cross Compilation）則原本就是第一公民，寫好程式後只要用 <code>cargo build --target wasm32-unkown-unknown</code> 就能編譯出 Webassembly，甚至還提供了 <code>wasm32-unknown-emscripten</code> 與 <code>wasm32-wasi</code> 等目標讓開發者還可以使用這些標準提供的功能。</p>
+<p>Wasi 的全名是 WebAssembly System Interface 旨在讓 wasm 可以有個符合 POSIX 的系統介面來做系統呼叫，目前 Bytcode Alliance 還在開發 wasi 中，不過許多 wasm runtime 都已經有支援了。 <a href="https://bytecodealliance.org/">Bytcode Alliance</a> 是由 Mozilla、Fastly、Intel 與 Red Hat 聯合起來的組織，目標就是要讓 WebAssembly 及其生態圈能成熟穩定下來。</p>
+<p>既然我們能編譯出 wasm bytecode 了，總要有方式能執行起來，至於要怎麼執行也是見仁見智了，目前最官方的實作大概就是 Bytcode Alliance 的 wasmtime 了。<a href="https://wasmtime.dev/">Wasmtime</a> 是原本由 Mozilla 主導，現在由 Fastly 接手開發的 JIT Interpreter，不同的語言如 C 或 GO 也都有使用其函式庫的方法。如果你想用其他 runtime 的話，<a href="https://github.com/appcypher/awesome-wasm-runtimes">Awesome WebAssembly Runtimes</a> 也有列出非常多的不同實作。而許多大型<a href="https://v8.dev/features">專案</a>或<a href="https://docs.microsoft.com/en-us/dotnet/architecture/blazor-for-web-forms-developers/hosting-models">框架</a>也有針對不同領域用途的不同實作。</p>
+<p>所以的確 Webassembly 要當作完整獨自的生態體系的話還有一小段路要走，不過作為 web 的支援我覺得算是蠻成熟可以實際使用了。另外每個語言都可以一起協助拓展 Webassembly 的生態圈，期望 wasm 在未來可以持續有不錯的進展。</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;rust-esp&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Environment Setup for ESP Development in Rust
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;arc-mutex&#x2F;">
+              在 Rust 中讓型別能夠跨執行緒的方法<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>
