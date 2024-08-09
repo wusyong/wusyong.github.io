@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Rust Kernel Module: Getting Started
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Rust Kernel Module: Getting Started
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2022-05-04T12:04:23+08:00">May 04, 2022</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>9 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1709 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Linux-next has <a href="https://lwn.net/Articles/849849/">Rust support</a> for a while. While it's still not really in the mainline yet, the whole Rust stack in Linux is pretty solid already. From compiling to debugging, I can confirm the development workflow for Rust kernel modules is surprisingly seamless. In this post, I'm going to introduce you how to setup the development environment for Linux Kernel. So you can build the modules and test it.</p>
+<p>I know setup whole kernel is incredibly cumbersome, and theoretically we can just build the modules from linux headers. In fact, the <a href="https://github.com/fishinabarrel/linux-kernel-module-rust">old project</a> for Rust kernel module actually did this approach already. But testing programs without any kind of sandbox is dangerous and error prone. We should build common sense that sandbox is crucial for any project IMHO. Just bear with me throughout these steps. It's going to be easier and more fun after all of these.</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>To get the source code, we can clone the Linux repository from Rust-for-Linux organization:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> git clone https://github.com/Rust-for-Linux/linux.git
+</span></code></pre>
+<h3 id="dependencies">Dependencies</h3>
+<p>Next we need to prepare all dependencies required. Quick start guide from <a href="https://github.com/Rust-for-Linux/linux/blob/rust/Documentation/rust/quick-start.rst"><code>Documentation/rust</code></a> also lists all the requirements already. Feel free to follow it instead for this step.</p>
+<h4 id="system-requirements">System Requirements</h4>
+<p>The first one is of course all dependencies for compiling the kernel. For some distributions, they might already ship some of the packages. I'll only provide commands for debian-related distributions. But others should follow the same:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> sudo apt install libncurses-dev flex bison openssl libssl-dev \
+</span><span>    dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf
+</span></code></pre>
+<h4 id="qemu-gdb">QEMU &amp; GDB</h4>
+<p>And then is tools for testing and debugging, this includes all dependencies required from QEMU and GDB. In later post, we'll show how to run and debug kernel via attaching QEMU to GDB.</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> sudo apt install qemu qemu-system qemu-kvm libvirt-daemon-system \
+</span><span>    libvirt-clients bridge-utils
+</span><span style="color:#bf616a;">$</span><span> sudo apt install gdb
+</span></code></pre>
+<h3 id="llvm-or-libclang">LLVM (or libclang)</h3>
+<p>For simplicity, we will compile the kernel with LLVM. This is because we will use <code>bindgen</code> to help Rust connect to the C code which requires <code>libclang</code>. We will compile the kernel with <code>LLVM=1</code>, or if your distribution doesn't support full toolchain, use with <code>CC=clang</code>. Again, most distributions should ship with LLVM already. But if you are afraid of missing anything, run the following command:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> sudo apt install llvm lld libclang-dev
+</span></code></pre>
+<h3 id="rust">Rust</h3>
+<p>For your sanity, I really recommend <a href="https://www.rust-lang.org/tools/install">download and install Rust</a> from the official site and remove other versions installed from other package managers. But if you insist, <a href="https://github.com/Rust-for-Linux/linux/blob/rust/Documentation/rust/quick-start.rst"><code>Documentation/rust</code></a> should also cover that. For the time of this post, Linux is still stick to a certain Rust version instead of stable. To get the toolchain of that version, run the following commands:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> rustup override set $(</span><span style="color:#bf616a;">scripts/min-tool-version.sh</span><span> rustc)
+</span><span style="color:#bf616a;">$</span><span> rustup component add rust-src </span><span style="color:#65737e;"># Rust standard library source
+</span></code></pre>
+<p>And we also need to install <code>bindgen</code>:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> cargo install</span><span style="color:#bf616a;"> --locked --version </span><span>$(</span><span style="color:#bf616a;">scripts/min-tool-version.sh</span><span> bindgen) bindgen
+</span></code></pre>
+<h2 id="compiling-kernel">Compiling Kernel</h2>
+<p>Alright, this is where the fun begins! We are ready to compile the Linux kernel. Before we start, let's check again and make sure the toolchain is correct:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> make LLVM=1 rustavailable
+</span></code></pre>
+<p>This will use the same logic by Kconfig to determine if <code>RUST_IS_AVAILABLE</code> should be enable. When you get a fresh kernel, it usually starts with <code>make menuconfig</code> to create the <code>.config</code> file. While we can use it to toggle the Rust support and all modules we want to build, we can also copy existing one from its CI workflow. We could get the most similar configurations from the upstream. In this post, I will assume you are under <code>x86_64</code> architecture. If it's not, please take a look of its <a href="https://github.com/Rust-for-Linux/linux/blob/rust/.github/workflows/ci.yaml"><code>ci.yaml</code></a> and choose the closest possible config for you.</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> cp .github/workflows/kernel-x86_64-debug.config .config
+</span></code></pre>
+<p>AAAAAAAAAAAAAAAAAAAAAND COMPILE!</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">make</span><span> LLVM=1</span><span style="color:#bf616a;"> -j</span><span>$</span><span style="color:#bf616a;">(nproc)
+</span></code></pre>
+<p>Take a coffee or go for a walk. It will take some time to complete. Once the compilation is done, you should found the kernel binary image under <code>arch/x86/boot/bzImage</code> in Linux source directory.</p>
+<h3 id="build-initramfs">Build initramfs</h3>
+<p>Now we have the kernel, we could run with QMEU right? Well not quite, we still need a root filesystem for the kernel. Starting from here, there could be multiple approaches. Depends on your need, it could be totally different. I would say there's no one true ring to rule all of them. For example, You can use <a href="https://buildroot.org/"><code>Buildroot</code></a> to setup as your drive. For us, we can just follow how CI does: Building initramfs. If you don't know what is initramfs, here's the quote from <a href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/filesystems/ramfs-rootfs-initramfs.txt?h=v4.9.30">Linux kernel documentation</a>:</p>
+<blockquote>
+<p>All 2.6 Linux kernels contain a gzipped &quot;cpio&quot; format archive, which is
+extracted into rootfs when the kernel boots up. After extracting, the
+kernel checks to see if rootfs contains a file &quot;init&quot;, and if so it executes
+it as PID 1. If found, this init process is responsible for bringing the
+system the rest of the way up, including locating and mounting the real root
+device (if any). If rootfs does not contain an init program after the
+embedded cpio archive is extracted into it, the kernel will fall through to
+the older code to locate and mount a root partition, then exec some variant
+of /sbin/init out of that.</p>
+</blockquote>
+<p>I hope you got it, because I'm going to introduce another tool we need: <a href="https://www.busybox.net/downloads/binaries/"><code>busybox</code></a>. And I'll also drop another quote for you to understand:</p>
+<blockquote>
+<p>BusyBox combines tiny versions of many common UNIX utilities into a single small executable. It provides replacements for most of the utilities you usually find in GNU fileutils, shellutils, etc. The utilities in BusyBox generally have fewer options than their full-featured GNU cousins; however, the options that are included provide the expected functionality and behave very much like their GNU counterparts. BusyBox provides a fairly complete environment for any small or embedded system.</p>
+</blockquote>
+<p>Whew that's quite a read. Don't worry about not fully understanding what they do. Because we only care about the setup and how to create the image for now. We'll come back to this if we really need some advanced configurations. The project itself already offer a script for us to create image:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> wget https://www.busybox.net/downloads/binaries/1.35.0-x86_64-linux-musl/busybox
+</span><span style="color:#bf616a;">$</span><span> usr/gen_init_cpio .github/workflows/qemu-initramfs.desc &gt; qemu-initramfs.img
+</span></code></pre>
+<p><code>qemu-initramfs.desc</code> might contain modules we didn't build. Just remove those lines if you get the errors.</p>
+<h2 id="running-on-qemu">Running on QEMU</h2>
+<p>Alright! This time is real. We are going to start QEMU on the compiled kernel:</p>
+<blockquote>
+<p>In case you don't know how to exit <del>vim</del> qemu: Ctrl+A then X</p>
+</blockquote>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> sudo qemu-system-x86_64 \
+</span><span style="color:#bf616a;">    -kernel</span><span> arch/x86/boot/bzImage \
+</span><span style="color:#bf616a;">    -initrd</span><span> qemu-initramfs.img \
+</span><span style="color:#bf616a;">    -M</span><span> pc \
+</span><span style="color:#bf616a;">    -m</span><span> 4G \
+</span><span style="color:#bf616a;">    -cpu</span><span> Cascadelake-Server \
+</span><span style="color:#bf616a;">    -smp </span><span>$(</span><span style="color:#bf616a;">nproc</span><span>) \
+</span><span style="color:#bf616a;">    -nographic </span><span>\
+</span><span style="color:#bf616a;">    -vga</span><span> none \
+</span><span style="color:#bf616a;">    -no-reboot </span><span>\
+</span><span style="color:#bf616a;">    -append </span><span>&#39;</span><span style="color:#a3be8c;">console=ttyS0</span><span>&#39;
+</span></code></pre>
+<p>See QEMU's <a href="https://www.qemu.org/docs/master/system/invocation.html">Invocation</a> if you want to understand what each parameter does. If everything runs smoothly, it should look like this:</p>
+<p><img src="https://i.imgur.com/5foNAMl.png" alt="" /></p>
+<p>Hooray! You just built a Linux kernel with Rust kernel modules loaded!</p>
+<h2 id="debugging-with-gdb">Debugging with GDB</h2>
+<p>Before we end the post, there's one more thing we haven't done yet. Running the kernel is one thing, how to debug it is another. While it's definitely a huge topic, I would like to give an entry point to let everyone know how to start the first step at least.</p>
+<p>To enable debugging, we need to make sure option <code>CONFIG_GDB_SCRIPTS</code> is on and <code>CONFIG_DEBUG_INFO_REDUCED</code> is off when building kernel. If you configure with <code>make menucofig</code>, you can use <code>/</code> to search these options and find their path to toggle. Build the kernel with <code>make LLVM=1 -j$(nproc)</code> will create the kernel with symbols we need. With incremental compilations, it should take way lesser time to complete. This is also true when we focus on kernel modules later. We just need to compile the modules afterwards.</p>
+<p>Once it's finish again, you should see <code>vmlinux</code> and <code>vmlinux-gdb.py</code> in the root of project. <code>vmlinux</code> is the target for GDB and <code>vmlinux-gdb.py</code> is pre-defined GDB helpers. To get the commands (<code>lx-*</code>) defined in <code>vmlinux-gdb.py</code>, we add the script file to GDB’s auto load path. Some usages of the commands can be found in <a href="https://www.kernel.org/doc/html/latest/dev-tools/gdb-kernel-debugging.html">GDB Kernel Debugging Page</a>.</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> echo &quot;</span><span style="color:#a3be8c;">add-auto-load-safe-path path/to/vmlinux-gdb.py</span><span>&quot; &gt;&gt; </span><span style="color:#bf616a;">~</span><span>/.gdbinit
+</span></code></pre>
+<p>Let's run the kernel on QMEU again, but this time with a few more parameters added:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> sudo qemu-system-x86_64 \
+</span><span style="color:#bf616a;">    -kernel</span><span> arch/x86/boot/bzImage \
+</span><span style="color:#bf616a;">    -initrd</span><span> qemu-initramfs.img \
+</span><span style="color:#bf616a;">    -M</span><span> pc \
+</span><span style="color:#bf616a;">    -m</span><span> 4G \
+</span><span style="color:#bf616a;">    -cpu</span><span> Cascadelake-Server \
+</span><span style="color:#bf616a;">    -smp </span><span>$(</span><span style="color:#bf616a;">nproc</span><span>) \
+</span><span style="color:#bf616a;">    -nographic </span><span>\
+</span><span style="color:#bf616a;">    -vga</span><span> none \
+</span><span style="color:#bf616a;">    -no-reboot </span><span>\
+</span><span style="color:#bf616a;">    -append </span><span>&#39;</span><span style="color:#a3be8c;">console=ttyS0 nokaslr</span><span>&#39; \
+</span><span style="color:#bf616a;">    -s -S
+</span></code></pre>
+<p>We add <code>nokaslr</code> boot parameter because GDB doesn't work well with KASLR on. We also use <code>-s -S</code> combination to hold QEMU from booting the kernel until a GDB instance is attached. Now let's create another shell window to start GDB and attach then to QEMU. Starting from here we can now set breakpoints and debugging the kernel.</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> gdb vmlinux
+</span></code></pre>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>(gdb) target remote :1234   # Attach to QEMU
+</span><span>(gdb) hbreak start_kernel
+</span><span>(gdb) c
+</span><span>(gdb) b mm_alloc
+</span><span>(gdb) c
+</span><span>(gdb) lx-dmesg  # Display kernel dmesg log in GDB shell
+</span><span>(gdb) ...
+</span></code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>Okay we are finally done with building our first kernel. While this is just the first step, I believe this is the most difficult one and it will be more and more interesting from now on. In the next post, we'll start exploring the joy of writing kernel modules! </p>
+<h2 id="reference">Reference</h2>
+<ol>
+<li>https://mirrors.edge.kernel.org/pub/linux/kernel</li>
+<li>https://wiki.gentoo.org/wiki/Custom_Initramfs</li>
+<li>https://busybox.net/FAQ.html</li>
+<li>https://www.qemu.org/docs/master/system/index.html</li>
+<li>https://github.com/d0u9/Linux-Device-Driver/blob/draft/02_getting_start_with_driver_development/03_build_initramfs.md</li>
+<li>https://www.josehu.com/memo/2021/01/02/linux-kernel-build-debug.html#fn:2</li>
+</ol>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;servo-01&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Overview of Servo
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;rust-kernel-module-01&#x2F;">
+              Rust Kernel Module: Hello World<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>
