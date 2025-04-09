@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Starting Out
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h1 class="title is-2">Starting Out</h1>
+      <p class="subtitle is-4"></p>
+    </div>
+    <div class="content">
+      <style>
+.textleft {
+  text-align:left;
+}
+.reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+font-family:Arial, Microsoft JhengHei;}
+.reveal .progress {
+    height: 14px !important;
+}
+.progress span {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAMCAIAAAAs6UAAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QUNCQzIyREQ0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QUNCQzIyREU0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpBQ0JDMjJEQjRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpBQ0JDMjJEQzRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PovDFgYAAAAmSURBVHjaYvjPwMAAxjMZmBhA9H8INv4P4TPM/A+m04zBNECAAQBCWQv9SUQpVgAAAABJRU5ErkJggg==) repeat-x !important;
+}
+.progress span:after, .progress span.nyancat {
+    content: "";
+    background: url(data:image/gif;base64,R0lGODlhIgAVAKIHAL3/9/+Zmf8zmf/MmZmZmf+Z/wAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpDMkJBNjY5RTU1NEJFMzExOUM4QUM2MDAwNDQzRERBQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCREIzOEIzMzRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCREIzOEIzMjRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkM1QkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkMyQkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8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) ;
+    width: 34px !important;
+    height: 21px !important;
+    border: none !important;
+    float: right;
+    margin-top: -7px;
+    margin-right: -10px;
+}
+.my-icon-css {
+  width: 100%;
+  height: 200px;
+  background-position:center;
+  background-repeat: no-repeat;
+  background-image:url('https://mir-s3-cdn-cf.behance.net/project_modules/disp/fe36cc42774743.57ee5f329fae6.gif');
+}
+</style>
+<h2 id="starting-out">Starting Out</h2>
+<h4 id="wusyong-wu-yu-wei">@wusyong, 吳昱緯</h4>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="ready-set-go">Ready, set, go!</h2>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">2 </span><span>+ </span><span style="color:#d08770;">15  
+</span><span style="color:#d08770;">17  
+</span><span>ghci&gt; </span><span style="color:#d08770;">49</span><span> * </span><span style="color:#d08770;">100  
+</span><span style="color:#d08770;">4900  
+</span><span>ghci&gt; </span><span style="color:#d08770;">1892 </span><span>- </span><span style="color:#d08770;">1472  
+</span><span style="color:#d08770;">420  
+</span><span>ghci&gt; </span><span style="color:#d08770;">5 </span><span>/ </span><span style="color:#d08770;">2  
+</span><span style="color:#d08770;">2.5  
+</span><span>ghci&gt;  
+</span></code></pre>
+<hr />
+<h3 id="arithmetic">Arithmetic</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; (</span><span style="color:#d08770;">50</span><span> * </span><span style="color:#d08770;">100</span><span>) - </span><span style="color:#d08770;">4999  
+</span><span style="color:#d08770;">1  
+</span><span>ghci&gt; </span><span style="color:#d08770;">50</span><span> * </span><span style="color:#d08770;">100 </span><span>- </span><span style="color:#d08770;">4999  
+</span><span style="color:#d08770;">1  
+</span><span>ghci&gt; </span><span style="color:#d08770;">50</span><span> * (</span><span style="color:#d08770;">100 </span><span>- </span><span style="color:#d08770;">4999</span><span>)  
+</span><span>-</span><span style="color:#d08770;">244950  
+</span></code></pre>
+<hr />
+<h3 id="boolean">Boolean</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">True</span><span> &amp;&amp; </span><span style="color:#d08770;">False  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; </span><span style="color:#d08770;">True</span><span> &amp;&amp; </span><span style="color:#d08770;">True  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; </span><span style="color:#d08770;">False </span><span>|| </span><span style="color:#d08770;">True  
+</span><span style="color:#d08770;">True   
+</span><span>ghci&gt; not </span><span style="color:#d08770;">False  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; not (</span><span style="color:#d08770;">True</span><span> &amp;&amp; </span><span style="color:#d08770;">True</span><span>)  
+</span><span style="color:#d08770;">False  
+</span></code></pre>
+<hr />
+<h3 id="boolean-1">Boolean</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">5 </span><span>== </span><span style="color:#d08770;">5  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; </span><span style="color:#d08770;">1 </span><span>== </span><span style="color:#d08770;">0  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; </span><span style="color:#d08770;">5 </span><span>/= </span><span style="color:#d08770;">5  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; </span><span style="color:#d08770;">5 </span><span>/= </span><span style="color:#d08770;">4  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; &quot;</span><span style="color:#a3be8c;">hello</span><span>&quot; == &quot;</span><span style="color:#a3be8c;">hello</span><span>&quot;  
+</span><span style="color:#d08770;">True  
+</span></code></pre>
+<hr />
+<h3 id="types-still-matter">Types still matter</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">5 </span><span>+ &quot;</span><span style="color:#a3be8c;">llama</span><span>&quot;
+</span><span style="color:#d08770;">No </span><span style="color:#b48ead;">instance </span><span style="color:#bf616a;">for</span><span> (</span><span style="color:#b48ead;">Num</span><span> [</span><span style="color:#b48ead;">Char</span><span>])  
+</span><span>arising from a use </span><span style="color:#b48ead;">of</span><span> `+&#39; at &lt;interactive&gt;:</span><span style="color:#d08770;">1</span><span>:</span><span style="color:#d08770;">0</span><span>-</span><span style="color:#d08770;">9  
+</span><span style="color:#d08770;">Possible</span><span> fix: add an </span><span style="color:#b48ead;">instance </span><span style="color:#bf616a;">declaration for</span><span> (</span><span style="color:#b48ead;">Num</span><span> [</span><span style="color:#b48ead;">Char</span><span>])  
+</span><span style="color:#d08770;">In</span><span> the expression: </span><span style="color:#d08770;">5 </span><span>+ &quot;</span><span style="color:#a3be8c;">llama</span><span>&quot;  
+</span><span style="color:#d08770;">In</span><span> the definition </span><span style="color:#b48ead;">of</span><span> `it&#39;: it = </span><span style="color:#d08770;">5 </span><span>+ &quot;</span><span style="color:#a3be8c;">llama</span><span>&quot;   
+</span></code></pre>
+<hr />
+<h3 id="functions">Functions</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; succ </span><span style="color:#d08770;">8  
+</span><span style="color:#d08770;">9
+</span><span>ghci&gt; min </span><span style="color:#d08770;">9 10  
+</span><span style="color:#d08770;">9  
+</span><span>ghci&gt; min </span><span style="color:#d08770;">3.4 3.2  
+</span><span style="color:#d08770;">3.2  
+</span><span>ghci&gt; max </span><span style="color:#d08770;">100 101  
+</span><span style="color:#d08770;">101  
+</span></code></pre>
+<hr />
+<h3 id="function-application-has-the-highest-precedence">Function application has the highest precedence</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; succ </span><span style="color:#d08770;">9 </span><span>+ max </span><span style="color:#d08770;">5 4 </span><span>+ </span><span style="color:#d08770;">1  
+</span><span style="color:#d08770;">16  
+</span><span>ghci&gt; (succ </span><span style="color:#d08770;">9</span><span>) + (max </span><span style="color:#d08770;">5 4</span><span>) + </span><span style="color:#d08770;">1  
+</span><span style="color:#d08770;">16   
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="baby-s-first-functions">Baby's first functions</h2>
+<p>Create a <code>baby.hs</code>:</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>doubleMe x = x + x
+</span></code></pre>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; :l baby  
+</span><span>[</span><span style="color:#d08770;">1 </span><span style="color:#b48ead;">of </span><span style="color:#d08770;">1</span><span>] </span><span style="color:#d08770;">Compiling Main</span><span>             ( baby.hs, interpreted )  
+</span><span style="color:#d08770;">Ok</span><span>, modules loaded: </span><span style="color:#d08770;">Main</span><span>.  
+</span><span>ghci&gt; doubleMe </span><span style="color:#d08770;">9  
+</span><span style="color:#d08770;">18  
+</span><span>ghci&gt; doubleMe </span><span style="color:#d08770;">8.3  
+</span><span style="color:#d08770;">16.6   
+</span></code></pre>
+<hr />
+<h3 id="more-functions">More functions</h3>
+<p>Create a <code>baby.hs</code>:</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>doubleUs x y = x*</span><span style="color:#d08770;">2 </span><span>+ y*</span><span style="color:#d08770;">2
+</span><span>doubleUs x y = doubleMe x + doubleMe y   
+</span></code></pre>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; :r
+</span><span>ghci&gt; doubleUs </span><span style="color:#d08770;">4 9  
+</span><span style="color:#d08770;">26  
+</span><span>ghci&gt; doubleUs </span><span style="color:#d08770;">2.3 34.2  
+</span><span style="color:#d08770;">73.0  
+</span><span>ghci&gt; doubleUs </span><span style="color:#d08770;">28 88 </span><span>+ doubleMe </span><span style="color:#d08770;">123  
+</span><span style="color:#d08770;">478     
+</span></code></pre>
+<hr />
+<h3 id="if-statement">If Statement</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>doubleSmallNumber x = </span><span style="color:#b48ead;">if</span><span> x &gt; </span><span style="color:#d08770;">100  
+</span><span>                        </span><span style="color:#b48ead;">then</span><span> x  
+</span><span>                        </span><span style="color:#b48ead;">else</span><span> x*</span><span style="color:#d08770;">2
+</span></code></pre>
+<hr />
+<h4 id="is-valid-character-for-function">' is valid character for function</h4>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>doubleSmallNumber&#39; x = (</span><span style="color:#b48ead;">if</span><span> x &gt; </span><span style="color:#d08770;">100 </span><span style="color:#b48ead;">then</span><span> x </span><span style="color:#b48ead;">else</span><span> x*</span><span style="color:#d08770;">2</span><span>) + </span><span style="color:#d08770;">1
+</span></code></pre>
+<hr />
+<h4 id="however-first-character-in-function-cant-be-upper-case">However first character in function cant be upper case</h4>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>conanO&#39;</span><span style="color:#d08770;">Brien </span><span>= &quot;</span><span style="color:#a3be8c;">It&#39;s a-me, Conan O&#39;Brien!</span><span>&quot;  
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="an-intro-to-lists">An intro to lists</h2>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; lostNumbers = [</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">15</span><span>,</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">23</span><span>,</span><span style="color:#d08770;">42</span><span>]  
+</span><span>ghci&gt; lostNumbers  
+</span><span>[</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">15</span><span>,</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">23</span><span>,</span><span style="color:#d08770;">42</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="strings-are-lists">Strings are Lists</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>&quot;</span><span style="color:#a3be8c;">hello</span><span>&quot;
+</span><span>[&#39;</span><span style="color:#a3be8c;">h</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">e</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">l</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">l</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">o</span><span>&#39;]
+</span></code></pre>
+<hr />
+<h3 id="operator">++ operator</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>] ++ [</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">11</span><span>,</span><span style="color:#d08770;">12</span><span>]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">11</span><span>,</span><span style="color:#d08770;">12</span><span>]  
+</span><span>ghci&gt; &quot;</span><span style="color:#a3be8c;">hello</span><span>&quot; ++ &quot; &quot; ++ &quot;</span><span style="color:#a3be8c;">world</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">hello world</span><span>&quot;  
+</span><span>ghci&gt; [&#39;</span><span style="color:#a3be8c;">w</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">o</span><span>&#39;] ++ [&#39;</span><span style="color:#a3be8c;">o</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">t</span><span>&#39;]  
+</span><span>&quot;</span><span style="color:#a3be8c;">woot</span><span>&quot; 
+</span></code></pre>
+<hr />
+<h3 id="operator-cons-operator">: operator (cons operator)</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; &#39;</span><span style="color:#a3be8c;">A</span><span>&#39;:&quot;</span><span style="color:#a3be8c;"> SMALL CAT</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">A SMALL CAT</span><span>&quot;  
+</span><span>ghci&gt; </span><span style="color:#d08770;">5</span><span>:[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>]  
+</span><span>[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>]  
+</span></code></pre>
+<hr />
+<h3 id="what-lists-actually-present">What lists actually present</h3>
+<ul>
+<li><code>[1,2,3]</code> == <code>1:2:3:[]</code></li>
+<li><code>[]</code> means empty list</li>
+<li><code>[]</code>, <code>[[]] and </code>[[],[],[]] are all different things.</li>
+</ul>
+<hr />
+<h3 id="operator-1">!! operator</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; &quot;</span><span style="color:#a3be8c;">Steve Buscemi</span><span>&quot; !! </span><span style="color:#d08770;">6  
+</span><span>&#39;</span><span style="color:#a3be8c;">B</span><span>&#39;  
+</span><span>ghci&gt; [</span><span style="color:#d08770;">9.4</span><span>,</span><span style="color:#d08770;">33.2</span><span>,</span><span style="color:#d08770;">96.2</span><span>,</span><span style="color:#d08770;">11.2</span><span>,</span><span style="color:#d08770;">23.25</span><span>] !! </span><span style="color:#d08770;">1  
+</span><span style="color:#d08770;">33.2
+</span></code></pre>
+<hr />
+<h3 id="list-can-contain-list">List can contain list</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> b = [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]]  
+</span><span>ghci&gt; b  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]]  
+</span><span>ghci&gt; b ++ [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">1</span><span>]]  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">1</span><span>]]  
+</span><span>ghci&gt; [</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">6</span><span>]:b  
+</span><span>[[</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]]  
+</span><span>ghci&gt; b !! </span><span style="color:#d08770;">2  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>] 
+</span></code></pre>
+<hr />
+<h3 id="order-comparing">Order comparing</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>] &gt; [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">0</span><span>]  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>] &gt; [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">100</span><span>]  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>] &gt; [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>] &gt; [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>] == [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>]  
+</span><span style="color:#d08770;">True
+</span></code></pre>
+<hr />
+<h3 id="head-tail-last-init">head/tail/last/init</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; head [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span style="color:#d08770;">5  
+</span><span>ghci&gt; tail [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>[</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>] 
+</span><span>ghci&gt; last [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span style="color:#d08770;">1 
+</span><span>ghci&gt; init [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>]
+</span><span>ghci&gt; head </span><span style="color:#d08770;">[]  
+</span><span>*** </span><span style="color:#d08770;">Exception</span><span>: </span><span style="color:#d08770;">Prelude</span><span>.head: empty list  
+</span></code></pre>
+<hr />
+<h3 id="more-basic-functions">More basic functions</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; length [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span style="color:#d08770;">5 
+</span><span>ghci&gt; null [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; null </span><span style="color:#d08770;">[]  
+</span><span style="color:#d08770;">True 
+</span><span>ghci&gt; reverse [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>] 
+</span><span>ghci&gt; take </span><span style="color:#d08770;">3</span><span> [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>]
+</span><span>ghci&gt; take </span><span style="color:#d08770;">5</span><span> [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>]  
+</span><span>ghci&gt; take </span><span style="color:#d08770;">0</span><span> [</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span style="color:#d08770;">[] 
+</span></code></pre>
+<hr />
+<h3 id="more-basic-functions-1">More basic functions</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; drop </span><span style="color:#d08770;">3</span><span> [</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span>ghci&gt; drop </span><span style="color:#d08770;">0</span><span> [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span>ghci&gt; drop </span><span style="color:#d08770;">100</span><span> [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span style="color:#d08770;">[]
+</span><span>ghci&gt; minimum [</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span style="color:#d08770;">1  
+</span><span>ghci&gt; maximum [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span style="color:#d08770;">9
+</span><span>ghci&gt; sum [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">7</span><span>]  
+</span><span style="color:#d08770;">31  
+</span><span>ghci&gt; product [</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>]  
+</span><span style="color:#d08770;">24  
+</span></code></pre>
+<hr />
+<h3 id="more-basic-functions-2">More basic functions</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">4 </span><span style="color:#8fa1b3;">`</span><span>elem</span><span style="color:#8fa1b3;">`</span><span> [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; </span><span style="color:#d08770;">10 </span><span style="color:#8fa1b3;">`</span><span>elem</span><span style="color:#8fa1b3;">`</span><span> [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span style="color:#d08770;">False  
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="texas-ranges">Texas ranges</h2>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">20</span><span>]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">11</span><span>,</span><span style="color:#d08770;">12</span><span>,</span><span style="color:#d08770;">13</span><span>,</span><span style="color:#d08770;">14</span><span>,</span><span style="color:#d08770;">15</span><span>,</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">17</span><span>,</span><span style="color:#d08770;">18</span><span>,</span><span style="color:#d08770;">19</span><span>,</span><span style="color:#d08770;">20</span><span>]  
+</span><span>ghci&gt; [&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;..&#39;</span><span style="color:#a3be8c;">z</span><span>&#39;]  
+</span><span>&quot;</span><span style="color:#a3be8c;">abcdefghijklmnopqrstuvwxyz</span><span>&quot;  
+</span><span>ghci&gt; [&#39;</span><span style="color:#a3be8c;">K</span><span>&#39;..&#39;</span><span style="color:#a3be8c;">Z</span><span>&#39;]  
+</span><span>&quot;</span><span style="color:#a3be8c;">KLMNOPQRSTUVWXYZ</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="ranges-can-be-specified-the-step">Ranges can be specified the step</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>..</span><span style="color:#d08770;">20</span><span>]  
+</span><span>[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">12</span><span>,</span><span style="color:#d08770;">14</span><span>,</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">18</span><span>,</span><span style="color:#d08770;">20</span><span>]  
+</span><span>ghci&gt; [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>..</span><span style="color:#d08770;">20</span><span>]  
+</span><span>[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">12</span><span>,</span><span style="color:#d08770;">15</span><span>,</span><span style="color:#d08770;">18</span><span>]
+</span><span style="color:#65737e;">-- Floating point can go wrong though
+</span><span>ghci&gt; [</span><span style="color:#d08770;">0.1</span><span>, </span><span style="color:#d08770;">0.3 </span><span>.. </span><span style="color:#d08770;">1</span><span>]  
+</span><span>[</span><span style="color:#d08770;">0.1</span><span>,</span><span style="color:#d08770;">0.3</span><span>,</span><span style="color:#d08770;">0.5</span><span>,</span><span style="color:#d08770;">0.7</span><span>,</span><span style="color:#d08770;">0.8999999999999999</span><span>,</span><span style="color:#d08770;">1.0999999999999999</span><span>] 
+</span></code></pre>
+<hr />
+<h3 id="inifinite-lists">Inifinite lists</h3>
+<ul>
+<li><code>take 24 [13,26..]</code> == <code>[13,26..24*13]</code></li>
+</ul>
+<hr />
+<h3 id="some-functions-to-produce-infinite-lists">Some functions to produce infinite lists</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; take </span><span style="color:#d08770;">10</span><span> (cycle [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>])  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>ghci&gt; take </span><span style="color:#d08770;">12</span><span> (cycle &quot;</span><span style="color:#a3be8c;">LOL </span><span>&quot;)  
+</span><span>&quot;</span><span style="color:#a3be8c;">LOL LOL LOL </span><span>&quot; 
+</span><span>ghci&gt; take </span><span style="color:#d08770;">10</span><span> (repeat </span><span style="color:#d08770;">5</span><span>)  
+</span><span>[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>] 
+</span><span>ghci&gt; replicate </span><span style="color:#d08770;">3 10
+</span><span>[</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">10</span><span>]
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="i-m-a-list-comprehension">I'm a list comprehension</h2>
+<p>Set Comprehensions</p>
+<p><img src="http://s3.amazonaws.com/lyah/setnotation.png" alt="" /></p>
+<hr />
+<h3 id="list-comprehension">list comprehension</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; [x*</span><span style="color:#d08770;">2 </span><span>| x &lt;- [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">10</span><span>]]  
+</span><span>[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">12</span><span>,</span><span style="color:#d08770;">14</span><span>,</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">18</span><span>,</span><span style="color:#d08770;">20</span><span>]
+</span><span>ghci&gt; [x*</span><span style="color:#d08770;">2 </span><span>| x &lt;- [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">10</span><span>], x*</span><span style="color:#d08770;">2 </span><span>&gt;= </span><span style="color:#d08770;">12</span><span>]  
+</span><span>[</span><span style="color:#d08770;">12</span><span>,</span><span style="color:#d08770;">14</span><span>,</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">18</span><span>,</span><span style="color:#d08770;">20</span><span>]
+</span><span>ghci&gt; [ x | x &lt;- [</span><span style="color:#d08770;">50</span><span>..</span><span style="color:#d08770;">100</span><span>], x </span><span style="color:#8fa1b3;">`</span><span>mod</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">7 </span><span>== </span><span style="color:#d08770;">3</span><span>]  
+</span><span>[</span><span style="color:#d08770;">52</span><span>,</span><span style="color:#d08770;">59</span><span>,</span><span style="color:#d08770;">66</span><span>,</span><span style="color:#d08770;">73</span><span>,</span><span style="color:#d08770;">80</span><span>,</span><span style="color:#d08770;">87</span><span>,</span><span style="color:#d08770;">94</span><span>]   
+</span></code></pre>
+<h3 id="filtering">Filtering</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>boomBangs xs = [ </span><span style="color:#b48ead;">if</span><span> x &lt; </span><span style="color:#d08770;">10 </span><span style="color:#b48ead;">then </span><span>&quot;</span><span style="color:#a3be8c;">BOOM!</span><span>&quot; </span><span style="color:#b48ead;">else </span><span>&quot;</span><span style="color:#a3be8c;">BANG!</span><span>&quot; | x &lt;- xs, odd x]   
+</span><span>ghci&gt; boomBangs [</span><span style="color:#d08770;">7</span><span>..</span><span style="color:#d08770;">13</span><span>]  
+</span><span>[&quot;</span><span style="color:#a3be8c;">BOOM!</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">BOOM!</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">BANG!</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">BANG!</span><span>&quot;]
+</span><span>ghci&gt; [ x | x &lt;- [</span><span style="color:#d08770;">10</span><span>..</span><span style="color:#d08770;">20</span><span>], x /= </span><span style="color:#d08770;">13</span><span>, x /= </span><span style="color:#d08770;">15</span><span>, x /= </span><span style="color:#d08770;">19</span><span>]  
+</span><span>[</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">11</span><span>,</span><span style="color:#d08770;">12</span><span>,</span><span style="color:#d08770;">14</span><span>,</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">17</span><span>,</span><span style="color:#d08770;">18</span><span>,</span><span style="color:#d08770;">20</span><span>] 
+</span><span>ghci&gt; [ x*y | x &lt;- [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">10</span><span>], y &lt;- [</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">11</span><span>]]  
+</span><span>[</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">20</span><span>,</span><span style="color:#d08770;">22</span><span>,</span><span style="color:#d08770;">40</span><span>,</span><span style="color:#d08770;">50</span><span>,</span><span style="color:#d08770;">55</span><span>,</span><span style="color:#d08770;">80</span><span>,</span><span style="color:#d08770;">100</span><span>,</span><span style="color:#d08770;">110</span><span>] 
+</span><span>ghci&gt; [ x*y | x &lt;- [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">10</span><span>], y &lt;- [</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">11</span><span>], x*y &gt; </span><span style="color:#d08770;">50</span><span>]  
+</span><span>[</span><span style="color:#d08770;">55</span><span>,</span><span style="color:#d08770;">80</span><span>,</span><span style="color:#d08770;">100</span><span>,</span><span style="color:#d08770;">110</span><span>] 
+</span></code></pre>
+<hr />
+<h3 id="list-combination">List combination</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> nouns = [&quot;</span><span style="color:#a3be8c;">hobo</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">frog</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">pope</span><span>&quot;]  
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> adjectives = [&quot;</span><span style="color:#a3be8c;">lazy</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">grouchy</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">scheming</span><span>&quot;]  
+</span><span>ghci&gt; [adjective ++ &quot; &quot; ++ noun | adjective &lt;- adjectives, noun &lt;- nouns]  
+</span><span>[&quot;</span><span style="color:#a3be8c;">lazy hobo</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">lazy frog</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">lazy pope</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">grouchy hobo</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">grouchy frog</span><span>&quot;,  
+</span><span>&quot;</span><span style="color:#a3be8c;">grouchy pope</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">scheming hobo</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">scheming frog</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">scheming pope</span><span>&quot;]
+</span></code></pre>
+<hr />
+<h3 id="practices">Practices</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>length&#39; xs = sum [</span><span style="color:#d08770;">1 </span><span>| _ &lt;- xs]
+</span><span>removeNonUppercase st = [ c | c &lt;- st, c </span><span style="color:#8fa1b3;">`</span><span>elem</span><span style="color:#8fa1b3;">`</span><span> [&#39;</span><span style="color:#a3be8c;">A</span><span>&#39;..&#39;</span><span style="color:#a3be8c;">Z</span><span>&#39;]]
+</span><span>ghci&gt; removeNonUppercase &quot;</span><span style="color:#a3be8c;">Hahaha! Ahahaha!</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">HA</span><span>&quot;  
+</span><span>ghci&gt; removeNonUppercase &quot;</span><span style="color:#a3be8c;">IdontLIKEFROGS</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">ILIKEFROGS</span><span>&quot; 
+</span></code></pre>
+<hr />
+<h3 id="nested-list-comprehensions">Nested List Comprehensions</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> xxs = [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">9</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>]]  
+</span><span>ghci&gt; [ [ x | x &lt;- xs, even x ] | xs &lt;- xxs]  
+</span><span>[[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">8</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">6</span><span>]]
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="tuples">Tuples</h2>
+<ul>
+<li><code>(1,2)</code>, <code>(3,4,5)</code></li>
+<li>Tuple is viewed as type. So this will fail: <code>[(1,2),(8,11,5),(4,5)]</code></li>
+<li>Element in tuple can be homogenous: <code>(1, &quot;Hi&quot;)</code></li>
+</ul>
+<hr />
+<h3 id="2-tuples-functions">2-Tuples functions</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; fst (</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">11</span><span>)  
+</span><span style="color:#d08770;">8  
+</span><span>ghci&gt; fst (&quot;</span><span style="color:#a3be8c;">Wow</span><span>&quot;, </span><span style="color:#d08770;">False</span><span>)  
+</span><span>&quot;</span><span style="color:#a3be8c;">Wow</span><span>&quot;
+</span><span>ghci&gt; snd (</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">11</span><span>)  
+</span><span style="color:#d08770;">11  
+</span><span>ghci&gt; snd (&quot;</span><span style="color:#a3be8c;">Wow</span><span>&quot;, </span><span style="color:#d08770;">False</span><span>)  
+</span><span style="color:#d08770;">False
+</span></code></pre>
+<hr />
+<h3 id="some-more-functions">Some more functions</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; zip [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>] [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>]  
+</span><span>[(</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">5</span><span>),(</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>),(</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>),(</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>),(</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>)]  
+</span><span>ghci&gt; zip [</span><span style="color:#d08770;">1 </span><span>.. </span><span style="color:#d08770;">5</span><span>] [&quot;</span><span style="color:#a3be8c;">one</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">two</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">three</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">four</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">five</span><span>&quot;]  
+</span><span>[(</span><span style="color:#d08770;">1</span><span>,&quot;</span><span style="color:#a3be8c;">one</span><span>&quot;),(</span><span style="color:#d08770;">2</span><span>,&quot;</span><span style="color:#a3be8c;">two</span><span>&quot;),(</span><span style="color:#d08770;">3</span><span>,&quot;</span><span style="color:#a3be8c;">three</span><span>&quot;),(</span><span style="color:#d08770;">4</span><span>,&quot;</span><span style="color:#a3be8c;">four</span><span>&quot;),(</span><span style="color:#d08770;">5</span><span>,&quot;</span><span style="color:#a3be8c;">five</span><span>&quot;)]
+</span><span>ghci&gt; zip [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">6</span><span>] [&quot;</span><span style="color:#a3be8c;">im</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">a</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">turtle</span><span>&quot;]  
+</span><span>[(</span><span style="color:#d08770;">5</span><span>,&quot;</span><span style="color:#a3be8c;">im</span><span>&quot;),(</span><span style="color:#d08770;">3</span><span>,&quot;</span><span style="color:#a3be8c;">a</span><span>&quot;),(</span><span style="color:#d08770;">2</span><span>,&quot;</span><span style="color:#a3be8c;">turtle</span><span>&quot;)]
+</span><span>ghci&gt; zip [</span><span style="color:#d08770;">1</span><span>..] [&quot;</span><span style="color:#a3be8c;">apple</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">orange</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">cherry</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">mango</span><span>&quot;]  
+</span><span>[(</span><span style="color:#d08770;">1</span><span>,&quot;</span><span style="color:#a3be8c;">apple</span><span>&quot;),(</span><span style="color:#d08770;">2</span><span>,&quot;</span><span style="color:#a3be8c;">orange</span><span>&quot;),(</span><span style="color:#d08770;">3</span><span>,&quot;</span><span style="color:#a3be8c;">cherry</span><span>&quot;),(</span><span style="color:#d08770;">4</span><span>,&quot;</span><span style="color:#a3be8c;">mango</span><span>&quot;)]
+</span></code></pre>
+<hr />
+<h3 id="putting-things-together">Putting things together</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> triangles = [ (a,b,c) | c &lt;- [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">10</span><span>], b &lt;- [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">10</span><span>], a &lt;- [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">10</span><span>] ]
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> rightTriangles = [ (a,b,c) | c &lt;- [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">10</span><span>], b &lt;- [</span><span style="color:#d08770;">1</span><span>..c], a &lt;- [</span><span style="color:#d08770;">1</span><span>..b], a^</span><span style="color:#d08770;">2 </span><span>+ b^</span><span style="color:#d08770;">2 </span><span>== c^</span><span style="color:#d08770;">2</span><span>]
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> rightTriangles&#39; = [ (a,b,c) | c &lt;- [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">10</span><span>], b &lt;- [</span><span style="color:#d08770;">1</span><span>..c], a &lt;- [</span><span style="color:#d08770;">1</span><span>..b], a^</span><span style="color:#d08770;">2 </span><span>+ b^</span><span style="color:#d08770;">2 </span><span>== c^</span><span style="color:#d08770;">2</span><span>, a+b+c == </span><span style="color:#d08770;">24</span><span>]  
+</span><span>ghci&gt; rightTriangles&#39;  
+</span><span>[(</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">10</span><span>)]  
+</span></code></pre>
+<p>{{% /section %}}</p>
+
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-9">
+        
+        
+        
+
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+  
+  
+
+  
+  
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+  
+
+  
+  
+</body>
+
+</html>
