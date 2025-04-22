@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Functors, Applicative Functors and Monoids
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h1 class="title is-2">Functors, Applicative Functors and Monoids</h1>
+      <p class="subtitle is-4"></p>
+    </div>
+    <div class="content">
+      <style>
+.textleft {
+  text-align:left;
+}
+.reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+font-family:Arial, Microsoft JhengHei;}
+.reveal .progress {
+    height: 14px !important;
+}
+.progress span {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAMCAIAAAAs6UAAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QUNCQzIyREQ0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QUNCQzIyREU0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpBQ0JDMjJEQjRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpBQ0JDMjJEQzRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PovDFgYAAAAmSURBVHjaYvjPwMAAxjMZmBhA9H8INv4P4TPM/A+m04zBNECAAQBCWQv9SUQpVgAAAABJRU5ErkJggg==) repeat-x !important;
+}
+.progress span:after, .progress span.nyancat {
+    content: "";
+    background: url(data:image/gif;base64,R0lGODlhIgAVAKIHAL3/9/+Zmf8zmf/MmZmZmf+Z/wAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpDMkJBNjY5RTU1NEJFMzExOUM4QUM2MDAwNDQzRERBQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCREIzOEIzMzRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCREIzOEIzMjRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkM1QkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkMyQkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkECQcABwAsAAAAACIAFQAAA6J4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93bqCA7f7TFaYoIFAMMwczB5EkTzJllEUttmIGoG5bfPBjDawD7CsJC67uWcv2CRov929C/q2ZpcBbYBmLGk6W1BRY4MUDnMvJEsBAXdlknk2fCeRk2iJliAijpBlEmigjR0plKSgpKWvEUheF4tUZqZID1RHjEe8PsDBBwkAIfkECQcABwAsAAAAACIAFQAAA6B4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93TqS40XiKSYgTLBgIBAMqE/zmQSaZEzns+jQ9pC/5dQJ0VIv5KMVWxqb36opxHrNvu9ptPfGbmsBbgSAeRdydCdjXWRPchQPh1hNAQF4TpM9NnwukpRyi5chGjqJEoSOIh0plaYsZBKvsCuNjY5ptElgDyFIuj6+vwcJACH5BAkHAAcALAAAAAAiABUAAAOfeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GKifWaddvNQAtszXYCxgR/Zy5jYTFeXmSDiIZGdQEBd06QSBQ5e4cEkE9nnZQaG2J4F4MSLx8rkqUSZBeurhlTUqsLsi60DpZxSWBJugcJACH5BAkHAAcALAAAAAAiABUAAAOgeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GuifWaddvNwMkZtmY7AWMEgGcKY2ExXl5khFMVc0Z1AQF3TpJShDl8iASST2efloV5JTyJFpgOch8dgW9KZxexshGNLqgLtbW0SXFwvaJfCQAh+QQJBwAHACwAAAAAIgAVAAADoXi63P7wmUmrnVGOzbvfRsYYXGGe6MmF4kEOaSGYMwq2LizHfDGwIlLPNKGZfi6gZmggEAy2iVPZEKZqzakq+1xUFFYe90lxTsHmim6HGpvf3eR7skYJ3PC5tyystc0AboFnVXQ9XFJTZIQOYUYFTQEBeWaSVF4bbCeRk1meBJYSL3WbaReMIxQfHXh6jaYXsbEQni6oaF21ERR7l0ksvA0JACH5BAkHAAcALAAAAAAiABUAAAOeeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMfFlA4hTITEMxkIBMOuADwmhzqeM6mashTCXKw2TVKQyKuTRSx2wegnNkyJ1ozpOFiMLqcEU8BZHx6NYW8nVlZefQ1tZgQBAXJIi1eHUTRwi0lhl48QL0sogxaGDhMlUo2gh14fHhcVmnOrrxNqrU9joX21Q0IUElm7DQkAIfkECQcABwAsAAAAACIAFQAAA6J4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93bqCA7f7TFaYoIFAMMwczB5EkTzJllEUttmIGoG5bfPBjDawD7CsJC67uWcv2CRov929C/q2ZpcBbYBmLGk6W1BRY4MUDnMvJEsBAXdlknk2fCeRk2iJliAijpBlEmigjR0plKSgpKWvEUheF4tUZqZID1RHjEe8PsDBBwkAIfkECQcABwAsAAAAACIAFQAAA6B4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93TqS40XiKSYgTLBgIBAMqE/zmQSaZEzns+jQ9pC/5dQJ0VIv5KMVWxqb36opxHrNvu9ptPfGbmsBbgSAeRdydCdjXWRPchQPh1hNAQF4TpM9NnwukpRyi5chGjqJEoSOIh0plaYsZBKvsCuNjY5ptElgDyFIuj6+vwcJACH5BAkHAAcALAAAAAAiABUAAAOfeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GKifWaddvNQAtszXYCxgR/Zy5jYTFeXmSDiIZGdQEBd06QSBQ5e4cEkE9nnZQaG2J4F4MSLx8rkqUSZBeurhlTUqsLsi60DpZxSWBJugcJACH5BAkHAAcALAAAAAAiABUAAAOgeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GuifWaddvNwMkZtmY7AWMEgGcKY2ExXl5khFMVc0Z1AQF3TpJShDl8iASST2efloV5JTyJFpgOch8dgW9KZxexshGNLqgLtbW0SXFwvaJfCQAh+QQJBwAHACwAAAAAIgAVAAADoXi63P7wmUmrnVGOzbvfRsYYXGGe6MmF4kEOaSGYMwq2LizHfDGwIlLPNKGZfi6gZmggEAy2iVPZEKZqzakq+1xUFFYe90lxTsHmim6HGpvf3eR7skYJ3PC5tyystc0AboFnVXQ9XFJTZIQOYUYFTQEBeWaSVF4bbCeRk1meBJYSL3WbaReMIxQfHXh6jaYXsbEQni6oaF21ERR7l0ksvA0JACH5BAkHAAcALAAAAAAiABUAAAOeeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMfFlA4hTITEMxkIBMOuADwmhzqeM6mashTCXKw2TVKQyKuTRSx2wegnNkyJ1ozpOFiMLqcEU8BZHx6NYW8nVlZefQ1tZgQBAXJIi1eHUTRwi0lhl48QL0sogxaGDhMlUo2gh14fHhcVmnOrrxNqrU9joX21Q0IUElm7DQkAOw==) ;
+    width: 34px !important;
+    height: 21px !important;
+    border: none !important;
+    float: right;
+    margin-top: -7px;
+    margin-right: -10px;
+}
+.my-icon-css {
+  width: 100%;
+  height: 200px;
+  background-position:center;
+  background-repeat: no-repeat;
+  background-image:url('https://mir-s3-cdn-cf.behance.net/project_modules/disp/fe36cc42774743.57ee5f329fae6.gif');
+}
+</style>
+<p>{{% section %}}</p>
+<h2 id="functors-applicative-functors-and-monoids">Functors, Applicative Functors and Monoids</h2>
+<h4 id="wusyong-wu-yu-wei">@wusyong, 吳昱緯</h4>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="functors-redux">Functors redux</h2>
+<p><code>fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code> </p>
+<p>give me a function that takes an a and returns a b and a box with an a (or several of them) inside it and I'll give you a box with a b (or several of them) inside it.</p>
+<hr />
+<h3 id="computational-context">computational context</h3>
+<p>The context might be that the computation can have a value or it might have failed (Maybe and Either a) or that there might be more values (lists), stuff like that.</p>
+<hr />
+<h3 id="functor-on-io">Functor on IO</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Functor IO where  
+</span><span>    fmap f action = </span><span style="color:#b48ead;">do  
+</span><span>        result &lt;- action  
+</span><span>        return (f result)  
+</span></code></pre>
+<hr />
+<h3 id="functor-on-io-1">Functor on IO</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do</span><span> line &lt;- getLine   
+</span><span>            </span><span style="color:#b48ead;">let</span><span> line&#39; = reverse line  
+</span><span>            putStrLn $ &quot;</span><span style="color:#a3be8c;">You said </span><span>&quot; ++ line&#39; ++ &quot;</span><span style="color:#a3be8c;"> backwards!</span><span>&quot;  
+</span><span>            putStrLn $ &quot;</span><span style="color:#a3be8c;">Yes, you really said</span><span>&quot; ++ line&#39; ++ &quot;</span><span style="color:#a3be8c;"> backwards!</span><span>&quot;  
+</span></code></pre>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do</span><span> line &lt;- fmap reverse getLine  
+</span><span>          putStrLn $ &quot;</span><span style="color:#a3be8c;">You said </span><span>&quot; ++ line ++ &quot;</span><span style="color:#a3be8c;"> backwards!</span><span>&quot;  
+</span><span>          putStrLn $ &quot;</span><span style="color:#a3be8c;">Yes, you really said</span><span>&quot; ++ line ++ &quot;</span><span style="color:#a3be8c;"> backwards!</span><span>&quot;  
+</span></code></pre>
+<hr />
+<h3 id="functor-on-io-2">Functor on IO</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">fmap </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">-&gt; IO </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; IO </span><span style="color:#bf616a;">b
+</span></code></pre>
+<hr />
+<h3 id="functor-on-io-3">Functor on IO</h3>
+<p>If you ever find yourself binding the result of an I/O action to a name, only to apply a function to that and call that something else, consider using fmap,</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>Data.Char  
+</span><span style="color:#b48ead;">import </span><span>Data.List  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do</span><span> line &lt;- fmap (intersperse &#39;</span><span style="color:#a3be8c;">-</span><span>&#39; . reverse . map toUpper) getLine  
+</span><span>          putStrLn line
+</span></code></pre>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> runhaskell fmapping_io.hs  
+</span><span style="color:#bf616a;">hello</span><span> there  
+</span><span style="color:#bf616a;">E-R-E-H-T- -O-L-L-E-H
+</span></code></pre>
+<hr />
+<h3 id="r">(-&gt;) r</h3>
+<p>The function type r -&gt; a can be rewritten as (-&gt;) r a</p>
+<hr />
+<h3 id="functions-functors">functions functors</h3>
+<p>Control.Monad.Instances</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Functor</span><span> ((</span><span style="color:#b48ead;">-&gt;</span><span>) </span><span style="color:#bf616a;">r</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    fmap f g = (\x -&gt; f (g x))
+</span></code></pre>
+<p>fmap :: (a -&gt; b) -&gt; ((-&gt;) r a) -&gt; ((-&gt;) r b)</p>
+<p>fmap :: (a -&gt; b) -&gt; (r -&gt; a) -&gt; (r -&gt; b)</p>
+<hr />
+<h3 id="function-composition">Function composition</h3>
+<p>We pipe the output of r -&gt; a into the input of a -&gt; b to get a function r -&gt; b</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Functor</span><span> ((</span><span style="color:#b48ead;">-&gt;</span><span>) </span><span style="color:#bf616a;">r</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    fmap = </span><span style="color:#8fa1b3;">(.)
+</span></code></pre>
+<hr />
+<h3 id="using-fmap-over-functions">using fmap over functions</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; :t fmap (*</span><span style="color:#d08770;">3</span><span>) (+</span><span style="color:#d08770;">100</span><span>)  
+</span><span>fmap (*</span><span style="color:#d08770;">3</span><span>) (+</span><span style="color:#d08770;">100</span><span>) :: (</span><span style="color:#d08770;">Num</span><span> a) =&gt; a -&gt; a  
+</span><span>ghci&gt; fmap (*</span><span style="color:#d08770;">3</span><span>) (+</span><span style="color:#d08770;">100</span><span>) </span><span style="color:#d08770;">1  
+</span><span style="color:#d08770;">303  
+</span><span>ghci&gt; (*</span><span style="color:#d08770;">3</span><span>) </span><span style="color:#8fa1b3;">`</span><span>fmap</span><span style="color:#8fa1b3;">`</span><span> (+</span><span style="color:#d08770;">100</span><span>) $ </span><span style="color:#d08770;">1  
+</span><span style="color:#d08770;">303  
+</span><span>ghci&gt; (*</span><span style="color:#d08770;">3</span><span>) . (+</span><span style="color:#d08770;">100</span><span>) $ </span><span style="color:#d08770;">1  
+</span><span style="color:#d08770;">303  
+</span><span>ghci&gt; fmap (show . (*</span><span style="color:#d08770;">3</span><span>)) (*</span><span style="color:#d08770;">100</span><span>) </span><span style="color:#d08770;">1  
+</span><span>&quot;</span><span style="color:#a3be8c;">300</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="lifting-a-function">lifting a function</h3>
+<p>takes an a -&gt; b function and returns a function f a -&gt; f b</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; :t fmap (*</span><span style="color:#d08770;">2</span><span>)  
+</span><span>fmap (*</span><span style="color:#d08770;">2</span><span>) :: (</span><span style="color:#d08770;">Num</span><span> a, </span><span style="color:#d08770;">Functor</span><span> f) =&gt; f a -&gt; f a  
+</span><span>ghci&gt; :t fmap (replicate </span><span style="color:#d08770;">3</span><span>)  
+</span><span>fmap (replicate </span><span style="color:#d08770;">3</span><span>) :: (</span><span style="color:#d08770;">Functor</span><span> f) =&gt; f a -&gt; f [a]
+</span></code></pre>
+<p>When we say a functor over numbers, you can think of that as a functor that has numbers in it. That functor can be a list, a Maybe , an Either String.</p>
+<hr />
+<h3 id="lifting-a-function-1">lifting a function</h3>
+<p>The type fmap (replicate 3) :: (Functor f) =&gt; f a -&gt; f [a] means that the function will work on any functor.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; fmap (replicate </span><span style="color:#d08770;">3</span><span>) [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">1</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">4</span><span>]]  
+</span><span>ghci&gt; fmap (replicate </span><span style="color:#d08770;">3</span><span>) (</span><span style="color:#d08770;">Just 4</span><span>)  
+</span><span style="color:#d08770;">Just</span><span> [</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span>ghci&gt; fmap (replicate </span><span style="color:#d08770;">3</span><span>) (</span><span style="color:#d08770;">Right </span><span>&quot;</span><span style="color:#a3be8c;">blah</span><span>&quot;)  
+</span><span style="color:#d08770;">Right</span><span> [&quot;</span><span style="color:#a3be8c;">blah</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">blah</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">blah</span><span>&quot;]  
+</span><span>ghci&gt; fmap (replicate </span><span style="color:#d08770;">3</span><span>) </span><span style="color:#d08770;">Nothing  
+</span><span style="color:#d08770;">Nothing  
+</span><span>ghci&gt; fmap (replicate </span><span style="color:#d08770;">3</span><span>) (</span><span style="color:#d08770;">Left </span><span>&quot;</span><span style="color:#a3be8c;">foo</span><span>&quot;)  
+</span><span style="color:#d08770;">Left </span><span>&quot;</span><span style="color:#a3be8c;">foo</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="functor-laws">functor laws</h3>
+<p>Calling fmap on a functor should just map a function over the functor.</p>
+<hr />
+<h3 id="first-law">First law</h3>
+<p>The first functor law states that if we map the id function over a functor, the functor that we get back should be the same as the original functor.</p>
+<p><strong>fmap id = id</strong> (\x -&gt; x)</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; fmap id (</span><span style="color:#d08770;">Just 3</span><span>)  
+</span><span style="color:#d08770;">Just 3  
+</span><span>ghci&gt; id (</span><span style="color:#d08770;">Just 3</span><span>)  
+</span><span style="color:#d08770;">Just 3  
+</span><span>ghci&gt; fmap id [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">5</span><span>]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>]  
+</span><span>ghci&gt; id [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">5</span><span>]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>]  
+</span><span>ghci&gt; fmap id </span><span style="color:#d08770;">[]  
+</span><span style="color:#d08770;">[]  
+</span><span>ghci&gt; fmap id </span><span style="color:#d08770;">Nothing  
+</span><span style="color:#d08770;">Nothing
+</span></code></pre>
+<hr />
+<h3 id="second-law">Second law</h3>
+<p>The second law says that composing two functions and then mapping the resulting function over a functor should be the same as first mapping one function over the functor and then mapping the other one. </p>
+<p><strong>fmap (f . g) = fmap f . fmap g</strong></p>
+<p><strong>fmap (f . g) F = fmap f (fmap g F)</strong></p>
+<hr />
+<h3 id="pathological-example">pathological example</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">CMaybe</span><span> a = </span><span style="color:#d08770;">CNothing </span><span>| </span><span style="color:#d08770;">CJust Int</span><span> a </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>)
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#d08770;">CNothing  
+</span><span style="color:#d08770;">CNothing  
+</span><span>ghci&gt; </span><span style="color:#d08770;">CJust 0 </span><span>&quot;</span><span style="color:#a3be8c;">haha</span><span>&quot;  
+</span><span style="color:#d08770;">CJust 0 </span><span>&quot;</span><span style="color:#a3be8c;">haha</span><span>&quot;  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">CNothing  
+</span><span style="color:#d08770;">CNothing </span><span>:: </span><span style="color:#d08770;">CMaybe</span><span> a  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">CJust 0 </span><span>&quot;</span><span style="color:#a3be8c;">haha</span><span>&quot;  
+</span><span style="color:#d08770;">CJust 0 </span><span>&quot;</span><span style="color:#a3be8c;">haha</span><span>&quot; :: </span><span style="color:#d08770;">CMaybe</span><span> [</span><span style="color:#d08770;">Char</span><span>]  
+</span><span>ghci&gt; </span><span style="color:#d08770;">CJust 100</span><span> [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]  
+</span><span style="color:#d08770;">CJust 100</span><span> [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="make-it-instance-of-functor">Make it instance of functor</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Functor CMaybe where  
+</span><span>    fmap f </span><span style="color:#d08770;">CNothing </span><span>= </span><span style="color:#d08770;">CNothing  
+</span><span>    fmap f (</span><span style="color:#d08770;">CJust</span><span> counter x) = </span><span style="color:#d08770;">CJust</span><span> (counter+</span><span style="color:#d08770;">1</span><span>) (f x)
+</span><span>
+</span><span>ghci&gt; fmap (++&quot;</span><span style="color:#a3be8c;">ha</span><span>&quot;) (</span><span style="color:#d08770;">CJust 0 </span><span>&quot;</span><span style="color:#a3be8c;">ho</span><span>&quot;)  
+</span><span style="color:#d08770;">CJust 1 </span><span>&quot;</span><span style="color:#a3be8c;">hoha</span><span>&quot;  
+</span><span>ghci&gt; fmap (++&quot;</span><span style="color:#a3be8c;">he</span><span>&quot;) (fmap (++&quot;</span><span style="color:#a3be8c;">ha</span><span>&quot;) (</span><span style="color:#d08770;">CJust 0 </span><span>&quot;</span><span style="color:#a3be8c;">ho</span><span>&quot;))  
+</span><span style="color:#d08770;">CJust 2 </span><span>&quot;</span><span style="color:#a3be8c;">hohahe</span><span>&quot;  
+</span><span>ghci&gt; fmap (++&quot;</span><span style="color:#a3be8c;">blah</span><span>&quot;) </span><span style="color:#d08770;">CNothing  
+</span><span style="color:#d08770;">CNothing
+</span></code></pre>
+<hr />
+<h3 id="it-violtes-the-law">It violtes the law</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; fmap id (</span><span style="color:#d08770;">CJust 0 </span><span>&quot;</span><span style="color:#a3be8c;">haha</span><span>&quot;)  
+</span><span style="color:#d08770;">CJust 1 </span><span>&quot;</span><span style="color:#a3be8c;">haha</span><span>&quot;  
+</span><span>ghci&gt; id (</span><span style="color:#d08770;">CJust 0 </span><span>&quot;</span><span style="color:#a3be8c;">haha</span><span>&quot;)  
+</span><span style="color:#d08770;">CJust 0 </span><span>&quot;</span><span style="color:#a3be8c;">haha</span><span>&quot;
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="applicative-functors">Applicative functors</h2>
+<p>Applicative typeclass, in the Control.Applicative module</p>
+<hr />
+<h3 id="function-wrapped-in-functor">function wrapped in functor</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; :t fmap </span><span style="color:#8fa1b3;">(++)</span><span> (</span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">hey</span><span>&quot;)  
+</span><span>fmap </span><span style="color:#8fa1b3;">(++)</span><span> (</span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">hey</span><span>&quot;) :: </span><span style="color:#d08770;">Maybe</span><span> ([</span><span style="color:#d08770;">Char</span><span>] -&gt; [</span><span style="color:#d08770;">Char</span><span>])  
+</span><span>ghci&gt; :t fmap compare (</span><span style="color:#d08770;">Just </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;)  
+</span><span>fmap compare (</span><span style="color:#d08770;">Just </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;) :: </span><span style="color:#d08770;">Maybe</span><span> (</span><span style="color:#d08770;">Char </span><span>-&gt; </span><span style="color:#d08770;">Ordering</span><span>)  
+</span><span>ghci&gt; :t fmap compare &quot;</span><span style="color:#a3be8c;">A LIST OF CHARS</span><span>&quot;  
+</span><span>fmap compare &quot;</span><span style="color:#a3be8c;">A LIST OF CHARS</span><span>&quot; :: [</span><span style="color:#d08770;">Char </span><span>-&gt; </span><span style="color:#d08770;">Ordering</span><span>]  
+</span><span>ghci&gt; :t fmap (\x y z -&gt; x + y / z) [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span>fmap (\x y z -&gt; x + y / z) [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>] :: (</span><span style="color:#d08770;">Fractional</span><span> a) =&gt; [a -&gt; a -&gt; a]
+</span></code></pre>
+<hr />
+<h3 id="make-use-of-it">Make use of it</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> a = fmap </span><span style="color:#8fa1b3;">(*)</span><span> [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span>ghci&gt; :t a  
+</span><span style="color:#8fa1b3;">a </span><span style="color:#b48ead;">::</span><span> [</span><span style="color:#b48ead;">Integer -&gt; Integer</span><span>]  
+</span><span>ghci&gt; fmap (\f -&gt; f </span><span style="color:#d08770;">9</span><span>) a  
+</span><span>[</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">18</span><span>,</span><span style="color:#d08770;">27</span><span>,</span><span style="color:#d08770;">36</span><span>]
+</span></code></pre>
+<p>...but the fuction will not be compatible between like Just (3 *) and Just 5</p>
+<hr />
+<h3 id="applicative-typeclass">Applicative typeclass</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">class</span><span> (</span><span style="color:#ebcb8b;">Functor </span><span style="color:#bf616a;">f</span><span>) =&gt; </span><span style="color:#ebcb8b;">Applicative </span><span style="color:#bf616a;">f </span><span style="color:#b48ead;">where  
+</span><span>    </span><span style="color:#8fa1b3;">pure </span><span style="color:#b48ead;">:: </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f a  
+</span><span>    </span><span style="color:#8fa1b3;">(&lt;*&gt;) </span><span>:: f (a -&gt; b) -&gt; f a -&gt; f b
+</span></code></pre>
+<p>pure should take a value of any type and return an applicative functor with that value inside it.</p>
+<p>Whereas fmap takes a function and a functor and applies the function inside the functor, &lt;*&gt; takes a functor that has a function in it and another functor and sort of extracts that function from the first functor and then maps it over the second one.</p>
+<hr />
+<h3 id="applicative-instance-implementation-for-maybe">Applicative instance implementation for Maybe</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Applicative Maybe where  
+</span><span>    pure = </span><span style="color:#d08770;">Just  
+</span><span>    </span><span style="color:#d08770;">Nothing </span><span>&lt;*&gt; _ = </span><span style="color:#d08770;">Nothing  
+</span><span>    (</span><span style="color:#d08770;">Just</span><span> f) &lt;*&gt; something = fmap f something
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#d08770;">Just</span><span> (+</span><span style="color:#d08770;">3</span><span>) &lt;*&gt; </span><span style="color:#d08770;">Just 9  
+</span><span style="color:#d08770;">Just 12  
+</span><span>ghci&gt; pure (+</span><span style="color:#d08770;">3</span><span>) &lt;*&gt; </span><span style="color:#d08770;">Just 10  
+</span><span style="color:#d08770;">Just 13  
+</span><span>ghci&gt; pure (+</span><span style="color:#d08770;">3</span><span>) &lt;*&gt; </span><span style="color:#d08770;">Just 9  
+</span><span style="color:#d08770;">Just 12  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Just</span><span> (++&quot;</span><span style="color:#a3be8c;">hahah</span><span>&quot;) &lt;*&gt; </span><span style="color:#d08770;">Nothing  
+</span><span style="color:#d08770;">Nothing  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Nothing </span><span>&lt;*&gt; </span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">woot</span><span>&quot;  
+</span><span style="color:#d08770;">Nothing
+</span></code></pre>
+<hr />
+<h3 id="applicative-instance-implementation-for-maybe-1">Applicative instance implementation for Maybe</h3>
+<p>With normal functors, you can just map a function over a functor and then you can't get the result out in any general way, even if the result is a partially applied function. Applicative functors, on the other hand, allow you to operate on several functors with a single function.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; pure </span><span style="color:#8fa1b3;">(+) </span><span>&lt;*&gt; </span><span style="color:#d08770;">Just 3 </span><span>&lt;*&gt; </span><span style="color:#d08770;">Just 5  
+</span><span style="color:#d08770;">Just 8  
+</span><span>ghci&gt; pure </span><span style="color:#8fa1b3;">(+) </span><span>&lt;*&gt; </span><span style="color:#d08770;">Just 3 </span><span>&lt;*&gt; </span><span style="color:#d08770;">Nothing  
+</span><span style="color:#d08770;">Nothing  
+</span><span>ghci&gt; pure </span><span style="color:#8fa1b3;">(+) </span><span>&lt;*&gt; </span><span style="color:#d08770;">Nothing </span><span>&lt;*&gt; </span><span style="color:#d08770;">Just 5  
+</span><span style="color:#d08770;">Nothing
+</span></code></pre>
+<hr />
+<h3 id="applicative-laws">applicative laws</h3>
+<p>pure f &lt;*&gt; x equals fmap f x</p>
+<p>Instead of writing pure f &lt;<em>&gt; x &lt;</em>&gt; y &lt;<em>&gt; ..., we can write fmap f x &lt;</em>&gt; y &lt;*&gt; ...</p>
+<hr />
+<h3 id="">&lt;$&gt;</h3>
+<p>just fmap as an infix operator</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">(&lt;$&gt;) </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Functor </span><span style="color:#bf616a;">f</span><span>) </span><span style="color:#b48ead;">=&gt;</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f b  
+</span><span>f &lt;$&gt; x = fmap f x
+</span></code></pre>
+<p>we can write f &lt;$&gt; x &lt;<em>&gt; y &lt;</em>&gt; z (like f x y z in normal value)</p>
+<hr />
+<h3 id="-1">&lt;$&gt;</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#8fa1b3;">(++) </span><span>&lt;$&gt; </span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">johntra</span><span>&quot; &lt;*&gt; </span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">volta</span><span>&quot;  
+</span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">johntravolta</span><span>&quot;
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#8fa1b3;">(++) </span><span>&quot;</span><span style="color:#a3be8c;">johntra</span><span>&quot; &quot;</span><span style="color:#a3be8c;">volta</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">johntravolta</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="applicative-instance-implementation-for-list">Applicative instance implementation for List</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Applicative</span><span> [] </span><span style="color:#b48ead;">where  
+</span><span>    pure x = [x]  
+</span><span>    fs &lt;*&gt; xs = [f x | f &lt;- fs, x &lt;- xs]
+</span><span>
+</span><span>ghci&gt; pure &quot;</span><span style="color:#a3be8c;">Hey</span><span>&quot; :: [</span><span style="color:#d08770;">String</span><span>]  
+</span><span>[&quot;</span><span style="color:#a3be8c;">Hey</span><span>&quot;]  
+</span><span>ghci&gt; pure &quot;</span><span style="color:#a3be8c;">Hey</span><span>&quot; :: </span><span style="color:#d08770;">Maybe String  
+</span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">Hey</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="applicative-instance-implementation-for-list-1">Applicative instance implementation for List</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; [(*</span><span style="color:#d08770;">0</span><span>),(+</span><span style="color:#d08770;">100</span><span>),(^</span><span style="color:#d08770;">2</span><span>)] &lt;*&gt; [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]  
+</span><span>[</span><span style="color:#d08770;">0</span><span>,</span><span style="color:#d08770;">0</span><span>,</span><span style="color:#d08770;">0</span><span>,</span><span style="color:#d08770;">101</span><span>,</span><span style="color:#d08770;">102</span><span>,</span><span style="color:#d08770;">103</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">9</span><span>]
+</span><span>
+</span><span>ghci&gt; [</span><span style="color:#8fa1b3;">(+)</span><span>,</span><span style="color:#8fa1b3;">(*)</span><span>] &lt;*&gt; [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>] &lt;*&gt; [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span>[</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">8</span><span>]
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#8fa1b3;">(++) </span><span>&lt;$&gt; [&quot;</span><span style="color:#a3be8c;">ha</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">heh</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">hmm</span><span>&quot;] &lt;*&gt; [&quot;</span><span style="color:#a3be8c;">?</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">!</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">.</span><span>&quot;]  
+</span><span>[&quot;</span><span style="color:#a3be8c;">ha?</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">ha!</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">ha.</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">heh?</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">heh!</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">heh.</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">hmm?</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">hmm!</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">hmm.</span><span>&quot;]
+</span></code></pre>
+<hr />
+<h3 id="good-replacement-for-list-comprehensions">good replacement for list comprehensions</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; [ x*y | x &lt;- [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">10</span><span>], y &lt;- [</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">11</span><span>]]     
+</span><span>[</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">20</span><span>,</span><span style="color:#d08770;">22</span><span>,</span><span style="color:#d08770;">40</span><span>,</span><span style="color:#d08770;">50</span><span>,</span><span style="color:#d08770;">55</span><span>,</span><span style="color:#d08770;">80</span><span>,</span><span style="color:#d08770;">100</span><span>,</span><span style="color:#d08770;">110</span><span>]
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#8fa1b3;">(*) </span><span>&lt;$&gt; [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">10</span><span>] &lt;*&gt; [</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">11</span><span>]  
+</span><span>[</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">20</span><span>,</span><span style="color:#d08770;">22</span><span>,</span><span style="color:#d08770;">40</span><span>,</span><span style="color:#d08770;">50</span><span>,</span><span style="color:#d08770;">55</span><span>,</span><span style="color:#d08770;">80</span><span>,</span><span style="color:#d08770;">100</span><span>,</span><span style="color:#d08770;">110</span><span>]
+</span><span>
+</span><span>ghci&gt; filter (&gt;</span><span style="color:#d08770;">50</span><span>) $ </span><span style="color:#8fa1b3;">(*) </span><span>&lt;$&gt; [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">10</span><span>] &lt;*&gt; [</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">11</span><span>]  
+</span><span>[</span><span style="color:#d08770;">55</span><span>,</span><span style="color:#d08770;">80</span><span>,</span><span style="color:#d08770;">100</span><span>,</span><span style="color:#d08770;">110</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="applicative-instance-implementation-for-io">Applicative instance implementation for IO</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Applicative IO where  
+</span><span>    pure = return  
+</span><span>    a &lt;*&gt; b = </span><span style="color:#b48ead;">do  
+</span><span>        f &lt;- a  
+</span><span>        x &lt;- b  
+</span><span>        return (f x)
+</span></code></pre>
+<p>(&lt;*&gt;) :: IO (a -&gt; b) -&gt; IO a -&gt; IO b</p>
+<hr />
+<h3 id="applicative-instance-implementation-for-io-1">Applicative instance implementation for IO</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">myAction </span><span style="color:#b48ead;">:: IO String  
+</span><span>myAction = </span><span style="color:#b48ead;">do  
+</span><span>    a &lt;- getLine  
+</span><span>    b &lt;- getLine  
+</span><span>    return $ a ++ b
+</span><span style="color:#65737e;">-- which can be
+</span><span style="color:#8fa1b3;">myAction </span><span style="color:#b48ead;">:: IO String  
+</span><span>myAction = </span><span style="color:#8fa1b3;">(++) </span><span>&lt;$&gt; getLine &lt;*&gt; getLine
+</span><span style="color:#65737e;">-- which can also do this
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    a &lt;- </span><span style="color:#8fa1b3;">(++) </span><span>&lt;$&gt; getLine &lt;*&gt; getLine  
+</span><span>    putStrLn $ &quot;</span><span style="color:#a3be8c;">The two lines concatenated turn out to be: </span><span>&quot; ++ a 
+</span></code></pre>
+<hr />
+<h3 id="applicative-instance-implementation-for-r">Applicative instance implementation for (-&gt;) r</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Applicative</span><span> ((</span><span style="color:#b48ead;">-&gt;</span><span>) </span><span style="color:#bf616a;">r</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    pure x = (\_ -&gt; x)  
+</span><span>    f &lt;*&gt; g = \x -&gt; f x (g x)
+</span><span>
+</span><span>ghci&gt; (pure </span><span style="color:#d08770;">3</span><span>) &quot;</span><span style="color:#a3be8c;">blah</span><span>&quot;  
+</span><span style="color:#d08770;">3
+</span></code></pre>
+<hr />
+<h3 id="applicative-instance-implementation-for-r-1">Applicative instance implementation for (-&gt;) r</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; :t </span><span style="color:#8fa1b3;">(+) </span><span>&lt;$&gt; (+</span><span style="color:#d08770;">3</span><span>) &lt;*&gt; (*</span><span style="color:#d08770;">100</span><span>)  
+</span><span style="color:#8fa1b3;">(+) </span><span>&lt;$&gt; (+</span><span style="color:#d08770;">3</span><span>) &lt;*&gt; (*</span><span style="color:#d08770;">100</span><span>) :: (</span><span style="color:#d08770;">Num</span><span> a) =&gt; a -&gt; a  
+</span><span>ghci&gt; </span><span style="color:#8fa1b3;">(+) </span><span>&lt;$&gt; (+</span><span style="color:#d08770;">3</span><span>) &lt;*&gt; (*</span><span style="color:#d08770;">100</span><span>) $ </span><span style="color:#d08770;">5  
+</span><span style="color:#d08770;">508
+</span><span>
+</span><span>ghci&gt; (\x y z -&gt; [x,y,z]) &lt;$&gt; (+</span><span style="color:#d08770;">3</span><span>) &lt;*&gt; (*</span><span style="color:#d08770;">2</span><span>) &lt;*&gt; (/</span><span style="color:#d08770;">2</span><span>) $ </span><span style="color:#d08770;">5  
+</span><span>[</span><span style="color:#d08770;">8.0</span><span>,</span><span style="color:#d08770;">10.0</span><span>,</span><span style="color:#d08770;">2.5</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="applicative-instance-implementation-for-ziplist">Applicative instance implementation for ziplist</h3>
+<p>ZipList is a list type can make <code>[(+3),(*2)] &lt;*&gt; [1,2]</code> become <code>[1 + 3, 2 * 2]</code></p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Applicative ZipList where  
+</span><span>        pure x = </span><span style="color:#d08770;">ZipList</span><span> (repeat x)  
+</span><span>        </span><span style="color:#d08770;">ZipList</span><span> fs &lt;*&gt; </span><span style="color:#d08770;">ZipList</span><span> xs = </span><span style="color:#d08770;">ZipList</span><span> (zipWith (\f x -&gt; f x) fs xs)
+</span></code></pre>
+<hr />
+<h3 id="getziplist-to-extract-a-raw-list-out-of-a-ziplist">getZipList to extract a raw list out of a ziplist</h3>
+<p>The (,,) function is the same as \x y z -&gt; (x,y,z). Also, the (,) function is the same as \x y -&gt; (x,y).</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; getZipList $ </span><span style="color:#8fa1b3;">(+) </span><span>&lt;$&gt; </span><span style="color:#d08770;">ZipList</span><span> [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>] &lt;*&gt; </span><span style="color:#d08770;">ZipList</span><span> [</span><span style="color:#d08770;">100</span><span>,</span><span style="color:#d08770;">100</span><span>,</span><span style="color:#d08770;">100</span><span>]  
+</span><span>[</span><span style="color:#d08770;">101</span><span>,</span><span style="color:#d08770;">102</span><span>,</span><span style="color:#d08770;">103</span><span>]  
+</span><span>ghci&gt; getZipList $ </span><span style="color:#8fa1b3;">(+) </span><span>&lt;$&gt; </span><span style="color:#d08770;">ZipList</span><span> [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>] &lt;*&gt; </span><span style="color:#d08770;">ZipList</span><span> [</span><span style="color:#d08770;">100</span><span>,</span><span style="color:#d08770;">100</span><span>..]  
+</span><span>[</span><span style="color:#d08770;">101</span><span>,</span><span style="color:#d08770;">102</span><span>,</span><span style="color:#d08770;">103</span><span>]  
+</span><span>ghci&gt; getZipList $ max &lt;$&gt; </span><span style="color:#d08770;">ZipList</span><span> [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">3</span><span>] &lt;*&gt; </span><span style="color:#d08770;">ZipList</span><span> [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>]  
+</span><span>[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span>ghci&gt; getZipList $ </span><span style="color:#8fa1b3;">(,,) </span><span>&lt;$&gt; </span><span style="color:#d08770;">ZipList </span><span>&quot;</span><span style="color:#a3be8c;">dog</span><span>&quot; &lt;*&gt; </span><span style="color:#d08770;">ZipList </span><span>&quot;</span><span style="color:#a3be8c;">cat</span><span>&quot; &lt;*&gt; </span><span style="color:#d08770;">ZipList </span><span>&quot;</span><span style="color:#a3be8c;">rat</span><span>&quot;  
+</span><span>[(&#39;</span><span style="color:#a3be8c;">d</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">c</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">r</span><span>&#39;),(&#39;</span><span style="color:#a3be8c;">o</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;),(&#39;</span><span style="color:#a3be8c;">g</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">t</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">t</span><span>&#39;)]
+</span></code></pre>
+<hr />
+<h3 id="lifta2-applies-a-function-between-two-applicatives">liftA2: applies a function between two applicatives</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">liftA2 </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Applicative </span><span style="color:#bf616a;">f</span><span>) </span><span style="color:#b48ead;">=&gt;</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">c</span><span>) </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f b </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f c  
+</span><span>liftA2 f a b = f &lt;$&gt; a &lt;*&gt; b
+</span><span>
+</span><span>ghci&gt; fmap (\x -&gt; [x]) (</span><span style="color:#d08770;">Just 4</span><span>)  
+</span><span style="color:#d08770;">Just</span><span> [</span><span style="color:#d08770;">4</span><span>]
+</span><span>
+</span><span>ghci&gt; liftA2 </span><span style="color:#8fa1b3;">(:)</span><span> (</span><span style="color:#d08770;">Just 3</span><span>) (</span><span style="color:#d08770;">Just</span><span> [</span><span style="color:#d08770;">4</span><span>])  
+</span><span style="color:#d08770;">Just</span><span> [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span>ghci&gt; </span><span style="color:#8fa1b3;">(:) </span><span>&lt;$&gt; </span><span style="color:#d08770;">Just 3 </span><span>&lt;*&gt; </span><span style="color:#d08770;">Just</span><span> [</span><span style="color:#d08770;">4</span><span>]  
+</span><span style="color:#d08770;">Just</span><span> [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="practice-sequencea">Practice: sequenceA</h3>
+<p>Let's try implementing a function that takes a list of applicatives and returns an applicative that has a list as its result value.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">sequenceA </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Applicative </span><span style="color:#bf616a;">f</span><span>) </span><span style="color:#b48ead;">=&gt;</span><span> [</span><span style="color:#bf616a;">f a</span><span>] </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f</span><span> [</span><span style="color:#bf616a;">a</span><span>]  
+</span><span>sequenceA </span><span style="color:#d08770;">[] </span><span>= pure </span><span style="color:#d08770;">[]  
+</span><span>sequenceA (x:xs) = </span><span style="color:#8fa1b3;">(:) </span><span>&lt;$&gt; x &lt;*&gt; sequenceA xs
+</span><span style="color:#65737e;">-- which can be
+</span><span style="color:#8fa1b3;">sequenceA </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Applicative </span><span style="color:#bf616a;">f</span><span>) </span><span style="color:#b48ead;">=&gt;</span><span> [</span><span style="color:#bf616a;">f a</span><span>] </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f</span><span> [</span><span style="color:#bf616a;">a</span><span>]  
+</span><span>sequenceA = foldr (liftA2 </span><span style="color:#8fa1b3;">(:)</span><span>) (pure </span><span style="color:#d08770;">[]</span><span>)
+</span></code></pre>
+<hr />
+<h3 id="practice-sequencea-1">Practice: sequenceA</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; sequenceA [</span><span style="color:#d08770;">Just 3</span><span>, </span><span style="color:#d08770;">Just 2</span><span>, </span><span style="color:#d08770;">Just 1</span><span>]  
+</span><span style="color:#d08770;">Just</span><span> [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>ghci&gt; sequenceA [</span><span style="color:#d08770;">Just 3</span><span>, </span><span style="color:#d08770;">Nothing</span><span>, </span><span style="color:#d08770;">Just 1</span><span>]  
+</span><span style="color:#d08770;">Nothing  
+</span><span>ghci&gt; sequenceA [(+</span><span style="color:#d08770;">3</span><span>),(+</span><span style="color:#d08770;">2</span><span>),(+</span><span style="color:#d08770;">1</span><span>)] </span><span style="color:#d08770;">3  
+</span><span>[</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span>ghci&gt; sequenceA [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]]  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>]]  
+</span><span>ghci&gt; sequenceA [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">4</span><span>],</span><span style="color:#d08770;">[]</span><span>]  
+</span><span style="color:#d08770;">[]
+</span></code></pre>
+<hr />
+<h3 id="practice-sequencea-2">Practice: sequenceA</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; map (\f -&gt; f </span><span style="color:#d08770;">7</span><span>) [(&gt;</span><span style="color:#d08770;">4</span><span>),(&lt;</span><span style="color:#d08770;">10</span><span>),odd]  
+</span><span>[</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">True</span><span>]  
+</span><span>ghci&gt; and $ map (\f -&gt; f </span><span style="color:#d08770;">7</span><span>) [(&gt;</span><span style="color:#d08770;">4</span><span>),(&lt;</span><span style="color:#d08770;">10</span><span>),odd]  
+</span><span style="color:#d08770;">True
+</span><span>
+</span><span>ghci&gt; sequenceA [(&gt;</span><span style="color:#d08770;">4</span><span>),(&lt;</span><span style="color:#d08770;">10</span><span>),odd] </span><span style="color:#d08770;">7  
+</span><span>[</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">True</span><span>]  
+</span><span>ghci&gt; and $ sequenceA [(&gt;</span><span style="color:#d08770;">4</span><span>),(&lt;</span><span style="color:#d08770;">10</span><span>),odd] </span><span style="color:#d08770;">7  
+</span><span style="color:#d08770;">True
+</span></code></pre>
+<hr />
+<h3 id="practice-sequencea-3">Practice: sequenceA</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; sequenceA [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]]  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>]]  
+</span><span>ghci&gt; [[x,y] | x &lt;- [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>], y &lt;- [</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]]  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>]]  
+</span><span>ghci&gt; sequenceA [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]]  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>]]  
+</span><span>ghci&gt; [[x,y] | x &lt;- [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>], y &lt;- [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]]  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>]]  
+</span><span>ghci&gt; sequenceA [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]]  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>]]  
+</span><span>ghci&gt; [[x,y,z] | x &lt;- [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>], y &lt;- [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>], z &lt;- [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]]  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>]]
+</span></code></pre>
+<hr />
+<h3 id="practice-sequencea-4">Practice: sequenceA</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; sequenceA [getLine, getLine, getLine]  
+</span><span>heyh  
+</span><span>ho  
+</span><span>woo  
+</span><span>[&quot;</span><span style="color:#a3be8c;">heyh</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">ho</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">woo</span><span>&quot;]
+</span></code></pre>
+<hr />
+<h3 id="applicative-laws-1">Applicative laws</h3>
+<ul>
+<li><code>pure f &lt;*&gt; x = fmap f x</code></li>
+<li><code>pure id &lt;*&gt; v = v</code></li>
+<li><code>pure (.) &lt;*&gt; u &lt;*&gt; v &lt;*&gt; w = u &lt;*&gt; (v &lt;*&gt; w)</code></li>
+<li><code>pure f &lt;*&gt; pure x = pure (f x)</code></li>
+<li><code>u &lt;*&gt; pure y = pure ($ y) &lt;*&gt; u</code></li>
+</ul>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="the-newtype-keyword">The newtype keyword</h2>
+<p>When using newtype, you're restricted to just one constructor with one field.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">newtype </span><span style="color:#d08770;">ZipList</span><span> a = </span><span style="color:#d08770;">ZipList</span><span> { getZipList :: [a] }
+</span><span style="color:#b48ead;">newtype </span><span style="color:#d08770;">CharList </span><span>= </span><span style="color:#d08770;">CharList</span><span> { getCharList :: [</span><span style="color:#d08770;">Char</span><span>] } </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Eq</span><span>, </span><span style="color:#a3be8c;">Show</span><span>)
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#d08770;">CharList </span><span>&quot;</span><span style="color:#a3be8c;">this will be shown!</span><span>&quot;  
+</span><span style="color:#d08770;">CharList</span><span> {getCharList = &quot;</span><span style="color:#a3be8c;">this will be shown!</span><span>&quot;}  
+</span><span>ghci&gt; </span><span style="color:#d08770;">CharList </span><span>&quot;</span><span style="color:#a3be8c;">benny</span><span>&quot; == </span><span style="color:#d08770;">CharList </span><span>&quot;</span><span style="color:#a3be8c;">benny</span><span>&quot;  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; </span><span style="color:#d08770;">CharList </span><span>&quot;</span><span style="color:#a3be8c;">benny</span><span>&quot; == </span><span style="color:#d08770;">CharList </span><span>&quot;</span><span style="color:#a3be8c;">oisters</span><span>&quot;  
+</span><span style="color:#d08770;">False
+</span></code></pre>
+<hr />
+<h3 id="the-newtype-keyword-1">The newtype keyword</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#d08770;">CharList </span><span>:: [</span><span style="color:#d08770;">Char</span><span>] -&gt; </span><span style="color:#d08770;">CharList
+</span><span>
+</span><span style="color:#8fa1b3;">getCharList </span><span style="color:#b48ead;">:: CharList -&gt;</span><span> [</span><span style="color:#b48ead;">Char</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="using-newtype-to-make-type-class-instances">Using newtype to make type class instances</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">newtype </span><span style="color:#d08770;">Pair</span><span> b a = </span><span style="color:#d08770;">Pair</span><span> { getPair :: (a,b) }
+</span><span style="color:#b48ead;">instance Functor</span><span> (</span><span style="color:#b48ead;">Pair </span><span style="color:#bf616a;">c</span><span>) </span><span style="color:#b48ead;">where
+</span><span>    </span><span style="color:#8fa1b3;">fmap </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">-&gt; Pair </span><span style="color:#bf616a;">c a </span><span style="color:#b48ead;">-&gt; Pair </span><span style="color:#bf616a;">c b
+</span><span>    fmap f (</span><span style="color:#d08770;">Pair</span><span> (x,y)) = </span><span style="color:#d08770;">Pair</span><span> (f x, y)
+</span><span>
+</span><span>ghci&gt; getPair $ fmap (*</span><span style="color:#d08770;">100</span><span>) (</span><span style="color:#d08770;">Pair</span><span> (</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>))  
+</span><span>(</span><span style="color:#d08770;">200</span><span>,</span><span style="color:#d08770;">3</span><span>)  
+</span><span>ghci&gt; getPair $ fmap reverse (</span><span style="color:#d08770;">Pair</span><span> (&quot;</span><span style="color:#a3be8c;">london calling</span><span>&quot;, </span><span style="color:#d08770;">3</span><span>))  
+</span><span>(&quot;</span><span style="color:#a3be8c;">gnillac nodnol</span><span>&quot;,</span><span style="color:#d08770;">3</span><span>)
+</span></code></pre>
+<hr />
+<h3 id="on-newtype-laziness">On newtype laziness</h3>
+<p>As we know many functions/types are lazy</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; undefined  
+</span><span>*** </span><span style="color:#d08770;">Exception</span><span>: </span><span style="color:#d08770;">Prelude</span><span>.undefined
+</span><span>
+</span><span>ghci&gt; head [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,undefined,</span><span style="color:#d08770;">2</span><span>,undefined]  
+</span><span style="color:#d08770;">3
+</span></code></pre>
+<hr />
+<h3 id="on-newtype-laziness-1">On newtype laziness</h3>
+<p>But not <code>data</code> type</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">CoolBool </span><span>= </span><span style="color:#d08770;">CoolBool</span><span> { getCoolBool :: </span><span style="color:#d08770;">Bool</span><span> }
+</span><span style="color:#8fa1b3;">helloMe </span><span style="color:#b48ead;">:: CoolBool -&gt; String  
+</span><span>helloMe (</span><span style="color:#d08770;">CoolBool</span><span> _) = &quot;</span><span style="color:#a3be8c;">hello</span><span>&quot;
+</span><span>
+</span><span>ghci&gt; helloMe undefined  
+</span><span>&quot;</span><span style="color:#a3be8c;">*** Exception: Prelude.undefined
+</span></code></pre>
+<hr />
+<h3 id="on-newtype-laziness-2">On newtype laziness</h3>
+<p>Use <code>newtype</code> for laziness</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">newtype </span><span style="color:#d08770;">CoolBool </span><span>= </span><span style="color:#d08770;">CoolBool</span><span> { getCoolBool :: </span><span style="color:#d08770;">Bool</span><span> }
+</span><span>
+</span><span>ghci&gt; helloMe undefined  
+</span><span>&quot;</span><span style="color:#a3be8c;">hello</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="type-vs-newtype-vs-data">type vs. newtype vs. data</h3>
+<ul>
+<li>type for type alias</li>
+<li>newtype for wrapping existing type. Mainly for making instance of typeclass</li>
+<li>data for creating whole new type</li>
+</ul>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="monoids">Monoids</h2>
+<p>Monoids in math:</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">4</span><span> * </span><span style="color:#d08770;">1  
+</span><span style="color:#d08770;">4  
+</span><span>ghci&gt; </span><span style="color:#d08770;">1</span><span> * </span><span style="color:#d08770;">9  
+</span><span style="color:#d08770;">9  
+</span><span>ghci&gt; [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>] ++ </span><span style="color:#d08770;">[]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]  
+</span><span>ghci&gt; </span><span style="color:#d08770;">[] </span><span>++ [</span><span style="color:#d08770;">0.5</span><span>, </span><span style="color:#d08770;">2.5</span><span>]  
+</span><span>[</span><span style="color:#d08770;">0.5</span><span>,</span><span style="color:#d08770;">2.5</span><span>]
+</span><span>ghci&gt; (</span><span style="color:#d08770;">3</span><span> * </span><span style="color:#d08770;">2</span><span>) * (</span><span style="color:#d08770;">8</span><span> * </span><span style="color:#d08770;">5</span><span>)  
+</span><span style="color:#d08770;">240  
+</span><span>ghci&gt; </span><span style="color:#d08770;">3</span><span> * (</span><span style="color:#d08770;">2</span><span> * (</span><span style="color:#d08770;">8</span><span> * </span><span style="color:#d08770;">5</span><span>))  
+</span><span style="color:#d08770;">240  
+</span><span>ghci&gt; &quot;</span><span style="color:#a3be8c;">la</span><span>&quot; ++ (&quot;</span><span style="color:#a3be8c;">di</span><span>&quot; ++ &quot;</span><span style="color:#a3be8c;">da</span><span>&quot;)  
+</span><span>&quot;</span><span style="color:#a3be8c;">ladida</span><span>&quot;  
+</span><span>ghci&gt; (&quot;</span><span style="color:#a3be8c;">la</span><span>&quot; ++ &quot;</span><span style="color:#a3be8c;">di</span><span>&quot;) ++ &quot;</span><span style="color:#a3be8c;">da</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">ladida</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="monoids-properties">Monoids properties</h3>
+<p>It seems that both * together with 1 and ++ along with [] share some common properties</p>
+<ul>
+<li>The function takes two parameters.</li>
+<li>The parameters and the returned value have the same type.</li>
+<li>There exists such a value that doesn't change other values when used with the binary function.</li>
+</ul>
+<hr />
+<h3 id="monoid-typeclass">Monoid typeclass</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Monoid </span><span style="color:#bf616a;">m </span><span style="color:#b48ead;">where  
+</span><span>    </span><span style="color:#8fa1b3;">mempty </span><span style="color:#b48ead;">:: </span><span style="color:#bf616a;">m  
+</span><span>    </span><span style="color:#8fa1b3;">mappend </span><span style="color:#b48ead;">:: </span><span style="color:#bf616a;">m </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">m </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">m  
+</span><span>    </span><span style="color:#8fa1b3;">mconcat </span><span style="color:#b48ead;">::</span><span> [</span><span style="color:#bf616a;">m</span><span>] </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">m  
+</span><span>    mconcat = foldr mappend mempty
+</span></code></pre>
+<hr />
+<h3 id="monoid-laws">Monoid laws</h3>
+<ul>
+<li>mempty <code>mappend</code> x = x</li>
+<li>x <code>mappend</code> mempty = x</li>
+<li>(x <code>mappend</code> y) <code>mappend</code> z = x <code>mappend</code> (y <code>mappend</code> z)</li>
+</ul>
+<hr />
+<h3 id="lists-are-monoids">Lists are monoids</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Monoid</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">where  
+</span><span>    mempty = </span><span style="color:#d08770;">[]  
+</span><span>    mappend = </span><span style="color:#8fa1b3;">(++)
+</span><span>
+</span><span>ghci&gt; [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>] </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> [</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span>ghci&gt; (&quot;</span><span style="color:#a3be8c;">one</span><span>&quot; </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span>&quot;</span><span style="color:#a3be8c;">two</span><span>&quot;) </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span>&quot;</span><span style="color:#a3be8c;">tree</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">onetwotree</span><span>&quot;  
+</span><span>ghci&gt; &quot;</span><span style="color:#a3be8c;">one</span><span>&quot; </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> (&quot;</span><span style="color:#a3be8c;">two</span><span>&quot; </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span>&quot;</span><span style="color:#a3be8c;">tree</span><span>&quot;)  
+</span><span>&quot;</span><span style="color:#a3be8c;">onetwotree</span><span>&quot;  
+</span><span>ghci&gt; &quot;</span><span style="color:#a3be8c;">one</span><span>&quot; </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span>&quot;</span><span style="color:#a3be8c;">two</span><span>&quot; </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span>&quot;</span><span style="color:#a3be8c;">tree</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">onetwotree</span><span>&quot;  
+</span><span>ghci&gt; &quot;</span><span style="color:#a3be8c;">pang</span><span>&quot; </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> mempty  
+</span><span>&quot;</span><span style="color:#a3be8c;">pang</span><span>&quot;  
+</span><span>ghci&gt; mconcat [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">9</span><span>]]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">9</span><span>]  
+</span><span>ghci&gt; mempty :: [a]  
+</span><span style="color:#d08770;">[]
+</span></code></pre>
+<hr />
+<h3 id="product-type">Product type</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">newtype </span><span style="color:#d08770;">Product</span><span> a =  </span><span style="color:#d08770;">Product</span><span> { getProduct :: a }  
+</span><span>    </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Eq</span><span>, </span><span style="color:#a3be8c;">Ord</span><span>, </span><span style="color:#a3be8c;">Read</span><span>, </span><span style="color:#a3be8c;">Show</span><span>, </span><span style="color:#a3be8c;">Bounded</span><span>)
+</span><span>
+</span><span style="color:#b48ead;">instance Num </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">=&gt; Monoid</span><span> (</span><span style="color:#b48ead;">Product </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    mempty = </span><span style="color:#d08770;">Product 1  
+</span><span>    </span><span style="color:#d08770;">Product</span><span> x </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Product</span><span> y = </span><span style="color:#d08770;">Product</span><span> (x * y)
+</span><span>
+</span><span>ghci&gt; getProduct $ </span><span style="color:#d08770;">Product 3 </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Product 9  
+</span><span style="color:#d08770;">27  
+</span><span>ghci&gt; getProduct $ </span><span style="color:#d08770;">Product 3 </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> mempty  
+</span><span style="color:#d08770;">3  
+</span><span>ghci&gt; getProduct $ </span><span style="color:#d08770;">Product 3 </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Product 4 </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Product 2  
+</span><span style="color:#d08770;">24  
+</span><span>ghci&gt; getProduct . mconcat . map </span><span style="color:#d08770;">Product </span><span>$ [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>]  
+</span><span style="color:#d08770;">24
+</span></code></pre>
+<hr />
+<h3 id="sum-type">Sum type</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; getSum $ </span><span style="color:#d08770;">Sum 2 </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Sum 9  
+</span><span style="color:#d08770;">11  
+</span><span>ghci&gt; getSum $ mempty </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Sum 3  
+</span><span style="color:#d08770;">3  
+</span><span>ghci&gt; getSum . mconcat . map </span><span style="color:#d08770;">Sum </span><span>$ [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]  
+</span><span style="color:#d08770;">6
+</span></code></pre>
+<hr />
+<h3 id="any-and-all">Any and All</h3>
+<p>Basically means OR/AND. Here's Any type:</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">newtype </span><span style="color:#d08770;">Any </span><span>= </span><span style="color:#d08770;">Any</span><span> { getAny :: </span><span style="color:#d08770;">Bool</span><span> }  
+</span><span>    </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Eq</span><span>, </span><span style="color:#a3be8c;">Ord</span><span>, </span><span style="color:#a3be8c;">Read</span><span>, </span><span style="color:#a3be8c;">Show</span><span>, </span><span style="color:#a3be8c;">Bounded</span><span>)
+</span><span>
+</span><span style="color:#b48ead;">instance Monoid Any where  
+</span><span>        mempty = </span><span style="color:#d08770;">Any False  
+</span><span>        </span><span style="color:#d08770;">Any</span><span> x </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Any</span><span> y = </span><span style="color:#d08770;">Any</span><span> (x || y)
+</span><span>
+</span><span>ghci&gt; getAny $ </span><span style="color:#d08770;">Any True </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Any False  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; getAny $ mempty </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Any True  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; getAny . mconcat . map </span><span style="color:#d08770;">Any </span><span>$ [</span><span style="color:#d08770;">False</span><span>, </span><span style="color:#d08770;">False</span><span>, </span><span style="color:#d08770;">False</span><span>, </span><span style="color:#d08770;">True</span><span>]  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; getAny $ mempty </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> mempty  
+</span><span style="color:#d08770;">False
+</span></code></pre>
+<hr />
+<h3 id="any-and-all-1">Any and All</h3>
+<p>And here's All tytpe</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">newtype </span><span style="color:#d08770;">All </span><span>= </span><span style="color:#d08770;">All</span><span> { getAll :: </span><span style="color:#d08770;">Bool</span><span> }  
+</span><span>        </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Eq</span><span>, </span><span style="color:#a3be8c;">Ord</span><span>, </span><span style="color:#a3be8c;">Read</span><span>, </span><span style="color:#a3be8c;">Show</span><span>, </span><span style="color:#a3be8c;">Bounded</span><span>)
+</span><span>
+</span><span style="color:#b48ead;">instance Monoid All where  
+</span><span>        mempty = </span><span style="color:#d08770;">All True  
+</span><span>        </span><span style="color:#d08770;">All</span><span> x </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">All</span><span> y = </span><span style="color:#d08770;">All</span><span> (x &amp;&amp; y)
+</span><span>
+</span><span>ghci&gt; getAll $ mempty </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">All True  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; getAll $ mempty </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">All False  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; getAll . mconcat . map </span><span style="color:#d08770;">All </span><span>$ [</span><span style="color:#d08770;">True</span><span>, </span><span style="color:#d08770;">True</span><span>, </span><span style="color:#d08770;">True</span><span>]  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; getAll . mconcat . map </span><span style="color:#d08770;">All </span><span>$ [</span><span style="color:#d08770;">True</span><span>, </span><span style="color:#d08770;">True</span><span>, </span><span style="color:#d08770;">False</span><span>]  
+</span><span style="color:#d08770;">False
+</span></code></pre>
+<hr />
+<h3 id="the-ordering-monoid">The Ordering monoid</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Monoid Ordering where  
+</span><span>    mempty = </span><span style="color:#d08770;">EQ  
+</span><span>    </span><span style="color:#d08770;">LT </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> _ = </span><span style="color:#d08770;">LT  
+</span><span>    </span><span style="color:#d08770;">EQ </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> y = y  
+</span><span>    </span><span style="color:#d08770;">GT </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> _ = </span><span style="color:#d08770;">GT
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#d08770;">LT </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">GT  
+</span><span style="color:#d08770;">LT  
+</span><span>ghci&gt; </span><span style="color:#d08770;">GT </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">LT  
+</span><span style="color:#d08770;">GT  
+</span><span>ghci&gt; mempty </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">LT  
+</span><span style="color:#d08770;">LT  
+</span><span>ghci&gt; mempty </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">GT  
+</span><span style="color:#d08770;">GT
+</span></code></pre>
+<hr />
+<h3 id="the-ordering-monoid-1">The Ordering monoid</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">lengthCompare </span><span style="color:#b48ead;">:: String -&gt; String -&gt; Ordering  
+</span><span>lengthCompare x y = </span><span style="color:#b48ead;">let</span><span> a = length x </span><span style="color:#8fa1b3;">`</span><span>compare</span><span style="color:#8fa1b3;">`</span><span> length y   
+</span><span>                        b = x </span><span style="color:#8fa1b3;">`</span><span>compare</span><span style="color:#8fa1b3;">`</span><span> y  
+</span><span>                    </span><span style="color:#b48ead;">in  if</span><span> a == </span><span style="color:#d08770;">EQ </span><span style="color:#b48ead;">then</span><span> b </span><span style="color:#b48ead;">else</span><span> a
+</span><span style="color:#65737e;">-- which can be
+</span><span style="color:#b48ead;">import </span><span>Data.Monoid  
+</span><span>  
+</span><span style="color:#8fa1b3;">lengthCompare </span><span style="color:#b48ead;">:: String -&gt; String -&gt; Ordering  
+</span><span>lengthCompare x y = (length x </span><span style="color:#8fa1b3;">`</span><span>compare</span><span style="color:#8fa1b3;">`</span><span> length y) </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`  
+</span><span>                    (x </span><span style="color:#8fa1b3;">`</span><span>compare</span><span style="color:#8fa1b3;">`</span><span> y)
+</span><span>
+</span><span>ghci&gt; lengthCompare &quot;</span><span style="color:#a3be8c;">zen</span><span>&quot; &quot;</span><span style="color:#a3be8c;">ants</span><span>&quot;  
+</span><span style="color:#d08770;">LT  
+</span><span>ghci&gt; lengthCompare &quot;</span><span style="color:#a3be8c;">zen</span><span>&quot; &quot;</span><span style="color:#a3be8c;">ant</span><span>&quot;  
+</span><span style="color:#d08770;">GT
+</span></code></pre>
+<hr />
+<h3 id="maybe-the-monoid">Maybe the monoid</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Monoid </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">=&gt; Monoid</span><span> (</span><span style="color:#b48ead;">Maybe </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    mempty = </span><span style="color:#d08770;">Nothing  
+</span><span>    </span><span style="color:#d08770;">Nothing </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> m = m  
+</span><span>    m </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Nothing </span><span>= m  
+</span><span>    </span><span style="color:#d08770;">Just</span><span> m1 </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Just</span><span> m2 = </span><span style="color:#d08770;">Just</span><span> (m1 </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> m2)
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#d08770;">Nothing </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">andy</span><span>&quot;  
+</span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">andy</span><span>&quot;  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Just LT </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Nothing  
+</span><span style="color:#d08770;">Just LT  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Just</span><span> (</span><span style="color:#d08770;">Sum 3</span><span>) </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Just</span><span> (</span><span style="color:#d08770;">Sum 4</span><span>)  
+</span><span style="color:#d08770;">Just</span><span> (</span><span style="color:#d08770;">Sum</span><span> {getSum = </span><span style="color:#d08770;">7</span><span>})
+</span></code></pre>
+<hr />
+<h3 id="maybe-the-monoid-first-as-example">Maybe the monoid: First as example</h3>
+<p>fromChunks takes a list of strict bytestrings and converts it to a lazy bytestring. toChunks takes a lazy bytestring and converts it to a list of strict ones.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">newtype </span><span style="color:#d08770;">First</span><span> a = </span><span style="color:#d08770;">First</span><span> { getFirst :: </span><span style="color:#d08770;">Maybe</span><span> a }  
+</span><span>    </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Eq</span><span>, </span><span style="color:#a3be8c;">Ord</span><span>, </span><span style="color:#a3be8c;">Read</span><span>, </span><span style="color:#a3be8c;">Show</span><span>)
+</span><span>
+</span><span style="color:#b48ead;">instance Monoid</span><span> (</span><span style="color:#b48ead;">First </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    mempty = </span><span style="color:#d08770;">First Nothing  
+</span><span>    </span><span style="color:#d08770;">First</span><span> (</span><span style="color:#d08770;">Just</span><span> x) </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> _ = </span><span style="color:#d08770;">First</span><span> (</span><span style="color:#d08770;">Just</span><span> x)  
+</span><span>    </span><span style="color:#d08770;">First Nothing </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`</span><span> x = x
+</span><span>
+</span><span>ghci&gt; getFirst $ </span><span style="color:#d08770;">First</span><span> (</span><span style="color:#d08770;">Just </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;) </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">First</span><span> (</span><span style="color:#d08770;">Just </span><span>&#39;</span><span style="color:#a3be8c;">b</span><span>&#39;)  
+</span><span style="color:#d08770;">Just </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;  
+</span><span>ghci&gt; getFirst $ </span><span style="color:#d08770;">First Nothing </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">First</span><span> (</span><span style="color:#d08770;">Just </span><span>&#39;</span><span style="color:#a3be8c;">b</span><span>&#39;)  
+</span><span style="color:#d08770;">Just </span><span>&#39;</span><span style="color:#a3be8c;">b</span><span>&#39;  
+</span><span>ghci&gt; getFirst $ </span><span style="color:#d08770;">First</span><span> (</span><span style="color:#d08770;">Just </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;) </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">First Nothing  
+</span><span style="color:#d08770;">Just </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;
+</span><span>
+</span><span>ghci&gt; getFirst . mconcat . map </span><span style="color:#d08770;">First </span><span>$ [</span><span style="color:#d08770;">Nothing</span><span>, </span><span style="color:#d08770;">Just 9</span><span>, </span><span style="color:#d08770;">Just 10</span><span>]  
+</span><span style="color:#d08770;">Just 9
+</span></code></pre>
+<hr />
+<h3 id="using-monoids-to-fold-data-structures">Using monoids to fold data structures</h3>
+<p>Whereas foldr takes a list and folds it up, the foldr from Data.Foldable typeclass accepts any type that can be folded up, not just lists!</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import qualified </span><span>Foldable </span><span style="color:#b48ead;">as </span><span>F
+</span><span>
+</span><span>ghci&gt; :t foldr  
+</span><span style="color:#8fa1b3;">foldr </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">F</span><span>.foldr  
+</span><span style="color:#d08770;">F</span><span>.foldr :: (</span><span style="color:#d08770;">F</span><span>.</span><span style="color:#d08770;">Foldable</span><span> t) =&gt; (a -&gt; b -&gt; b) -&gt; b -&gt; t a -&gt; b
+</span><span>
+</span><span>ghci&gt; foldr </span><span style="color:#8fa1b3;">(*) </span><span style="color:#d08770;">1</span><span> [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]  
+</span><span style="color:#d08770;">6  
+</span><span>ghci&gt; </span><span style="color:#d08770;">F</span><span>.foldr </span><span style="color:#8fa1b3;">(*) </span><span style="color:#d08770;">1</span><span> [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]  
+</span><span style="color:#d08770;">6
+</span></code></pre>
+<hr />
+<h3 id="making-instance-of-foldable">Making instance of Foldable</h3>
+<p>Implement foldMap function:
+<code>foldMap :: (Monoid m, Foldable t) =&gt; (a -&gt; m) -&gt; t a -&gt; m</code></p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Tree</span><span> a = </span><span style="color:#d08770;">Empty </span><span>| </span><span style="color:#d08770;">Node</span><span> a (</span><span style="color:#d08770;">Tree</span><span> a) (</span><span style="color:#d08770;">Tree</span><span> a) </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>, </span><span style="color:#a3be8c;">Read</span><span>, </span><span style="color:#a3be8c;">Eq</span><span>)
+</span><span>
+</span><span style="color:#b48ead;">instance F</span><span>.</span><span style="color:#b48ead;">Foldable Tree where  
+</span><span>    foldMap f </span><span style="color:#d08770;">Empty </span><span>= mempty  
+</span><span>    foldMap f (</span><span style="color:#d08770;">Node</span><span> x l r) = </span><span style="color:#d08770;">F</span><span>.foldMap f l </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`  
+</span><span>                             f x           </span><span style="color:#8fa1b3;">`</span><span>mappend</span><span style="color:#8fa1b3;">`  
+</span><span>                             </span><span style="color:#d08770;">F</span><span>.foldMap f r
+</span></code></pre>
+<hr />
+<h3 id="making-instance-of-foldable-1">Making instance of Foldable</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>testTree = </span><span style="color:#d08770;">Node 5  
+</span><span>            (</span><span style="color:#d08770;">Node 3  
+</span><span>                (</span><span style="color:#d08770;">Node 1 Empty Empty</span><span>)  
+</span><span>                (</span><span style="color:#d08770;">Node 6 Empty Empty</span><span>)  
+</span><span>            )  
+</span><span>            (</span><span style="color:#d08770;">Node 9  
+</span><span>                (</span><span style="color:#d08770;">Node 8 Empty Empty</span><span>)  
+</span><span>                (</span><span style="color:#d08770;">Node 10 Empty Empty</span><span>)  
+</span><span>            )
+</span><span>        
+</span><span>ghci&gt; </span><span style="color:#d08770;">F</span><span>.foldl </span><span style="color:#8fa1b3;">(+) </span><span style="color:#d08770;">0</span><span> testTree  
+</span><span style="color:#d08770;">42  
+</span><span>ghci&gt; </span><span style="color:#d08770;">F</span><span>.foldl </span><span style="color:#8fa1b3;">(*) </span><span style="color:#d08770;">1</span><span> testTree  
+</span><span style="color:#d08770;">64800
+</span></code></pre>
+<hr />
+<h2 id="making-instance-of-foldable-2">Making instance of Foldable</h2>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; getAny $ </span><span style="color:#d08770;">F</span><span>.foldMap (\x -&gt; </span><span style="color:#d08770;">Any </span><span>$ x == </span><span style="color:#d08770;">3</span><span>) testTree  
+</span><span style="color:#d08770;">True
+</span><span>ghci&gt; getAny $ </span><span style="color:#d08770;">F</span><span>.foldMap (\x -&gt; </span><span style="color:#d08770;">Any </span><span>$ x &gt; </span><span style="color:#d08770;">15</span><span>) testTree  
+</span><span style="color:#d08770;">False
+</span><span>ghci&gt; </span><span style="color:#d08770;">F</span><span>.foldMap (\x -&gt; [x]) testTree  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">10</span><span>]
+</span></code></pre>
+<p>{{% /section %}}</p>
+
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-9">
+        
+        
+        
+
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+  
+  
+
+  
+  
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+  
+
+  
+  
+</body>
+
+</html>

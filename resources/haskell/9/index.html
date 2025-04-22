@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Input and Output
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h1 class="title is-2">Input and Output</h1>
+      <p class="subtitle is-4"></p>
+    </div>
+    <div class="content">
+      <style>
+.textleft {
+  text-align:left;
+}
+.reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+font-family:Arial, Microsoft JhengHei;}
+.reveal .progress {
+    height: 14px !important;
+}
+.progress span {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAMCAIAAAAs6UAAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QUNCQzIyREQ0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QUNCQzIyREU0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpBQ0JDMjJEQjRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpBQ0JDMjJEQzRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PovDFgYAAAAmSURBVHjaYvjPwMAAxjMZmBhA9H8INv4P4TPM/A+m04zBNECAAQBCWQv9SUQpVgAAAABJRU5ErkJggg==) repeat-x !important;
+}
+.progress span:after, .progress span.nyancat {
+    content: "";
+    background: url(data:image/gif;base64,R0lGODlhIgAVAKIHAL3/9/+Zmf8zmf/MmZmZmf+Z/wAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpDMkJBNjY5RTU1NEJFMzExOUM4QUM2MDAwNDQzRERBQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCREIzOEIzMzRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCREIzOEIzMjRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkM1QkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkMyQkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkECQcABwAsAAAAACIAFQAAA6J4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93bqCA7f7TFaYoIFAMMwczB5EkTzJllEUttmIGoG5bfPBjDawD7CsJC67uWcv2CRov929C/q2ZpcBbYBmLGk6W1BRY4MUDnMvJEsBAXdlknk2fCeRk2iJliAijpBlEmigjR0plKSgpKWvEUheF4tUZqZID1RHjEe8PsDBBwkAIfkECQcABwAsAAAAACIAFQAAA6B4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93TqS40XiKSYgTLBgIBAMqE/zmQSaZEzns+jQ9pC/5dQJ0VIv5KMVWxqb36opxHrNvu9ptPfGbmsBbgSAeRdydCdjXWRPchQPh1hNAQF4TpM9NnwukpRyi5chGjqJEoSOIh0plaYsZBKvsCuNjY5ptElgDyFIuj6+vwcJACH5BAkHAAcALAAAAAAiABUAAAOfeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GKifWaddvNQAtszXYCxgR/Zy5jYTFeXmSDiIZGdQEBd06QSBQ5e4cEkE9nnZQaG2J4F4MSLx8rkqUSZBeurhlTUqsLsi60DpZxSWBJugcJACH5BAkHAAcALAAAAAAiABUAAAOgeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GuifWaddvNwMkZtmY7AWMEgGcKY2ExXl5khFMVc0Z1AQF3TpJShDl8iASST2efloV5JTyJFpgOch8dgW9KZxexshGNLqgLtbW0SXFwvaJfCQAh+QQJBwAHACwAAAAAIgAVAAADoXi63P7wmUmrnVGOzbvfRsYYXGGe6MmF4kEOaSGYMwq2LizHfDGwIlLPNKGZfi6gZmggEAy2iVPZEKZqzakq+1xUFFYe90lxTsHmim6HGpvf3eR7skYJ3PC5tyystc0AboFnVXQ9XFJTZIQOYUYFTQEBeWaSVF4bbCeRk1meBJYSL3WbaReMIxQfHXh6jaYXsbEQni6oaF21ERR7l0ksvA0JACH5BAkHAAcALAAAAAAiABUAAAOeeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMfFlA4hTITEMxkIBMOuADwmhzqeM6mashTCXKw2TVKQyKuTRSx2wegnNkyJ1ozpOFiMLqcEU8BZHx6NYW8nVlZefQ1tZgQBAXJIi1eHUTRwi0lhl48QL0sogxaGDhMlUo2gh14fHhcVmnOrrxNqrU9joX21Q0IUElm7DQkAIfkECQcABwAsAAAAACIAFQAAA6J4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93bqCA7f7TFaYoIFAMMwczB5EkTzJllEUttmIGoG5bfPBjDawD7CsJC67uWcv2CRov929C/q2ZpcBbYBmLGk6W1BRY4MUDnMvJEsBAXdlknk2fCeRk2iJliAijpBlEmigjR0plKSgpKWvEUheF4tUZqZID1RHjEe8PsDBBwkAIfkECQcABwAsAAAAACIAFQAAA6B4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93TqS40XiKSYgTLBgIBAMqE/zmQSaZEzns+jQ9pC/5dQJ0VIv5KMVWxqb36opxHrNvu9ptPfGbmsBbgSAeRdydCdjXWRPchQPh1hNAQF4TpM9NnwukpRyi5chGjqJEoSOIh0plaYsZBKvsCuNjY5ptElgDyFIuj6+vwcJACH5BAkHAAcALAAAAAAiABUAAAOfeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GKifWaddvNQAtszXYCxgR/Zy5jYTFeXmSDiIZGdQEBd06QSBQ5e4cEkE9nnZQaG2J4F4MSLx8rkqUSZBeurhlTUqsLsi60DpZxSWBJugcJACH5BAkHAAcALAAAAAAiABUAAAOgeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GuifWaddvNwMkZtmY7AWMEgGcKY2ExXl5khFMVc0Z1AQF3TpJShDl8iASST2efloV5JTyJFpgOch8dgW9KZxexshGNLqgLtbW0SXFwvaJfCQAh+QQJBwAHACwAAAAAIgAVAAADoXi63P7wmUmrnVGOzbvfRsYYXGGe6MmF4kEOaSGYMwq2LizHfDGwIlLPNKGZfi6gZmggEAy2iVPZEKZqzakq+1xUFFYe90lxTsHmim6HGpvf3eR7skYJ3PC5tyystc0AboFnVXQ9XFJTZIQOYUYFTQEBeWaSVF4bbCeRk1meBJYSL3WbaReMIxQfHXh6jaYXsbEQni6oaF21ERR7l0ksvA0JACH5BAkHAAcALAAAAAAiABUAAAOeeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMfFlA4hTITEMxkIBMOuADwmhzqeM6mashTCXKw2TVKQyKuTRSx2wegnNkyJ1ozpOFiMLqcEU8BZHx6NYW8nVlZefQ1tZgQBAXJIi1eHUTRwi0lhl48QL0sogxaGDhMlUo2gh14fHhcVmnOrrxNqrU9joX21Q0IUElm7DQkAOw==) ;
+    width: 34px !important;
+    height: 21px !important;
+    border: none !important;
+    float: right;
+    margin-top: -7px;
+    margin-right: -10px;
+}
+.my-icon-css {
+  width: 100%;
+  height: 200px;
+  background-position:center;
+  background-repeat: no-repeat;
+  background-image:url('https://mir-s3-cdn-cf.behance.net/project_modules/disp/fe36cc42774743.57ee5f329fae6.gif');
+}
+</style>
+<p>{{% section %}}</p>
+<h2 id="input-and-output">Input and Output</h2>
+<h4 id="wusyong-wu-yu-wei">@wusyong, 吳昱緯</h4>
+<hr />
+<p>When a function changes state, we say that the function has side-effects. This chapter explores the boundry of pure and impure.</p>
+<hr />
+<p><img src="http://s3.amazonaws.com/lyah/dognap.png" alt="" /></p>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="hello-world">Hello, world!</h2>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = putStrLn &quot;</span><span style="color:#a3be8c;">hello, world</span><span>&quot;  
+</span></code></pre>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ghc</span><span style="color:#bf616a;"> --make</span><span> helloworld  
+</span><span style="color:#bf616a;">[1</span><span> of 1] Compiling Main             ( helloworld.hs, helloworld.o )  
+</span><span style="color:#bf616a;">Linking</span><span> helloworld ...
+</span><span style="color:#bf616a;">$</span><span> ./helloworld  
+</span><span style="color:#bf616a;">hello,</span><span> world
+</span></code></pre>
+<hr />
+<h3 id="putstrln">putStrLn</h3>
+<p>Return an I/O action with result type () (empty tuple)</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; :t putStrLn  
+</span><span style="color:#8fa1b3;">putStrLn </span><span style="color:#b48ead;">:: String -&gt; IO </span><span>()  
+</span><span>ghci&gt; :t putStrLn &quot;</span><span style="color:#a3be8c;">hello, world</span><span>&quot;  
+</span><span>putStrLn &quot;</span><span style="color:#a3be8c;">hello, world</span><span>&quot; :: </span><span style="color:#d08770;">IO ()
+</span></code></pre>
+<hr />
+<h3 id="main-action">main action</h3>
+<ul>
+<li>do operation will glue multple IO into one</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    putStrLn &quot;</span><span style="color:#a3be8c;">Hello, what&#39;s your name?</span><span>&quot;  
+</span><span>    name &lt;- getLine  
+</span><span>    putStrLn (&quot;</span><span style="color:#a3be8c;">Hey </span><span>&quot; ++ name ++ &quot;</span><span style="color:#a3be8c;">, you rock!</span><span>&quot;)
+</span></code></pre>
+<hr />
+<h3 id="getline">getLine</h3>
+<p>name &lt;- getLine: perform the I/O action getLine and then bind its result value to name</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; :t getLine  
+</span><span style="color:#8fa1b3;">getLine </span><span style="color:#b48ead;">:: IO String</span><span>```
+</span><span>
+</span><span style="color:#65737e;">---
+</span><span>
+</span><span>### tained &amp; untained
+</span><span>
+</span><span style="color:#d08770;">This</span><span> works:
+</span><span style="color:#8fa1b3;">``</span><span>`haskell
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    putStrLn &quot;</span><span style="color:#a3be8c;">Hello, what&#39;s your name?</span><span>&quot;  
+</span><span>    name &lt;- getLine  
+</span><span>    putStrLn $ &quot;</span><span style="color:#a3be8c;">Read this carefully, because this is your future: </span><span>&quot; ++ tellFortune name  
+</span></code></pre>
+<p>but not this:
+``haskell
+nameTag = &quot;Hello, my name is &quot; ++ getLine
+-- You can't do name <insert string> either
+name = getLine </p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>
+</span><span>---
+</span><span>
+</span><span>### IO on ghci will still show the result
+</span><span>
+</span><span>```haskell
+</span><span>ghci&gt; putStrLn &quot;HEEY&quot;  
+</span><span>HEEY
+</span></code></pre>
+<hr />
+<h3 id="let-binding-in-do">let binding in do</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>Data.Char  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    putStrLn &quot;</span><span style="color:#a3be8c;">What&#39;s your first name?</span><span>&quot;  
+</span><span>    firstName &lt;- getLine  
+</span><span>    putStrLn &quot;</span><span style="color:#a3be8c;">What&#39;s your last name?</span><span>&quot;  
+</span><span>    lastName &lt;- getLine  
+</span><span>    </span><span style="color:#b48ead;">let</span><span> bigFirstName = map toUpper firstName  
+</span><span>        bigLastName = map toUpper lastName  
+</span><span>    putStrLn $ &quot;</span><span style="color:#a3be8c;">hey </span><span>&quot; ++ bigFirstName ++ &quot; &quot; ++ bigLastName ++ &quot;</span><span style="color:#a3be8c;">, how are you?</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="reversewords">reverseWords</h3>
+<p>return makes an I/O action out of a pure value (like IO String), it's reverse of &lt;-</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do   
+</span><span>    line &lt;- getLine  
+</span><span>    </span><span style="color:#b48ead;">if</span><span> null line  
+</span><span>        </span><span style="color:#b48ead;">then</span><span> return </span><span style="color:#d08770;">()  
+</span><span>        </span><span style="color:#b48ead;">else do  
+</span><span>            putStrLn $ reverseWords line  
+</span><span>            main  
+</span><span>  
+</span><span style="color:#8fa1b3;">reverseWords </span><span style="color:#b48ead;">:: String -&gt; String  
+</span><span>reverseWords = unwords . map reverse . words
+</span></code></pre>
+<hr />
+<h3 id="putstr">putStr</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do</span><span>   putStr &quot;</span><span style="color:#a3be8c;">Hey, </span><span>&quot;  
+</span><span>            putStr &quot;</span><span style="color:#a3be8c;">I&#39;m </span><span>&quot;  
+</span><span>            putStrLn &quot;</span><span style="color:#a3be8c;">Andy!</span><span>&quot;
+</span><span>$ runhaskell putstr_test.hs  
+</span><span style="color:#d08770;">Hey</span><span>, </span><span style="color:#d08770;">I</span><span>&#39;m </span><span style="color:#d08770;">Andy</span><span>!
+</span></code></pre>
+<hr />
+<h3 id="putchar">putChar</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do</span><span>   putChar &#39;</span><span style="color:#a3be8c;">t</span><span>&#39;  
+</span><span>            putChar &#39;</span><span style="color:#a3be8c;">e</span><span>&#39;  
+</span><span>            putChar &#39;</span><span style="color:#a3be8c;">h</span><span>&#39;
+</span><span>$ runhaskell putchar_test.hs  
+</span><span>teh
+</span><span>
+</span><span style="color:#8fa1b3;">putStr </span><span style="color:#b48ead;">:: String -&gt; IO </span><span>()  
+</span><span>putStr </span><span style="color:#d08770;">[] </span><span>= return </span><span style="color:#d08770;">()  
+</span><span>putStr (x:xs) = </span><span style="color:#b48ead;">do  
+</span><span>    putChar x  
+</span><span>    putStr xs
+</span></code></pre>
+<hr />
+<h3 id="print">print</h3>
+<p>putStrLn . show</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do</span><span>   print </span><span style="color:#d08770;">True  
+</span><span>            print </span><span style="color:#d08770;">2  
+</span><span>            print &quot;</span><span style="color:#a3be8c;">haha</span><span>&quot;  
+</span><span>            print </span><span style="color:#d08770;">3.2  
+</span><span>            print [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>]
+</span><span>$ runhaskell print_test.hs  
+</span><span style="color:#d08770;">True  
+</span><span style="color:#d08770;">2  
+</span><span>&quot;</span><span style="color:#a3be8c;">haha</span><span>&quot;  
+</span><span style="color:#d08770;">3.2  
+</span><span>[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="getchar">getChar</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do     
+</span><span>    c &lt;- getChar  
+</span><span>    </span><span style="color:#b48ead;">if</span><span> c /= &#39; &#39;  
+</span><span>        </span><span style="color:#b48ead;">then do  
+</span><span>            putChar c  
+</span><span>            main  
+</span><span>        </span><span style="color:#b48ead;">else</span><span> return </span><span style="color:#d08770;">()
+</span><span>$ runhaskell getchar_test.hs  
+</span><span>hello sir  
+</span><span>hello
+</span></code></pre>
+<hr />
+<h3 id="when">when</h3>
+<ul>
+<li>perform do if True</li>
+<li>return () if False</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>Control.Monad   
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    c &lt;- getChar  
+</span><span>    when (c /= &#39; &#39;) $ </span><span style="color:#b48ead;">do  
+</span><span>        putChar c  
+</span><span>        main
+</span></code></pre>
+<hr />
+<h3 id="sequence">sequence</h3>
+<p>sequence :: [IO a] -&gt; IO [a]</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    a &lt;- getLine  
+</span><span>    b &lt;- getLine  
+</span><span>    c &lt;- getLine  
+</span><span>    print [a,b,c]
+</span><span>
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    rs &lt;- sequence [getLine, getLine, getLine]  
+</span><span>    print rs
+</span><span>
+</span><span>ghci&gt; sequence (map print [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>])  
+</span><span style="color:#d08770;">1  
+</span><span style="color:#d08770;">2  
+</span><span style="color:#d08770;">3  
+</span><span style="color:#d08770;">4  
+</span><span style="color:#d08770;">5  
+</span><span>[</span><span style="color:#d08770;">()</span><span>,</span><span style="color:#d08770;">()</span><span>,</span><span style="color:#d08770;">()</span><span>,</span><span style="color:#d08770;">()</span><span>,</span><span style="color:#d08770;">()</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="mapm-mapm">mapM &amp; mapM_</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; mapM print [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]  
+</span><span style="color:#d08770;">1  
+</span><span style="color:#d08770;">2  
+</span><span style="color:#d08770;">3  
+</span><span>[</span><span style="color:#d08770;">()</span><span>,</span><span style="color:#d08770;">()</span><span>,</span><span style="color:#d08770;">()</span><span>]  
+</span><span>ghci&gt; mapM_ print [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]  
+</span><span style="color:#d08770;">1  
+</span><span style="color:#d08770;">2  
+</span><span style="color:#d08770;">3
+</span></code></pre>
+<hr />
+<h3 id="forever">forever</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>Control.Monad  
+</span><span style="color:#b48ead;">import </span><span>Data.Char  
+</span><span>  
+</span><span>main = forever $ </span><span style="color:#b48ead;">do  
+</span><span>    putStr &quot;</span><span style="color:#a3be8c;">Give me some input: </span><span>&quot;  
+</span><span>    l &lt;- getLine  
+</span><span>    putStrLn $ map toUpper l
+</span></code></pre>
+<hr />
+<h3 id="form">forM</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>Control.Monad  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do   
+</span><span>    colors &lt;- forM [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>] (\a -&gt; </span><span style="color:#b48ead;">do  
+</span><span>        putStrLn $ &quot;</span><span style="color:#a3be8c;">Which color do you associate with the number </span><span>&quot; ++ show a ++ &quot;</span><span style="color:#a3be8c;">?</span><span>&quot;  
+</span><span>        color &lt;- getLine  
+</span><span>        return color)  
+</span><span>    putStrLn &quot;</span><span style="color:#a3be8c;">The colors that you associate with 1, 2, 3 and 4 are: </span><span>&quot;  
+</span><span>    mapM putStrLn colors
+</span><span>
+</span><span>$ runhaskell form_test.hs  
+</span><span style="color:#d08770;">Which</span><span> color </span><span style="color:#b48ead;">do</span><span> you associate with the number </span><span style="color:#d08770;">1</span><span>?  
+</span><span>white  
+</span><span style="color:#d08770;">Which</span><span> color </span><span style="color:#b48ead;">do</span><span> you associate with the number </span><span style="color:#d08770;">2</span><span>?  
+</span><span>blue  
+</span><span style="color:#d08770;">Which</span><span> color </span><span style="color:#b48ead;">do</span><span> you associate with the number </span><span style="color:#d08770;">3</span><span>?  
+</span><span>red  
+</span><span style="color:#d08770;">Which</span><span> color </span><span style="color:#b48ead;">do</span><span> you associate with the number </span><span style="color:#d08770;">4</span><span>?  
+</span><span>orange  
+</span><span style="color:#d08770;">The</span><span> colors that you associate with </span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">2</span><span>, </span><span style="color:#d08770;">3</span><span> and </span><span style="color:#d08770;">4</span><span> are:  
+</span><span>white  
+</span><span>blue  
+</span><span>red  
+</span><span>orange
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="files-and-streams">Files and streams</h2>
+<h3 id="getcontents">getContents</h3>
+<ul>
+<li>getContents :: IO String</li>
+<li>lazy I/O, useful for pipeing output</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>Data.Char  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    contents &lt;- getContents  
+</span><span>    putStr (map toUpper contents)
+</span><span>
+</span><span>$ cat haiku.txt | ./capslocker  
+</span><span style="color:#d08770;">I</span><span>&#39;</span><span style="color:#d08770;">M A LIL</span><span>&#39; </span><span style="color:#d08770;">TEAPOT  
+</span><span style="color:#d08770;">WHAT</span><span>&#39;</span><span style="color:#d08770;">S WITH THAT AIRPLANE FOOD</span><span>, </span><span style="color:#d08770;">HUH</span><span>?  
+</span><span style="color:#d08770;">IT</span><span>&#39;</span><span style="color:#d08770;">S SO SMALL</span><span>, </span><span style="color:#d08770;">TASTELESS
+</span></code></pre>
+<hr />
+<h3 id="only-print-lines-shorter-than-10-characters">Only print lines shorter than 10 characters</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    contents &lt;- getContents  
+</span><span>    putStr (shortLinesOnly contents)  
+</span><span>  
+</span><span style="color:#8fa1b3;">shortLinesOnly </span><span style="color:#b48ead;">:: String -&gt; String  
+</span><span>shortLinesOnly input =   
+</span><span>    </span><span style="color:#b48ead;">let</span><span> allLines = lines input  
+</span><span>        shortLines = filter (\line -&gt; length line &lt; </span><span style="color:#d08770;">10</span><span>) allLines  
+</span><span>        result = unlines shortLines  
+</span><span>    </span><span style="color:#b48ead;">in</span><span>  result
+</span><span>
+</span><span>i&#39;m short  
+</span><span>so am i  
+</span><span>i am a loooooooooong line!!!  
+</span><span>yeah i&#39;m long so what hahahaha!!!!!!  
+</span><span>short line  
+</span><span>loooooooooooooooooooooooooooong  
+</span><span>short
+</span><span>
+</span><span>$ ghc </span><span style="color:#65737e;">--make shortlinesonly  
+</span><span>[</span><span style="color:#d08770;">1 </span><span style="color:#b48ead;">of </span><span style="color:#d08770;">1</span><span>] </span><span style="color:#d08770;">Compiling Main</span><span>             ( shortlinesonly.hs, shortlinesonly.o )  
+</span><span style="color:#d08770;">Linking</span><span> shortlinesonly ...  
+</span><span>$ cat shortlines.txt | ./shortlinesonly  
+</span><span>i&#39;m short  
+</span><span>so am i  
+</span><span>short
+</span></code></pre>
+<hr />
+<h3 id="interact">interact</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = interact shortLinesOnly  
+</span><span>  
+</span><span style="color:#8fa1b3;">shortLinesOnly </span><span style="color:#b48ead;">:: String -&gt; String  
+</span><span>shortLinesOnly input =   
+</span><span>    </span><span style="color:#b48ead;">let</span><span> allLines = lines input  
+</span><span>        shortLines = filter (\line -&gt; length line &lt; </span><span style="color:#d08770;">10</span><span>) allLines  
+</span><span>        result = unlines shortLines  
+</span><span>    </span><span style="color:#b48ead;">in</span><span>  result
+</span><span>
+</span><span>main = interact $ unlines . filter ((&lt;</span><span style="color:#d08770;">10</span><span>) . length) . lines
+</span></code></pre>
+<hr />
+<h3 id="tell-if-line-is-palindrome">tell if line is palindrome</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>respondPalindromes contents = unlines (map (\xs -&gt; </span><span style="color:#b48ead;">if</span><span> isPalindrome xs </span><span style="color:#b48ead;">then </span><span>&quot;</span><span style="color:#a3be8c;">palindrome</span><span>&quot; </span><span style="color:#b48ead;">else </span><span>&quot;</span><span style="color:#a3be8c;">not a palindrome</span><span>&quot;) (lines contents))  
+</span><span>    </span><span style="color:#b48ead;">where</span><span>   isPalindrome xs = xs == reverse xs
+</span><span>
+</span><span>respondPalindromes = unlines . map (\xs -&gt; </span><span style="color:#b48ead;">if</span><span> isPalindrome xs </span><span style="color:#b48ead;">then </span><span>&quot;</span><span style="color:#a3be8c;">palindrome</span><span>&quot; </span><span style="color:#b48ead;">else </span><span>&quot;</span><span style="color:#a3be8c;">not a palindrome</span><span>&quot;) . lines  
+</span><span>    </span><span style="color:#b48ead;">where</span><span>   isPalindrome xs = xs == reverse xs
+</span><span>
+</span><span>main = interact respondPalindromes
+</span><span>$ runhaskell palindromes.hs  
+</span><span>hehe  
+</span><span>not a palindrome  
+</span><span style="color:#d08770;">ABCBA  
+</span><span>palindrome  
+</span><span>cookie  
+</span><span>not a palindrome
+</span></code></pre>
+<hr />
+<h3 id="read-write-files">Read/write files</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.IO  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    handle &lt;- openFile &quot;</span><span style="color:#a3be8c;">girlfriend.txt</span><span>&quot; </span><span style="color:#d08770;">ReadMode  
+</span><span>    contents &lt;- hGetContents handle  
+</span><span>    putStr contents  
+</span><span>    hClose handle
+</span><span>
+</span><span>$ runhaskell girlfriend.hs  
+</span><span style="color:#d08770;">Hey</span><span>! </span><span style="color:#d08770;">Hey</span><span>! </span><span style="color:#d08770;">You</span><span>! </span><span style="color:#d08770;">You</span><span>!  
+</span><span style="color:#d08770;">I</span><span> don&#39;t like your girlfriend!  
+</span><span style="color:#d08770;">No</span><span> way! </span><span style="color:#d08770;">No</span><span> way!  
+</span><span style="color:#d08770;">I</span><span> think you need a new one!
+</span></code></pre>
+<hr />
+<h3 id="openfile">openFile</h3>
+<ul>
+<li>openFile :: FilePath -&gt; IOMode -&gt; IO Handle</li>
+<li>type FilePath = String</li>
+<li>data IOMode = ReadMode | WriteMode | AppendMode | ReadWriteMode</li>
+</ul>
+<hr />
+<h3 id="hgetcontents-hclose-hgetline-hputstr-hputstrln-hgetchar">hGetContents/hClose/hGetLine/hPutStr/hPutStrLn/hGetChar</h3>
+<hr />
+<h3 id="withfile">withFile</h3>
+<p>withFile :: FilePath -&gt; IOMode -&gt; (Handle -&gt; IO a) -&gt; IO a</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.IO     
+</span><span>    
+</span><span>main = </span><span style="color:#b48ead;">do     
+</span><span>    withFile &quot;</span><span style="color:#a3be8c;">girlfriend.txt</span><span>&quot; </span><span style="color:#d08770;">ReadMode</span><span> (\handle -&gt; </span><span style="color:#b48ead;">do  
+</span><span>        contents &lt;- hGetContents handle     
+</span><span>        putStr contents)
+</span><span>
+</span><span style="color:#8fa1b3;">withFile&#39; </span><span style="color:#b48ead;">:: FilePath -&gt; IOMode -&gt;</span><span> (</span><span style="color:#b48ead;">Handle -&gt; IO </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">-&gt; IO </span><span style="color:#bf616a;">a  
+</span><span>withFile&#39; path mode f = </span><span style="color:#b48ead;">do  
+</span><span>    handle &lt;- openFile path mode   
+</span><span>    result &lt;- f handle  
+</span><span>    hClose handle  
+</span><span>    return result
+</span></code></pre>
+<hr />
+<h3 id="readfile">readFile</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.IO  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    contents &lt;- readFile &quot;</span><span style="color:#a3be8c;">girlfriend.txt</span><span>&quot;  
+</span><span>    putStr contents
+</span></code></pre>
+<hr />
+<h3 id="writefile">writeFile</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.IO     
+</span><span style="color:#b48ead;">import </span><span>Data.Char  
+</span><span>    
+</span><span>main = </span><span style="color:#b48ead;">do     
+</span><span>    contents &lt;- readFile &quot;</span><span style="color:#a3be8c;">girlfriend.txt</span><span>&quot;     
+</span><span>    writeFile &quot;</span><span style="color:#a3be8c;">girlfriendcaps.txt</span><span>&quot; (map toUpper contents)
+</span><span>
+</span><span>$ runhaskell girlfriendtocaps.hs  
+</span><span>$ cat girlfriendcaps.txt  
+</span><span style="color:#d08770;">HEY</span><span>! </span><span style="color:#d08770;">HEY</span><span>! </span><span style="color:#d08770;">YOU</span><span>! </span><span style="color:#d08770;">YOU</span><span>!  
+</span><span style="color:#d08770;">I DON</span><span>&#39;</span><span style="color:#d08770;">T LIKE YOUR GIRLFRIEND</span><span>!  
+</span><span style="color:#d08770;">NO WAY</span><span>! </span><span style="color:#d08770;">NO WAY</span><span>!  
+</span><span style="color:#d08770;">I THINK YOU NEED A NEW ONE</span><span>!
+</span></code></pre>
+<hr />
+<h3 id="appendfile">appendFile</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.IO     
+</span><span>    
+</span><span>main = </span><span style="color:#b48ead;">do     
+</span><span>    todoItem &lt;- getLine  
+</span><span>    appendFile &quot;</span><span style="color:#a3be8c;">todo.txt</span><span>&quot; (todoItem ++ &quot;</span><span style="color:#96b5b4;">\n</span><span>&quot;)
+</span><span>
+</span><span>$ runhaskell appendtodo.hs  
+</span><span style="color:#d08770;">Iron</span><span> the dishes  
+</span><span>$ runhaskell appendtodo.hs  
+</span><span style="color:#d08770;">Dust</span><span> the dog  
+</span><span>$ runhaskell appendtodo.hs  
+</span><span style="color:#d08770;">Take</span><span> salad out </span><span style="color:#b48ead;">of</span><span> the oven  
+</span><span>$ cat todo.txt  
+</span><span style="color:#d08770;">Iron</span><span> the dishes  
+</span><span style="color:#d08770;">Dust</span><span> the dog  
+</span><span style="color:#d08770;">Take</span><span> salad out </span><span style="color:#b48ead;">of</span><span> the oven
+</span></code></pre>
+<hr />
+<h3 id="hsetbuffering">hSetBuffering</h3>
+<ul>
+<li>BufferMode: NoBuffering, LineBuffering or BlockBuffering (Maybe Int)</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do   
+</span><span>    withFile &quot;</span><span style="color:#a3be8c;">something.txt</span><span>&quot; </span><span style="color:#d08770;">ReadMode</span><span> (\handle -&gt; </span><span style="color:#b48ead;">do  
+</span><span>        hSetBuffering handle $ </span><span style="color:#d08770;">BlockBuffering</span><span> (</span><span style="color:#d08770;">Just 2048</span><span>)  
+</span><span>        contents &lt;- hGetContents handle  
+</span><span>        putStr contents)
+</span></code></pre>
+<hr />
+<h3 id="hflush">hFlush</h3>
+<ul>
+<li>LineBuffering: flush after each line</li>
+<li>Block...
+...</li>
+</ul>
+<hr />
+<h3 id="partially-apply-type-parameters">partially apply type parameters</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">type </span><span style="color:#d08770;">IntMap</span><span> v = </span><span style="color:#d08770;">Map Int</span><span> v
+</span><span style="color:#65737e;">-- or
+</span><span style="color:#b48ead;">type </span><span style="color:#d08770;">IntMap </span><span>= </span><span style="color:#d08770;">Map Int
+</span></code></pre>
+<hr />
+<h3 id="remove-words">Remove words</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.IO  
+</span><span style="color:#b48ead;">import </span><span>System.Directory  
+</span><span style="color:#b48ead;">import </span><span>Data.List  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do        
+</span><span>    handle &lt;- openFile &quot;</span><span style="color:#a3be8c;">todo.txt</span><span>&quot; </span><span style="color:#d08770;">ReadMode  
+</span><span>    (tempName, tempHandle) &lt;- openTempFile &quot;</span><span style="color:#a3be8c;">.</span><span>&quot; &quot;</span><span style="color:#a3be8c;">temp</span><span>&quot;  
+</span><span>    contents &lt;- hGetContents handle  
+</span><span>    </span><span style="color:#b48ead;">let</span><span> todoTasks = lines contents     
+</span><span>        numberedTasks = zipWith (\n line -&gt; show n ++ &quot;</span><span style="color:#a3be8c;"> - </span><span>&quot; ++ line) [</span><span style="color:#d08770;">0</span><span>..] todoTasks     
+</span><span>    putStrLn &quot;</span><span style="color:#a3be8c;">These are your TO-DO items:</span><span>&quot;  
+</span><span>    putStr $ unlines numberedTasks  
+</span><span>    putStrLn &quot;</span><span style="color:#a3be8c;">Which one do you want to delete?</span><span>&quot;     
+</span><span>    numberString &lt;- getLine     
+</span><span>    </span><span style="color:#b48ead;">let</span><span> number = read numberString     
+</span><span>        newTodoItems = delete (todoTasks !! number) todoTasks     
+</span><span>    hPutStr tempHandle $ unlines newTodoItems  
+</span><span>    hClose handle  
+</span><span>    hClose tempHandle  
+</span><span>    removeFile &quot;</span><span style="color:#a3be8c;">todo.txt</span><span>&quot;  
+</span><span>    renameFile tempName &quot;</span><span style="color:#a3be8c;">todo.txt</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="opentempfile">openTempFile</h3>
+<ul>
+<li>takes a dir and then a name</li>
+<li>getCurrentDirectory</li>
+</ul>
+<hr />
+<h3 id="removefile-renamefile">removeFile/renameFile</h3>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="command-line-arguments">Command line arguments</h2>
+<ul>
+<li>getArgs :: IO [String] </li>
+<li>getProgName :: IO String</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.Environment   
+</span><span style="color:#b48ead;">import </span><span>Data.List  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>   args &lt;- getArgs  
+</span><span>   progName &lt;- getProgName  
+</span><span>   putStrLn &quot;</span><span style="color:#a3be8c;">The arguments are:</span><span>&quot;  
+</span><span>   mapM putStrLn args  
+</span><span>   putStrLn &quot;</span><span style="color:#a3be8c;">The program name is:</span><span>&quot;  
+</span><span>   putStrLn progName
+</span><span>
+</span><span>$ ./arg-test first second w00t &quot;</span><span style="color:#a3be8c;">multi word arg</span><span>&quot;  
+</span><span style="color:#d08770;">The</span><span> arguments are:  
+</span><span>first  
+</span><span>second  
+</span><span>w00t  
+</span><span>multi word arg  
+</span><span style="color:#d08770;">The</span><span> program name is:  
+</span><span>arg-test
+</span></code></pre>
+<hr />
+<h3 id="todolist-features">todolist features</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.Environment   
+</span><span style="color:#b48ead;">import </span><span>System.Directory  
+</span><span style="color:#b48ead;">import </span><span>System.IO  
+</span><span style="color:#b48ead;">import </span><span>Data.List  
+</span><span>  
+</span><span style="color:#8fa1b3;">dispatch </span><span style="color:#b48ead;">::</span><span> [(</span><span style="color:#b48ead;">String</span><span>, [</span><span style="color:#b48ead;">String</span><span>] </span><span style="color:#b48ead;">-&gt; IO </span><span>())]  
+</span><span>dispatch =  [ (&quot;</span><span style="color:#a3be8c;">add</span><span>&quot;, add)  
+</span><span>            , (&quot;</span><span style="color:#a3be8c;">view</span><span>&quot;, view)  
+</span><span>            , (&quot;</span><span style="color:#a3be8c;">remove</span><span>&quot;, remove)  
+</span><span>            ]
+</span></code></pre>
+<hr />
+<h3 id="main">main</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    (command:args) &lt;- getArgs  
+</span><span>    </span><span style="color:#b48ead;">let</span><span> (</span><span style="color:#d08770;">Just</span><span> action) = lookup command dispatch  
+</span><span>    action args
+</span></code></pre>
+<hr />
+<h3 id="add-view-remove">add/view/remove</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">add </span><span style="color:#b48ead;">::</span><span> [</span><span style="color:#b48ead;">String</span><span>] </span><span style="color:#b48ead;">-&gt; IO </span><span>()  
+</span><span>add [fileName, todoItem] = appendFile fileName (todoItem ++ &quot;</span><span style="color:#96b5b4;">\n</span><span>&quot;)
+</span><span>
+</span><span style="color:#8fa1b3;">view </span><span style="color:#b48ead;">::</span><span> [</span><span style="color:#b48ead;">String</span><span>] </span><span style="color:#b48ead;">-&gt; IO </span><span>()  
+</span><span>view [fileName] = </span><span style="color:#b48ead;">do  
+</span><span>    contents &lt;- readFile fileName  
+</span><span>    </span><span style="color:#b48ead;">let</span><span> todoTasks = lines contents  
+</span><span>        numberedTasks = zipWith (\n line -&gt; show n ++ &quot;</span><span style="color:#a3be8c;"> - </span><span>&quot; ++ line) [</span><span style="color:#d08770;">0</span><span>..] todoTasks  
+</span><span>    putStr $ unlines numberedTasks
+</span><span>
+</span><span style="color:#8fa1b3;">remove </span><span style="color:#b48ead;">::</span><span> [</span><span style="color:#b48ead;">String</span><span>] </span><span style="color:#b48ead;">-&gt; IO </span><span>()  
+</span><span>remove [fileName, numberString] = </span><span style="color:#b48ead;">do  
+</span><span>    handle &lt;- openFile fileName </span><span style="color:#d08770;">ReadMode  
+</span><span>    (tempName, tempHandle) &lt;- openTempFile &quot;</span><span style="color:#a3be8c;">.</span><span>&quot; &quot;</span><span style="color:#a3be8c;">temp</span><span>&quot;  
+</span><span>    contents &lt;- hGetContents handle  
+</span><span>    </span><span style="color:#b48ead;">let</span><span> number = read numberString  
+</span><span>        todoTasks = lines contents  
+</span><span>        newTodoItems = delete (todoTasks !! number) todoTasks  
+</span><span>    hPutStr tempHandle $ unlines newTodoItems  
+</span><span>    hClose handle  
+</span><span>    hClose tempHandle  
+</span><span>    removeFile fileName  
+</span><span>    renameFile tempName fileName
+</span></code></pre>
+<hr />
+<h3 id="result">Result</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>$ ./todo view todo.txt  
+</span><span style="color:#d08770;">0 </span><span>- </span><span style="color:#d08770;">Iron</span><span> the dishes  
+</span><span style="color:#d08770;">1 </span><span>- </span><span style="color:#d08770;">Dust</span><span> the dog  
+</span><span style="color:#d08770;">2 </span><span>- </span><span style="color:#d08770;">Take</span><span> salad out </span><span style="color:#b48ead;">of</span><span> the oven  
+</span><span>  
+</span><span>$ ./todo add todo.txt &quot;</span><span style="color:#a3be8c;">Pick up children from drycleaners</span><span>&quot;  
+</span><span>  
+</span><span>$ ./todo view todo.txt  
+</span><span style="color:#d08770;">0 </span><span>- </span><span style="color:#d08770;">Iron</span><span> the dishes  
+</span><span style="color:#d08770;">1 </span><span>- </span><span style="color:#d08770;">Dust</span><span> the dog  
+</span><span style="color:#d08770;">2 </span><span>- </span><span style="color:#d08770;">Take</span><span> salad out </span><span style="color:#b48ead;">of</span><span> the oven  
+</span><span style="color:#d08770;">3 </span><span>- </span><span style="color:#d08770;">Pick</span><span> up children from drycleaners  
+</span><span>  
+</span><span>$ ./todo remove todo.txt </span><span style="color:#d08770;">2  
+</span><span>  
+</span><span>$ ./todo view todo.txt  
+</span><span style="color:#d08770;">0 </span><span>- </span><span style="color:#d08770;">Iron</span><span> the dishes  
+</span><span style="color:#d08770;">1 </span><span>- </span><span style="color:#d08770;">Dust</span><span> the dog  
+</span><span style="color:#d08770;">2 </span><span>- </span><span style="color:#d08770;">Pick</span><span> up children from drycleaners
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="randomness">Randomness</h2>
+<hr />
+<h3 id="random">random</h3>
+<ul>
+<li>random :: (RandomGen g, Random a) =&gt; g -&gt; (a, g)</li>
+<li>RandomGen typeclass for source of randomness</li>
+<li>Random typeclass for things that can take on random values</li>
+<li>StdGen is instance of RandomGen</li>
+<li>mkStdGen :: Int -&gt; StdGen </li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; random (mkStdGen </span><span style="color:#d08770;">100</span><span>) </span><span style="color:#65737e;">-- wrong
+</span><span>
+</span><span>ghci&gt; random (mkStdGen </span><span style="color:#d08770;">100</span><span>) :: (</span><span style="color:#d08770;">Int</span><span>, </span><span style="color:#d08770;">StdGen</span><span>)  
+</span><span>(-</span><span style="color:#d08770;">1352021624</span><span>,</span><span style="color:#d08770;">651872571 1655838864</span><span>)
+</span><span>
+</span><span>ghci&gt; random (mkStdGen </span><span style="color:#d08770;">949488</span><span>) :: (</span><span style="color:#d08770;">Float</span><span>, </span><span style="color:#d08770;">StdGen</span><span>)  
+</span><span>(</span><span style="color:#d08770;">0.8938442</span><span>,</span><span style="color:#d08770;">1597344447 1655838864</span><span>)  
+</span><span>ghci&gt; random (mkStdGen </span><span style="color:#d08770;">949488</span><span>) :: (</span><span style="color:#d08770;">Bool</span><span>, </span><span style="color:#d08770;">StdGen</span><span>)  
+</span><span>(</span><span style="color:#d08770;">False</span><span>,</span><span style="color:#d08770;">1485632275 40692</span><span>)  
+</span><span>ghci&gt; random (mkStdGen </span><span style="color:#d08770;">949488</span><span>) :: (</span><span style="color:#d08770;">Integer</span><span>, </span><span style="color:#d08770;">StdGen</span><span>)  
+</span><span>(</span><span style="color:#d08770;">1691547873</span><span>,</span><span style="color:#d08770;">1597344447 1655838864</span><span>)
+</span></code></pre>
+<hr />
+<h3 id="example-coin-toss">Example: coin toss</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">threeCoins </span><span style="color:#b48ead;">:: StdGen -&gt;</span><span> (</span><span style="color:#b48ead;">Bool</span><span>, </span><span style="color:#b48ead;">Bool</span><span>, </span><span style="color:#b48ead;">Bool</span><span>)  
+</span><span>threeCoins gen =   
+</span><span>    </span><span style="color:#b48ead;">let</span><span> (firstCoin, newGen) = random gen  
+</span><span>        (secondCoin, newGen&#39;) = random newGen  
+</span><span>        (thirdCoin, newGen&#39;&#39;) = random newGen&#39;  
+</span><span>    </span><span style="color:#b48ead;">in</span><span>  (firstCoin, secondCoin, thirdCoin)
+</span><span>
+</span><span>ghci&gt; threeCoins (mkStdGen </span><span style="color:#d08770;">21</span><span>)  
+</span><span>(</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">True</span><span>)  
+</span><span>ghci&gt; threeCoins (mkStdGen </span><span style="color:#d08770;">22</span><span>)  
+</span><span>(</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">False</span><span>,</span><span style="color:#d08770;">True</span><span>)  
+</span><span>ghci&gt; threeCoins (mkStdGen </span><span style="color:#d08770;">943</span><span>)  
+</span><span>(</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">False</span><span>,</span><span style="color:#d08770;">True</span><span>)  
+</span><span>ghci&gt; threeCoins (mkStdGen </span><span style="color:#d08770;">944</span><span>)  
+</span><span>(</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">True</span><span>)
+</span></code></pre>
+<hr />
+<h3 id="randoms">randoms</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; take </span><span style="color:#d08770;">5 </span><span>$ randoms (mkStdGen </span><span style="color:#d08770;">11</span><span>) :: [</span><span style="color:#d08770;">Int</span><span>]  
+</span><span>[-</span><span style="color:#d08770;">1807975507</span><span>,</span><span style="color:#d08770;">545074951</span><span>,-</span><span style="color:#d08770;">1015194702</span><span>,-</span><span style="color:#d08770;">1622477312</span><span>,-</span><span style="color:#d08770;">502893664</span><span>]  
+</span><span>ghci&gt; take </span><span style="color:#d08770;">5 </span><span>$ randoms (mkStdGen </span><span style="color:#d08770;">11</span><span>) :: [</span><span style="color:#d08770;">Bool</span><span>]  
+</span><span>[</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">True</span><span>,</span><span style="color:#d08770;">False</span><span>]  
+</span><span>ghci&gt; take </span><span style="color:#d08770;">5 </span><span>$ randoms (mkStdGen </span><span style="color:#d08770;">11</span><span>) :: [</span><span style="color:#d08770;">Float</span><span>]  
+</span><span>[</span><span style="color:#d08770;">7.904789e-2</span><span>,</span><span style="color:#d08770;">0.62691015</span><span>,</span><span style="color:#d08770;">0.26363158</span><span>,</span><span style="color:#d08770;">0.12223756</span><span>,</span><span style="color:#d08770;">0.38291094</span><span>]
+</span><span>
+</span><span style="color:#8fa1b3;">randoms&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">RandomGen </span><span style="color:#bf616a;">g</span><span>, </span><span style="color:#b48ead;">Random </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">g </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>]  
+</span><span>randoms&#39; gen = </span><span style="color:#b48ead;">let</span><span> (value, newGen) = random gen </span><span style="color:#b48ead;">in</span><span> value:randoms&#39; newGen
+</span><span>
+</span><span style="color:#8fa1b3;">finiteRandoms </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">RandomGen </span><span style="color:#bf616a;">g</span><span>, </span><span style="color:#b48ead;">Random </span><span style="color:#bf616a;">a</span><span>, </span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">n</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">n </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">g </span><span style="color:#b48ead;">-&gt;</span><span> ([</span><span style="color:#bf616a;">a</span><span>], </span><span style="color:#bf616a;">g</span><span>)  
+</span><span>finiteRandoms </span><span style="color:#d08770;">0</span><span> gen = (</span><span style="color:#d08770;">[]</span><span>, gen)  
+</span><span>finiteRandoms n gen =   
+</span><span>    </span><span style="color:#b48ead;">let</span><span> (value, newGen) = random gen  
+</span><span>        (restOfList, finalGen) = finiteRandoms (n-</span><span style="color:#d08770;">1</span><span>) newGen  
+</span><span>    </span><span style="color:#b48ead;">in</span><span>  (value:restOfList, finalGen)
+</span></code></pre>
+<hr />
+<h3 id="randomr">randomR</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; randomR (</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">6</span><span>) (mkStdGen </span><span style="color:#d08770;">359353</span><span>)  
+</span><span>(</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">1494289578 40692</span><span>)  
+</span><span>ghci&gt; randomR (</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">6</span><span>) (mkStdGen </span><span style="color:#d08770;">35935335</span><span>)  
+</span><span>(</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">1250031057 40692</span><span>)
+</span></code></pre>
+<hr />
+<h3 id="randomrs">randomRs</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; take </span><span style="color:#d08770;">10 </span><span>$ randomRs (&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">z</span><span>&#39;) (mkStdGen </span><span style="color:#d08770;">3</span><span>) :: [</span><span style="color:#d08770;">Char</span><span>]  
+</span><span>&quot;</span><span style="color:#a3be8c;">ndkxbvmomg</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="getstdgen-i-o-action">getStdGen I/O action</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.Random  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    gen &lt;- getStdGen  
+</span><span>    putStr $ take </span><span style="color:#d08770;">20</span><span> (randomRs (&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">z</span><span>&#39;) gen)
+</span></code></pre>
+<hr />
+<h3 id="get-twice-is-the-same">Get twice is the same!</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.Random  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    gen &lt;- getStdGen  
+</span><span>    putStrLn $ take </span><span style="color:#d08770;">20</span><span> (randomRs (&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">z</span><span>&#39;) gen)  
+</span><span>    gen2 &lt;- getStdGen  
+</span><span>    putStr $ take </span><span style="color:#d08770;">20</span><span> (randomRs (&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">z</span><span>&#39;) gen2)
+</span><span>
+</span><span style="color:#b48ead;">import </span><span>System.Random  
+</span><span style="color:#b48ead;">import </span><span>Data.List  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    gen &lt;- getStdGen  
+</span><span>    </span><span style="color:#b48ead;">let</span><span> randomChars = randomRs (&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">z</span><span>&#39;) gen  
+</span><span>        (first20, rest) = splitAt </span><span style="color:#d08770;">20</span><span> randomChars  
+</span><span>        (second20, _) = splitAt </span><span style="color:#d08770;">20</span><span> rest  
+</span><span>    putStrLn first20  
+</span><span>    putStr second20
+</span></code></pre>
+<hr />
+<h3 id="newstdgen">newStdGen</h3>
+<ul>
+<li>Splits our current random generator into two generators</li>
+<li>The global one gets updated as well, getStdGen again will get different one</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.Random  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do     
+</span><span>    gen &lt;- getStdGen     
+</span><span>    putStrLn $ take </span><span style="color:#d08770;">20</span><span> (randomRs (&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">z</span><span>&#39;) gen)     
+</span><span>    gen&#39; &lt;- newStdGen  
+</span><span>    putStr $ take </span><span style="color:#d08770;">20</span><span> (randomRs (&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;,&#39;</span><span style="color:#a3be8c;">z</span><span>&#39;) gen&#39;)
+</span></code></pre>
+<hr />
+<h3 id="example-guess-the-number">Example: guess the number</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.Random  
+</span><span style="color:#b48ead;">import </span><span>Control.Monad(</span><span style="color:#8fa1b3;">when</span><span>)  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    gen &lt;- getStdGen  
+</span><span>    askForNumber gen  
+</span><span>  
+</span><span style="color:#8fa1b3;">askForNumber </span><span style="color:#b48ead;">:: StdGen -&gt; IO </span><span>()  
+</span><span>askForNumber gen = </span><span style="color:#b48ead;">do  
+</span><span>    </span><span style="color:#b48ead;">let</span><span> (randNumber, newGen) = randomR (</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">10</span><span>) gen :: (</span><span style="color:#d08770;">Int</span><span>, </span><span style="color:#d08770;">StdGen</span><span>)  
+</span><span>    putStr &quot;</span><span style="color:#a3be8c;">Which number in the range from 1 to 10 am I thinking of? </span><span>&quot;  
+</span><span>    numberString &lt;- getLine  
+</span><span>    when (not $ null numberString) $ </span><span style="color:#b48ead;">do  
+</span><span>        </span><span style="color:#b48ead;">let</span><span> number = read numberString  
+</span><span>        </span><span style="color:#b48ead;">if</span><span> randNumber == number   
+</span><span>            </span><span style="color:#b48ead;">then</span><span> putStrLn &quot;</span><span style="color:#a3be8c;">You are correct!</span><span>&quot;  
+</span><span>            </span><span style="color:#b48ead;">else</span><span> putStrLn $ &quot;</span><span style="color:#a3be8c;">Sorry, it was </span><span>&quot; ++ show randNumber  
+</span><span>        askForNumber newGen
+</span></code></pre>
+<hr />
+<h3 id="example-guess-the-number-1">Example: guess the number</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.Random  
+</span><span style="color:#b48ead;">import </span><span>Control.Monad(</span><span style="color:#8fa1b3;">when</span><span>)  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    gen &lt;- getStdGen  
+</span><span>    </span><span style="color:#b48ead;">let</span><span> (randNumber, _) = randomR (</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">10</span><span>) gen :: (</span><span style="color:#d08770;">Int</span><span>, </span><span style="color:#d08770;">StdGen</span><span>)     
+</span><span>    putStr &quot;</span><span style="color:#a3be8c;">Which number in the range from 1 to 10 am I thinking of? </span><span>&quot;  
+</span><span>    numberString &lt;- getLine  
+</span><span>    when (not $ null numberString) $ </span><span style="color:#b48ead;">do  
+</span><span>        </span><span style="color:#b48ead;">let</span><span> number = read numberString  
+</span><span>        </span><span style="color:#b48ead;">if</span><span> randNumber == number  
+</span><span>            </span><span style="color:#b48ead;">then</span><span> putStrLn &quot;</span><span style="color:#a3be8c;">You are correct!</span><span>&quot;  
+</span><span>            </span><span style="color:#b48ead;">else</span><span> putStrLn $ &quot;</span><span style="color:#a3be8c;">Sorry, it was </span><span>&quot; ++ show randNumber  
+</span><span>        newStdGen  
+</span><span>        main
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="bytestrings">Bytestrings</h2>
+<ul>
+<li>String is too lazy sometimes</li>
+<li>Bytestrings are sort of like lists, only each element is one byte (or 8 bits) in size.</li>
+</ul>
+<hr />
+<h3 id="data-bytestring">Data.ByteString</h3>
+<ul>
+<li>strict version</li>
+<li>no laziness</li>
+<li>a series of bytes in an array</li>
+<li>less overhead because there are no thunks (the technical term for promise) involved</li>
+<li>memory consumtion</li>
+</ul>
+<hr />
+<h3 id="data-bytestring-lazy">Data.ByteString.Lazy</h3>
+<ul>
+<li>lazy version</li>
+<li>there are as many thunks in a list as there are elements</li>
+<li>stored in chunks, each chunk has a size of 64K.</li>
+<li>fits neatly into CPU's L2 cache</li>
+<li>signature similar to List but:
+<ul>
+<li>ByteString instead of [a]</li>
+<li>Word8 instead of a</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="pack">pack</h3>
+<p>pack :: [Word8] -&gt; ByteString</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">B</span><span>.pack [</span><span style="color:#d08770;">99</span><span>,</span><span style="color:#d08770;">97</span><span>,</span><span style="color:#d08770;">110</span><span>]  
+</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">can</span><span>&quot; </span><span style="color:#d08770;">Empty  
+</span><span>ghci&gt; </span><span style="color:#d08770;">B</span><span>.pack [</span><span style="color:#d08770;">98</span><span>..</span><span style="color:#d08770;">120</span><span>]  
+</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">bcdefghijklmnopqrstuvwx</span><span>&quot; </span><span style="color:#d08770;">Empty
+</span></code></pre>
+<hr />
+<h3 id="unpack">unpack</h3>
+<p>It takes a bytestring and turns it into a list of bytes.</p>
+<hr />
+<h3 id="fromchunks-tochunks">fromChunks/toChunks</h3>
+<p>fromChunks takes a list of strict bytestrings and converts it to a lazy bytestring. toChunks takes a lazy bytestring and converts it to a list of strict ones.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">B</span><span>.fromChunks [</span><span style="color:#d08770;">S</span><span>.pack [</span><span style="color:#d08770;">40</span><span>,</span><span style="color:#d08770;">41</span><span>,</span><span style="color:#d08770;">42</span><span>], </span><span style="color:#d08770;">S</span><span>.pack [</span><span style="color:#d08770;">43</span><span>,</span><span style="color:#d08770;">44</span><span>,</span><span style="color:#d08770;">45</span><span>], </span><span style="color:#d08770;">S</span><span>.pack [</span><span style="color:#d08770;">46</span><span>,</span><span style="color:#d08770;">47</span><span>,</span><span style="color:#d08770;">48</span><span>]]  
+</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">()*</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">+,-</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">./0</span><span>&quot; </span><span style="color:#d08770;">Empty</span><span>))
+</span></code></pre>
+<hr />
+<h2 id="cons-cons-empty">cons/cons'/empty</h2>
+<ul>
+<li>The bytestring version of :</li>
+<li>Lazy/Strict version</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">B</span><span>.cons </span><span style="color:#d08770;">85 </span><span>$ </span><span style="color:#d08770;">B</span><span>.pack [</span><span style="color:#d08770;">80</span><span>,</span><span style="color:#d08770;">81</span><span>,</span><span style="color:#d08770;">82</span><span>,</span><span style="color:#d08770;">84</span><span>]  
+</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">U</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">PQRT</span><span>&quot; </span><span style="color:#d08770;">Empty</span><span>)  
+</span><span>ghci&gt; </span><span style="color:#d08770;">B</span><span>.cons&#39; </span><span style="color:#d08770;">85 </span><span>$ </span><span style="color:#d08770;">B</span><span>.pack [</span><span style="color:#d08770;">80</span><span>,</span><span style="color:#d08770;">81</span><span>,</span><span style="color:#d08770;">82</span><span>,</span><span style="color:#d08770;">84</span><span>]  
+</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">UPQRT</span><span>&quot; </span><span style="color:#d08770;">Empty  
+</span><span>ghci&gt; foldr </span><span style="color:#d08770;">B</span><span>.cons </span><span style="color:#d08770;">B</span><span>.empty [</span><span style="color:#d08770;">50</span><span>..</span><span style="color:#d08770;">60</span><span>]  
+</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">2</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">3</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">4</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">5</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">6</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">7</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">8</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">9</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">:</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">;</span><span>&quot; (</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">&lt;</span><span>&quot;  
+</span><span style="color:#d08770;">Empty</span><span>))))))))))  
+</span><span>ghci&gt; foldr </span><span style="color:#d08770;">B</span><span>.cons&#39; </span><span style="color:#d08770;">B</span><span>.empty [</span><span style="color:#d08770;">50</span><span>..</span><span style="color:#d08770;">60</span><span>]  
+</span><span style="color:#d08770;">Chunk </span><span>&quot;</span><span style="color:#a3be8c;">23456789:;&lt;</span><span>&quot; </span><span style="color:#d08770;">Empty
+</span></code></pre>
+<hr />
+<h3 id="analogous-to-data-list">analogous to Data.List</h3>
+<p>head, tail, init, null, length, map, reverse, foldl, foldr, concat, takeWhile, filter</p>
+<hr />
+<h3 id="analogous-to-system-io-system-directory">analogous to System.IO/System.Directory</h3>
+<p>readFile :: FilePath -&gt; IO ByteString</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.Environment  
+</span><span style="color:#b48ead;">import qualified </span><span>Data.ByteString.Lazy </span><span style="color:#b48ead;">as </span><span>B  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do  
+</span><span>    (fileName1:fileName2:_) &lt;- getArgs  
+</span><span>    copyFile fileName1 fileName2  
+</span><span>  
+</span><span style="color:#8fa1b3;">copyFile </span><span style="color:#b48ead;">:: FilePath -&gt; FilePath -&gt; IO </span><span>()  
+</span><span>copyFile source dest = </span><span style="color:#b48ead;">do  
+</span><span>    contents &lt;- </span><span style="color:#d08770;">B</span><span>.readFile source  
+</span><span>    </span><span style="color:#d08770;">B</span><span>.writeFile dest contents
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="exceptions">Exceptions</h2>
+<ul>
+<li>Take advantange on Maybe/Either in pure code!</li>
+<li>I/O code (i.e. impure code) can throw exceptions.</li>
+<li>Pure code can throw exceptions, but it they can only be caught in the I/O</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">4 </span><span style="color:#8fa1b3;">`</span><span>div</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">0  
+</span><span>*** </span><span style="color:#d08770;">Exception</span><span>: divide by zero  
+</span><span>ghci&gt; head </span><span style="color:#d08770;">[]  
+</span><span>*** </span><span style="color:#d08770;">Exception</span><span>: </span><span style="color:#d08770;">Prelude</span><span>.head: empty list
+</span></code></pre>
+<hr />
+<h3 id="doesfileexist">doesFileExist</h3>
+<p>doesFileExist :: FilePath -&gt; IO Bool</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.Environment  
+</span><span style="color:#b48ead;">import </span><span>System.IO  
+</span><span style="color:#b48ead;">import </span><span>System.Directory  
+</span><span>  
+</span><span>main = </span><span style="color:#b48ead;">do</span><span> (fileName:_) &lt;- getArgs  
+</span><span>          fileExists &lt;- doesFileExist fileName  
+</span><span>          </span><span style="color:#b48ead;">if</span><span> fileExists  
+</span><span>              </span><span style="color:#b48ead;">then do</span><span> contents &lt;- readFile fileName  
+</span><span>                      putStrLn $ &quot;</span><span style="color:#a3be8c;">The file has </span><span>&quot; ++ show (length (lines contents)) ++ &quot;</span><span style="color:#a3be8c;"> lines!</span><span>&quot;  
+</span><span>              </span><span style="color:#b48ead;">else do</span><span> putStrLn &quot;</span><span style="color:#a3be8c;">The file doesn&#39;t exist!</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="catch">catch</h3>
+<p>catch :: IO a -&gt; (IOError -&gt; IO a) -&gt; IO a</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import </span><span>System.Environment  
+</span><span style="color:#b48ead;">import </span><span>System.IO  
+</span><span style="color:#b48ead;">import </span><span>System.IO.Error  
+</span><span>  
+</span><span>main = toTry </span><span style="color:#8fa1b3;">`</span><span>catch</span><span style="color:#8fa1b3;">`</span><span> handler  
+</span><span>              
+</span><span style="color:#8fa1b3;">toTry </span><span style="color:#b48ead;">:: IO </span><span>()  
+</span><span>toTry = </span><span style="color:#b48ead;">do</span><span> (fileName:_) &lt;- getArgs  
+</span><span>           contents &lt;- readFile fileName  
+</span><span>           putStrLn $ &quot;</span><span style="color:#a3be8c;">The file has </span><span>&quot; ++ show (length (lines contents)) ++ &quot;</span><span style="color:#a3be8c;"> lines!</span><span>&quot;  
+</span><span>  
+</span><span style="color:#8fa1b3;">handler </span><span style="color:#b48ead;">:: IOError -&gt; IO </span><span>()  
+</span><span>handler e = putStrLn &quot;</span><span style="color:#a3be8c;">Whoops, had some trouble!</span><span>&quot;
+</span><span>
+</span><span>$ runhaskell count_lines.hs i_exist.txt  
+</span><span style="color:#d08770;">The</span><span> file has </span><span style="color:#d08770;">3</span><span> lines!  
+</span><span>  
+</span><span>$ runhaskell count_lines.hs i_dont_exist.txt  
+</span><span style="color:#d08770;">Whoops</span><span>, had some trouble!
+</span></code></pre>
+<hr />
+<h3 id="ioerror-isdoesnotexisterror">ioError/isDoesNotExistError</h3>
+<ul>
+<li>isDoesNotExistError :: IOError -&gt; Bool</li>
+<li>ioError :: IOException -&gt; IO a</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">handler </span><span style="color:#b48ead;">:: IOError -&gt; IO </span><span>()  
+</span><span>handler e  
+</span><span>    | isDoesNotExistError e = putStrLn &quot;</span><span style="color:#a3be8c;">The file doesn&#39;t exist!</span><span>&quot;  
+</span><span>    | otherwise = ioError e
+</span></code></pre>
+<hr />
+<h3 id="more-errors">More errors</h3>
+<ul>
+<li>isAlreadyExistsError</li>
+<li>isDoesNotExistError</li>
+<li>isAlreadyInUseError</li>
+<li>isFullError</li>
+<li>isEOFError</li>
+<li>isIllegalOperation</li>
+<li>isPermissionError</li>
+<li>isUserError: evaluates to True when we use the function userError:
+ioError $ userError &quot;remote computer unplugged!&quot;</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">handler </span><span style="color:#b48ead;">:: IOError -&gt; IO </span><span>()  
+</span><span>handler e  
+</span><span>    | isDoesNotExistError e = putStrLn &quot;</span><span style="color:#a3be8c;">The file doesn&#39;t exist!</span><span>&quot;  
+</span><span>    | isFullError e = freeSomeSpace  
+</span><span>    | isIllegalOperation e = notifyCops  
+</span><span>    | otherwise = ioError e
+</span></code></pre>
+<hr />
+<h3 id="ioe-functions">ioe-* functions</h3>
+<p>ioeGetFileName :: IOError -&gt; Maybe FilePath</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">handler </span><span style="color:#b48ead;">:: IOError -&gt; IO </span><span>()     
+</span><span>handler e     
+</span><span>    | isDoesNotExistError e =   
+</span><span>        </span><span style="color:#b48ead;">case</span><span> ioeGetFileName e </span><span style="color:#b48ead;">of </span><span style="color:#d08770;">Just</span><span> path -&gt; putStrLn $ &quot;</span><span style="color:#a3be8c;">Whoops! File does not exist at: </span><span>&quot; ++ path  
+</span><span>                                 </span><span style="color:#d08770;">Nothing </span><span>-&gt; putStrLn &quot;</span><span style="color:#a3be8c;">Whoops! File does not exist at unknown location!</span><span>&quot;  
+</span><span>    | otherwise = ioError e
+</span></code></pre>
+<hr />
+<h3 id="multiple-catch-handlers">multiple catch handlers</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>main = </span><span style="color:#b48ead;">do</span><span> toTry </span><span style="color:#8fa1b3;">`</span><span>catch</span><span style="color:#8fa1b3;">`</span><span> handler1  
+</span><span>          thenTryThis </span><span style="color:#8fa1b3;">`</span><span>catch</span><span style="color:#8fa1b3;">`</span><span> handler2  
+</span><span>          launchRockets
+</span></code></pre>
+<p>{{% /section %}}</p>
+
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-9">
+        
+        
+        
+
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+  
+  
+
+  
+  
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+  
+
+  
+  
+</body>
+
+</html>

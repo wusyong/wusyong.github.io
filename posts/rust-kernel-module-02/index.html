@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Rust Kernel Module: Character Device Driver
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Rust Kernel Module: Character Device Driver
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2022-05-25T12:04:23+08:00">May 25, 2022</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>12 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>2300 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>There's one kind of module called device driver which provides functionality for hardware like a serial port. On Unix, each piece of hardware is represented by a file located in <code>/dev</code> named a device file (or sometimes called device node) which provides the means to communicate with the hardware. Devices are divided into two types: character devices and block devices. Block devices are usually used for storage hardwares since have buffers to handle requests with different scenario. Character device, on the other hand, can accept any length of bytes as they like.</p>
+<h2 id="device-file-and-device-driver">Device File and Device Driver</h2>
+<p>In our simple initramfs, we can see our console device file is controlled by a character device:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#65737e;"># Add this line in the init script `qemu-init.sh` then run.
+</span><span style="color:#bf616a;">$</span><span> busybox ls</span><span style="color:#bf616a;"> -l</span><span> /dev/
+</span><span style="color:#bf616a;">crw-------</span><span> 1 0 0   5, 1 May 21 12:43 console
+</span></code></pre>
+<p>If it starts with <code>c</code> then it means character device. And if it's <code>b</code>, it would be block device. Notice there are two numbers separated by a comma. These are driver's major number and minor number. The major number is a unique number tells you which driver is used to access the hardware. If you see multiple device file with same major number, they are controlled by the same device driver. The minor number is used by the driver to distinguish between the various hardware it controls. Imagine there's a storage hardware might contain multiple partitions, so there might be multiple device files in <code>/dev</code> with same major number. The device driver will use minor number to distinguish different partitions.</p>
+<p>To create a device file, we can use <code>mknod</code> command to create the node. For example, <code>mknod /dev/covfefe c 12 2</code> will create your device file <code>dev/covfefe</code> as character device with major number 12 and minor number 2. And since we use <code>usr/gen_init_cpio</code> to generate our initramfs, it also supports creating nodes with <code>nod &lt;name&gt; &lt;mode&gt; &lt;uid&gt; &lt;gid&gt; &lt;dev_type&gt; &lt;maj&gt; &lt;min&gt;</code>. So if you want to create <code>console</code> statically, you can add the line like <code>nod /dev/console 0600 0 0 c 5 1</code>.</p>
+<p>While we can create device files from this for sure, this isn't the best way to do it because we might create files with conflicted major number accidentally. Kernel can create and generate major number dynamically nowadays. We could choose this approach instead. There are also another kind of module even suit for us. I will demonstrate it pretty soon along the way.</p>
+<h3 id="more-file-system-support">More File System Support</h3>
+<p>Before we proceed, I would like to introduce a few more file systems for us to mount. So we can interact to our character devices and get some more information about them. Let's add following configurations:</p>
+<ol>
+<li>Run <code>make menuconfig</code> and check these options:</li>
+</ol>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>$ Device Drivers -&gt; Generic Driver Options -&gt; Maintain a devtmpfs filesystem to mount at /dev
+</span><span>$ File Systems -&gt; Pseudo filesystems -&gt; /proc file system support
+</span><span>$ File Systems -&gt; Pseudo filesystems -&gt; /sysfs file system support
+</span></code></pre>
+<ol start="2">
+<li>In <code>qemu-initramfs.desc</code>, it should have these at least:</li>
+</ol>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>dir     /bin                                          0755 0 0
+</span><span>dir     /sys                                          0755 0 0
+</span><span>dir     /dev                                          0755 0 0
+</span><span>dir     /proc                                         0755 0 0
+</span><span>file    /bin/busybox  busybox                         0755 0 0
+</span><span>slink   /bin/sh       /bin/busybox                    0755 0 0
+</span><span>file    /init         .github/workflows/qemu-init.sh  0755 0 0
+</span><span>
+</span><span>file    /rust_chrdev.ko  samples/rust/rust_chrdev.ko  0755 0 0
+</span><span>file    /rust_miscdev.ko samples/rust/rust_miscdev.ko 0755 0 0
+</span><span># Other kernel modules...
+</span></code></pre>
+<ol start="2">
+<li>Update our <code>qemu-init.sh</code>. You can add whatever commands you want to add. Just don't <code>rmmod</code> modules we just list. To interact with our character devices, we need a shell with job control enabled. The last line in init script is usually used for <a href="https://wiki.gentoo.org/wiki/Custom_Initramfs#Rescue_shell">rescue shell</a>, but it also works perfectly in our case.  You can also unmount at the end of the script. But since we are not going to do anything afterwards, it's not really necessary.</li>
+</ol>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#65737e;">#!/bin/sh
+</span><span>
+</span><span style="color:#bf616a;">busybox</span><span> mount</span><span style="color:#bf616a;"> -t</span><span> devtmpfs none /dev
+</span><span style="color:#bf616a;">busybox</span><span> mount</span><span style="color:#bf616a;"> -t</span><span> proc none /proc
+</span><span style="color:#bf616a;">busybox</span><span> mount</span><span style="color:#bf616a;"> -t</span><span> sysfs none /sys
+</span><span style="color:#bf616a;">busybox</span><span> insmod rust_chrdev.ko 
+</span><span style="color:#bf616a;">busybox</span><span> insmod rust_miscdev.ko
+</span><span style="color:#bf616a;">busybox</span><span> insmod rust_semaphore.ko
+</span><span style="color:#bf616a;">busybox</span><span> setsid sh</span><span style="color:#bf616a;"> -c </span><span>&#39;</span><span style="color:#a3be8c;">exec sh -l &lt;/dev/ttyS0 &gt;/dev/ttyS0 2&gt;&amp;1</span><span>&#39;
+</span></code></pre>
+<p>Okay let's build the kernel and image again, run via qemu, and you should get the shell prompt. This time you should see devices created by <code>devtmpfs</code>, and it should also contain some we just installed:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">$</span><span> busybox ls</span><span style="color:#bf616a;"> -l</span><span> /dev
+</span><span style="color:#bf616a;">crw-------</span><span>    1 0 0   10, 126 May 21 15:59 rust_miscdev
+</span><span style="color:#bf616a;">crw-------</span><span>    1 0 0   10, 125 May 21 15:59 rust_semaphore
+</span><span style="color:#bf616a;">...
+</span></code></pre>
+<h2 id="device-registration-and-file-operations">Device Registration and file::Operations</h2>
+<p>Alright! Let's see how does the code work, starting with <code>rust_chrdev.rs</code>.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">struct </span><span>RustChrdev {
+</span><span>    </span><span style="color:#bf616a;">_dev</span><span>: Pin&lt;Box&lt;chrdev::Registration&lt;2&gt;&gt;&gt;,
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">impl </span><span>kernel::Module </span><span style="color:#b48ead;">for </span><span>RustChrdev {
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">init</span><span>(</span><span style="color:#bf616a;">name</span><span>: &amp;</span><span style="color:#b48ead;">&#39;static</span><span> CStr, </span><span style="color:#bf616a;">module</span><span>: &amp;</span><span style="color:#b48ead;">&#39;static</span><span> ThisModule) -&gt; Result&lt;</span><span style="color:#b48ead;">Self</span><span>&gt; {
+</span><span>        pr_info!(&quot;</span><span style="color:#a3be8c;">Rust character device sample (init)</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">let mut</span><span> chrdev_reg = chrdev::Registration::new_pinned(name, </span><span style="color:#d08770;">0</span><span>, module)?;
+</span><span>
+</span><span>        </span><span style="color:#65737e;">// Register the same kind of device twice, we&#39;re just demonstrating
+</span><span>        </span><span style="color:#65737e;">// that you can use multiple minors. There are two minors in this case
+</span><span>        </span><span style="color:#65737e;">// because its type is `chrdev::Registration&lt;2&gt;`
+</span><span>        chrdev_reg.</span><span style="color:#96b5b4;">as_mut</span><span>().register::&lt;RustFile&gt;()?;
+</span><span>        chrdev_reg.</span><span style="color:#96b5b4;">as_mut</span><span>().register::&lt;RustFile&gt;()?;
+</span><span>
+</span><span>        Ok(RustChrdev { _dev: chrdev_reg })
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>First we can notice the module declares a new field with type of pinned <code>chrdev::Registration</code>. We create the instance via <code>new_pinned</code> with arguments <code>name</code>, <code>module</code>, and a number <code>0</code> indicate the starting minor number. Don't worry about what's <code>Pin</code> for now. We will discuss it in the future post. To register a character device, we call <code>register</code> method. It accept any generic has the trait <code>file::Operations</code> which we will explain later. In this case, we define a <code>RustFile</code> for it. Notice we can register the same kind of device twice because our type uses const generic and its type is <code>chrdev::Registration&lt;2&gt;</code>. This matches what we just said above: a device driver can control multiple minors. Next, let's shift our focus to <code>RustFile</code>.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">struct </span><span>RustFile;
+</span><span>
+</span><span style="color:#b48ead;">impl </span><span>file::Operations </span><span style="color:#b48ead;">for </span><span>RustFile {
+</span><span>    kernel::declare_file_operations!();
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">open</span><span>(</span><span style="color:#bf616a;">_shared</span><span>: &amp;(), </span><span style="color:#bf616a;">_file</span><span>: &amp;file::File) -&gt; Result {
+</span><span>        Ok(())
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>As you can see it doesn't contain many things yet. But the <code>file::Operations</code> trait actually has more methods can implement, we just define an pretty empty one first. The whole trait definition looks like this:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">pub trait </span><span>Operations {
+</span><span>    </span><span style="color:#b48ead;">type </span><span>Data: PointerWrapper + Send + Sync = ();
+</span><span>    </span><span style="color:#b48ead;">type </span><span>OpenData: Sync = ();
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">const </span><span style="color:#d08770;">TO_USE</span><span>: ToUse;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">open</span><span>(</span><span style="color:#bf616a;">context</span><span>: &amp;</span><span style="color:#b48ead;">Self::</span><span>OpenData, </span><span style="color:#bf616a;">file</span><span>: &amp;File) -&gt; Result&lt;</span><span style="color:#b48ead;">Self::</span><span>Data&gt;;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">read</span><span>(
+</span><span>        </span><span style="color:#bf616a;">_data</span><span>: &lt;</span><span style="color:#b48ead;">Self::</span><span>Data as PointerWrapper&gt;::Borrowed, 
+</span><span>        </span><span style="color:#bf616a;">_file</span><span>: &amp;File, 
+</span><span>        </span><span style="color:#bf616a;">_writer</span><span>: &amp;</span><span style="color:#b48ead;">mut</span><span> impl IoBufferWriter, 
+</span><span>        </span><span style="color:#bf616a;">_offset</span><span>: </span><span style="color:#b48ead;">u64
+</span><span>    ) -&gt; Result&lt;</span><span style="color:#b48ead;">usize</span><span>&gt; { ... }
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">write</span><span>(
+</span><span>        </span><span style="color:#bf616a;">_data</span><span>: &lt;</span><span style="color:#b48ead;">Self::</span><span>Data as PointerWrapper&gt;::Borrowed, 
+</span><span>        </span><span style="color:#bf616a;">_file</span><span>: &amp;File, 
+</span><span>        </span><span style="color:#bf616a;">_reader</span><span>: &amp;</span><span style="color:#b48ead;">mut</span><span> impl IoBufferReader, 
+</span><span>        </span><span style="color:#bf616a;">_offset</span><span>: </span><span style="color:#b48ead;">u64
+</span><span>    ) -&gt; Result&lt;</span><span style="color:#b48ead;">usize</span><span>&gt; { ... }
+</span><span>    </span><span style="color:#65737e;">//...
+</span><span>}
+</span></code></pre>
+<p>All methods except <code>open</code> have default implementation which just returns <code>EINVAL</code> invalid argument signal. So types implement <code>file::Operations</code> trait must define <code>open</code> at least. The trait has two associated types <code>OpenData</code> and <code>Data</code>. <code>OpenData</code> is used for <code>open</code> method, it's passed as an argument when we call <code>register</code>. And <code>Data</code> is returned by <code>open</code> method and made available to other methods. Since we haven't done anything yet, they are both <code>()</code> for now and Rust can derive them automatically so we don't need to specify them explicitly.</p>
+<p>Last, we have macro <code>kernel::declare_file_operations!()</code> to help generating <code>TO_USE</code> constant. It's a list of bool to decide which methods will be used as callbacks in the end. In our example, we do nothing for now, so all methods except <code>open</code> will be None (and hence be NULL in <code>files_operation</code> bindings.)</p>
+<h3 id="miscellaneous-device-driver">Miscellaneous Device Driver</h3>
+<p>We discussed that it's not safe to assign a major number to create device file manually. And when we called <code>register method</code>, it pass <code>0</code> under the hood which will let kernel dynamically allocate the major number. The newly registered device will have an entry in <code>/proc/devices</code>. We can see the major number by command <code>busybox more /proc/devices</code>. To make the device file, we can either call <code>mknod</code> command or use <code>device_create</code> function in C FFI manner. But we also have another choice which can create the device node when we just call <code>register</code>. It is called Miscellaneous Character Drivers.</p>
+<p>Miscellaneous character drivers (short for <code>miscdev</code>) is a subset of character drivers which different drivers will all share the same major number and make minor numbers as their identifier. This is pretty useful when your driver only controls one device, because it will save all the unnecessary minor space. Running <code>busybox more /proc/misc</code> will show all miscdev's minor numbers. What's really convenient is when a miscdev is registered, kernel will create a device node under <code>/dev</code> right away. This suits us pretty well for our upcoming examples. So let's update our chrdev sample to become a miscdev and find how to interact with it! We'll create a module that can show some strings when it's being opened and read, such as <code>cat /dev/rust_chrdev</code>. </p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#65737e;">// Update your imports to these
+</span><span style="color:#b48ead;">use </span><span>core::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+</span><span style="color:#b48ead;">use </span><span>kernel::io_buffer::*;
+</span><span style="color:#b48ead;">use </span><span>kernel::prelude::*;
+</span><span style="color:#b48ead;">use </span><span>kernel::str::CString;
+</span><span style="color:#b48ead;">use </span><span>kernel::sync::{Ref, RefBorrow};
+</span><span style="color:#b48ead;">use </span><span>kernel::{file, miscdev};
+</span><span>
+</span><span>
+</span><span style="color:#b48ead;">struct </span><span>SharedState {
+</span><span>    </span><span style="color:#bf616a;">already_opened</span><span>: AtomicBool,
+</span><span>    </span><span style="color:#bf616a;">count</span><span>: AtomicU64,
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">struct </span><span>RustChrdev {
+</span><span>    </span><span style="color:#bf616a;">_dev</span><span>: Pin&lt;Box&lt;miscdev::Registration&lt;RustFile&gt;&gt;&gt;,
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">impl </span><span>kernel::Module </span><span style="color:#b48ead;">for </span><span>RustChrdev {
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">init</span><span>(</span><span style="color:#bf616a;">name</span><span>: &amp;</span><span style="color:#b48ead;">&#39;static</span><span> CStr, </span><span style="color:#bf616a;">_module</span><span>: &amp;</span><span style="color:#b48ead;">&#39;static</span><span> ThisModule) -&gt; Result&lt;</span><span style="color:#b48ead;">Self</span><span>&gt; {
+</span><span>        pr_info!(&quot;</span><span style="color:#a3be8c;">Rust character device sample (init)</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">let</span><span> state = Ref::try_new(SharedState {
+</span><span>            already_opened: AtomicBool::new(</span><span style="color:#d08770;">false</span><span>),
+</span><span>            count: AtomicU64::new(</span><span style="color:#d08770;">0</span><span>),
+</span><span>        })?;
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">let</span><span> miscdev_reg = miscdev::Registration::new_pinned(fmt!(&quot;</span><span style="color:#a3be8c;">{name}</span><span>&quot;), state)?;
+</span><span>
+</span><span>        Ok(RustChrdev { _dev: miscdev_reg })
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>You will notice a few signatures have been changed but their types should still be similar. We now declare the module with <code>miscdev::Registration</code> and it accepts just a generic that has <code>file::Operations</code> trait instead. Parameters of <code>new_pinned</code> is also a little bit different because <code>miscdev</code> can take an argument for <code>OpenData</code>. This time we actually want to pass some thing for our driver. So we declare a new type <code>SharedState</code> which contains a few atomic types. Notice we also create the instance with <code>Ref</code> type. This is the reference counted pointer <code>refcount_t</code> in kernel which serve the same purpose as <code>Arc</code> in rust <code>std</code>.</p>
+<p>In the multiple-threaded environment, without any protection, concurrent access to the same memory may lead to the race condition, and will not preserve the performance. In the kernel module, this problem may happen due to multiple instances accessing the shared resources. Fortunately, <code>OpenData</code> and <code>Data</code> in <code>file::Operations</code> are passed as immutable reference. You can't modify it unless you define with types that promise synchronization. We will introduce other concurrency primitives in later posts. For now, let's just use reference count with atomic combination to let processor handle for you. Now let's update our <code>RustFile</code> as well to see how it utilize <code>SharedState</code>:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">struct </span><span>RustFile;
+</span><span>
+</span><span style="color:#b48ead;">impl </span><span>file::Operations </span><span style="color:#b48ead;">for </span><span>RustFile {
+</span><span>    </span><span style="color:#b48ead;">type </span><span>OpenData = Ref&lt;SharedState&gt;;
+</span><span>    </span><span style="color:#b48ead;">type </span><span>Data = Ref&lt;SharedState&gt;;
+</span><span>    kernel::declare_file_operations!(read, write);
+</span><span>
+</span><span>    </span><span style="color:#65737e;">/// Called when a process tries to open the device file, such as `cat /dev/rust_chrdev`.
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">open</span><span>(</span><span style="color:#bf616a;">shared</span><span>: &amp;Ref&lt;SharedState&gt;, _: &amp;file::File) -&gt; Result&lt;Ref&lt;SharedState&gt;&gt; {
+</span><span>        </span><span style="color:#b48ead;">if</span><span> shared
+</span><span>            .already_opened
+</span><span>            .</span><span style="color:#96b5b4;">compare_exchange</span><span>(</span><span style="color:#d08770;">false</span><span>, </span><span style="color:#d08770;">true</span><span>, Ordering::Acquire, Ordering::Relaxed)
+</span><span>            .</span><span style="color:#96b5b4;">is_ok</span><span>()
+</span><span>        {
+</span><span>            shared.count.</span><span style="color:#96b5b4;">fetch_add</span><span>(</span><span style="color:#d08770;">1</span><span>, Ordering::AcqRel);
+</span><span>            Ok(shared.</span><span style="color:#96b5b4;">clone</span><span>())
+</span><span>        } </span><span style="color:#b48ead;">else </span><span>{
+</span><span>            Err(</span><span style="color:#d08770;">EBUSY</span><span>)
+</span><span>        }
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#65737e;">/// Called when a process closes the device file.
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">release</span><span>(</span><span style="color:#bf616a;">shared</span><span>: Ref&lt;SharedState&gt;, _: &amp;file::File) {
+</span><span>        shared.already_opened.</span><span style="color:#96b5b4;">store</span><span>(</span><span style="color:#d08770;">false</span><span>, Ordering::Release);
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#65737e;">/// Called when a process, which already opened the dev file, attempts to read from it.
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">read</span><span>(
+</span><span>        </span><span style="color:#bf616a;">shared</span><span>: RefBorrow&lt;&#39;_, SharedState&gt;,
+</span><span>        _: &amp;file::File,
+</span><span>        </span><span style="color:#bf616a;">data</span><span>: &amp;</span><span style="color:#b48ead;">mut</span><span> impl IoBufferWriter,
+</span><span>        </span><span style="color:#bf616a;">offset</span><span>: </span><span style="color:#b48ead;">u64</span><span>,
+</span><span>    ) -&gt; Result&lt;</span><span style="color:#b48ead;">usize</span><span>&gt; {
+</span><span>        </span><span style="color:#65737e;">// Succeed if the caller doesn&#39;t provide a buffer or if not at the start.
+</span><span>        </span><span style="color:#b48ead;">if</span><span> data.</span><span style="color:#96b5b4;">is_empty</span><span>() || offset != </span><span style="color:#d08770;">0 </span><span>{
+</span><span>            </span><span style="color:#b48ead;">return </span><span>Ok(</span><span style="color:#d08770;">0</span><span>);
+</span><span>        }
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">let</span><span> msg = CString::try_from_fmt(fmt!(
+</span><span>            &quot;</span><span style="color:#a3be8c;">This is my {} times saying Hello World!</span><span style="color:#96b5b4;">\n</span><span>&quot;,
+</span><span>            shared.count.</span><span style="color:#96b5b4;">load</span><span>(Ordering::Acquire)
+</span><span>        ))?;
+</span><span>        
+</span><span>        </span><span style="color:#65737e;">// Put the message to the buffer
+</span><span>        data.</span><span style="color:#96b5b4;">write_slice</span><span>(msg.</span><span style="color:#96b5b4;">as_bytes</span><span>())?;
+</span><span>        </span><span style="color:#65737e;">// Most read functions return the number of bytes put into the buffer.
+</span><span>        Ok(msg.</span><span style="color:#96b5b4;">len</span><span>())
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#65737e;">/// Called when a process writes to dev file, such as `echo &quot;hi&quot; &gt; /dev/hello`
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">write</span><span>(
+</span><span>        _: RefBorrow&lt;&#39;_, SharedState&gt;,
+</span><span>        _: &amp;file::File,
+</span><span>        _: &amp;</span><span style="color:#b48ead;">mut</span><span> impl IoBufferReader,
+</span><span>        _: </span><span style="color:#b48ead;">u64</span><span>,
+</span><span>    ) -&gt; Result&lt;</span><span style="color:#b48ead;">usize</span><span>&gt; {
+</span><span>        pr_alert!(&quot;</span><span style="color:#a3be8c;">Sorry, this operation is not supported.</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>        Err(</span><span style="color:#d08770;">EINVAL</span><span>)
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>We need to declare the type of <code>Data</code> and <code>OpenData</code> since we now want to share some states. They can be different types, but it doesn't need to in this case. In this example we use <code>already_opened</code> field which is a <code>AtomicBool</code> to determine whether the file is currently opened by someone or not and then add the counter.</p>
+<p>This time we also have more operation methods, so we need to add them into <code>declare_file_operations!</code> macro. Usually the only required methods are <code>open</code> and <code>release</code>, so what we only need to list in the macro would be <code>read</code> and <code>write</code>. In <code>read</code> method, you can see how to create a message and put into buffer. While we don't do anything in <code>write</code> method, we still add this to demonstrate how to catch these attempts and tell the user that the operation is not supported.</p>
+<p>Build and run the kernel again and you should find there's a device file <code>rust_chardev</code> under <code>/dev</code> and see how many times &quot;Hello World&quot; are being called via <code>busybox cat /dev/rust_chrdev</code>. Running command <code>busybox more /proc/misc</code> will show that is now a miscdev and you can get its minor number.</p>
+<h3 id="device-unregistration">Device Unregistration</h3>
+<p>Last we need to talk about unregistration. We can not allow <code>rmmod</code> to remove the kernel module that is being used. When you call <code>cat /proc/modules</code> or <code>lsmod</code>, the third field is the counter of how many processes are using that module. It's increase when <code>open</code> is called and decrease when <code>release</code>. The check is performed by system call <code>sys_delete_module</code>. </p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Congratulations! Your kernel module start doing something. While it's not pretty meaningful, it will get more and more powerful as we add more types and functions into our tool belt. Next will be concurrency primitives like Mutex lock. But before we explore them, we will have to figure out why some types must be pinned.</p>
+<h2 id="reference">Reference</h2>
+<p><a href="https://sysprog21.github.io/lkmpg/#character-device-drivers">The Linux Kernel Module Programming Guide: Character Device drivers</a></p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;rust-kernel-module-01&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Rust Kernel Module: Hello World
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;rust-kernel-module-03&#x2F;">
+              Rust Kernel Module: Pinning<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>
