@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Higher Order Functions
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h1 class="title is-2">Higher Order Functions</h1>
+      <p class="subtitle is-4"></p>
+    </div>
+    <div class="content">
+      <style>
+.textleft {
+  text-align:left;
+}
+.reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+font-family:Arial, Microsoft JhengHei;}
+.reveal .progress {
+    height: 14px !important;
+}
+.progress span {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAMCAIAAAAs6UAAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QUNCQzIyREQ0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QUNCQzIyREU0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpBQ0JDMjJEQjRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpBQ0JDMjJEQzRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PovDFgYAAAAmSURBVHjaYvjPwMAAxjMZmBhA9H8INv4P4TPM/A+m04zBNECAAQBCWQv9SUQpVgAAAABJRU5ErkJggg==) repeat-x !important;
+}
+.progress span:after, .progress span.nyancat {
+    content: "";
+    background: url(data:image/gif;base64,R0lGODlhIgAVAKIHAL3/9/+Zmf8zmf/MmZmZmf+Z/wAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpDMkJBNjY5RTU1NEJFMzExOUM4QUM2MDAwNDQzRERBQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCREIzOEIzMzRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCREIzOEIzMjRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkM1QkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkMyQkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8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) ;
+    width: 34px !important;
+    height: 21px !important;
+    border: none !important;
+    float: right;
+    margin-top: -7px;
+    margin-right: -10px;
+}
+.my-icon-css {
+  width: 100%;
+  height: 200px;
+  background-position:center;
+  background-repeat: no-repeat;
+  background-image:url('https://mir-s3-cdn-cf.behance.net/project_modules/disp/fe36cc42774743.57ee5f329fae6.gif');
+}
+</style>
+<p>{{% section %}}</p>
+<h2 id="higher-order-functions">Higher Order Functions</h2>
+<h4 id="wusyong-wu-yu-wei">@wusyong, 吳昱緯</h4>
+<hr />
+<h3 id="higher-order-functions-has-at-least-one-of">Higher order functions has at least one of...</h3>
+<ul>
+<li>takes one or more functions as arguments</li>
+<li>returns a function as its result</li>
+</ul>
+<p>Higher order functions are indispensable if we want to define computations by defining what stuff is instead of defining steps that change some state and maybe looping them</p>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="curried-functions">Curried functions</h2>
+<ul>
+<li>Every function in Haskell officially only takes one parameter.</li>
+<li>All the functions that accepted several parameters so far have been <strong>curried functions</strong>.</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; max </span><span style="color:#d08770;">4 5  
+</span><span style="color:#d08770;">5  
+</span><span>ghci&gt; (max </span><span style="color:#d08770;">4</span><span>) </span><span style="color:#d08770;">5  
+</span><span style="color:#d08770;">5  
+</span></code></pre>
+<hr />
+<h3 id="function-application">Function Application</h3>
+<ul>
+<li><code>max :: (Ord a) =&gt; a -&gt; a -&gt; a</code> == <code>max :: (Ord a) =&gt; a -&gt; (a -&gt; a)</code></li>
+<li>max takes an a and returns a function that takes an a and returns an a</li>
+</ul>
+<hr />
+<h3 id="partially-applied-function">Partially Applied Function</h3>
+<p>Partial application (calling functions with too few parameters) is a neat way to create functions on the fly.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">multThree </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>multThree x y z = x * y * z  
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> multTwoWithNine = multThree </span><span style="color:#d08770;">9  
+</span><span>ghci&gt; multTwoWithNine </span><span style="color:#d08770;">2 3  
+</span><span style="color:#d08770;">54  
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> multWithEighteen = multTwoWithNine </span><span style="color:#d08770;">2  
+</span><span>ghci&gt; multWithEighteen </span><span style="color:#d08770;">10  
+</span><span style="color:#d08770;">180  
+</span></code></pre>
+<hr />
+<h3 id="partially-applied-function-1">Partially Applied Function</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">compareWithHundred </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">a</span><span>, </span><span style="color:#b48ead;">Ord </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Ordering  
+</span><span>compareWithHundred x = compare </span><span style="color:#d08770;">100</span><span> x  
+</span></code></pre>
+<p>While <code>compare</code> has type of <code>(Ord a) =&gt; a -&gt; (a -&gt; Ordering)</code></p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">compareWithHundred </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">a</span><span>, </span><span style="color:#b48ead;">Ord </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Ordering  
+</span><span>compareWithHundred = compare </span><span style="color:#d08770;">100  
+</span></code></pre>
+<hr />
+<h3 id="infix-functions-work-too">Infix functions work too</h3>
+<p>To section an infix function, simply surround it with parentheses and only supply a parameter on one side.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">divideByTen </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Floating </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>divideByTen = (/</span><span style="color:#d08770;">10</span><span>)
+</span><span>
+</span><span style="color:#8fa1b3;">isUpperAlphanum </span><span style="color:#b48ead;">:: Char -&gt; Bool  
+</span><span>isUpperAlphanum = (</span><span style="color:#8fa1b3;">`</span><span>elem</span><span style="color:#8fa1b3;">`</span><span> [&#39;</span><span style="color:#a3be8c;">A</span><span>&#39;..&#39;</span><span style="color:#a3be8c;">Z</span><span>&#39;])
+</span></code></pre>
+<p>(-4) means minus 4 for convenience. Use (subtract 4) for infix section instead.</p>
+<hr />
+<h3 id="without-let-to-bind-the-name">Without let to bind the name</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; multThree </span><span style="color:#d08770;">3 4  
+</span><span>&lt;interactive&gt;:</span><span style="color:#d08770;">1</span><span>:</span><span style="color:#d08770;">0</span><span>:  
+</span><span>    </span><span style="color:#d08770;">No </span><span style="color:#b48ead;">instance </span><span style="color:#bf616a;">for</span><span> (</span><span style="color:#b48ead;">Show</span><span> (</span><span style="color:#bf616a;">t </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">t</span><span>))  
+</span><span>        arising from a use </span><span style="color:#b48ead;">of</span><span> `print&#39; at &lt;interactive&gt;:</span><span style="color:#d08770;">1</span><span>:</span><span style="color:#d08770;">0</span><span>-</span><span style="color:#d08770;">12  
+</span><span>    </span><span style="color:#d08770;">Possible</span><span> fix: add an </span><span style="color:#b48ead;">instance </span><span style="color:#bf616a;">declaration for</span><span> (</span><span style="color:#b48ead;">Show</span><span> (</span><span style="color:#bf616a;">t </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">t</span><span>))  
+</span><span>    </span><span style="color:#d08770;">In</span><span> the expression: print it  
+</span><span>    </span><span style="color:#d08770;">In</span><span> a &#39;</span><span style="color:#b48ead;">do</span><span>&#39; expression: print it  
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="some-higher-orderism-is-in-order">Some higher-orderism is in order</h2>
+<p>Functions can take functions as parameters and also return functions. </p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">applyTwice </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>applyTwice f x = f (f x)
+</span></code></pre>
+<p>Parentheses is now madatory here since they indicate first parameter is a function.</p>
+<hr />
+<h3 id="applytwice">applyTwice</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; applyTwice (+</span><span style="color:#d08770;">3</span><span>) </span><span style="color:#d08770;">10  
+</span><span style="color:#d08770;">16  
+</span><span>ghci&gt; applyTwice (++ &quot;</span><span style="color:#a3be8c;"> HAHA</span><span>&quot;) &quot;</span><span style="color:#a3be8c;">HEY</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">HEY HAHA HAHA</span><span>&quot;  
+</span><span>ghci&gt; applyTwice (&quot;</span><span style="color:#a3be8c;">HAHA </span><span>&quot; ++) &quot;</span><span style="color:#a3be8c;">HEY</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">HAHA HAHA HEY</span><span>&quot;  
+</span><span>ghci&gt; applyTwice (multThree </span><span style="color:#d08770;">2 2</span><span>) </span><span style="color:#d08770;">9  
+</span><span style="color:#d08770;">144  
+</span><span>ghci&gt; applyTwice (</span><span style="color:#d08770;">3</span><span>:) [</span><span style="color:#d08770;">1</span><span>]  
+</span><span>[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">1</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="zipwith">zipWith</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">zipWith&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">c</span><span>) </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">b</span><span>] </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">c</span><span>]  
+</span><span>zipWith&#39; _ </span><span style="color:#d08770;">[]</span><span> _ = </span><span style="color:#d08770;">[]  
+</span><span>zipWith&#39; _ _ </span><span style="color:#d08770;">[] </span><span>= </span><span style="color:#d08770;">[]  
+</span><span>zipWith&#39; f (x:xs) (y:ys) = f x y : zipWith&#39; f xs ys 
+</span><span>
+</span><span>ghci&gt; zipWith&#39; </span><span style="color:#8fa1b3;">(+)</span><span> [</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>] [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]  
+</span><span>[</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">9</span><span>]  
+</span><span>ghci&gt; zipWith&#39; max [</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>] [</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">5</span><span>]  
+</span><span>[</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>]  
+</span><span>ghci&gt; zipWith&#39; </span><span style="color:#8fa1b3;">(++)</span><span> [&quot;</span><span style="color:#a3be8c;">foo </span><span>&quot;, &quot;</span><span style="color:#a3be8c;">bar </span><span>&quot;, &quot;</span><span style="color:#a3be8c;">baz </span><span>&quot;] [&quot;</span><span style="color:#a3be8c;">fighters</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">hoppers</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">aldrin</span><span>&quot;]  
+</span><span>[&quot;</span><span style="color:#a3be8c;">foo fighters</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">bar hoppers</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">baz aldrin</span><span>&quot;]  
+</span><span>ghci&gt; zipWith&#39; </span><span style="color:#8fa1b3;">(*)</span><span> (replicate </span><span style="color:#d08770;">5 2</span><span>) [</span><span style="color:#d08770;">1</span><span>..]  
+</span><span>[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">10</span><span>]  
+</span><span>ghci&gt; zipWith&#39; (zipWith&#39; </span><span style="color:#8fa1b3;">(*)</span><span>) [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>]] [[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>]]  
+</span><span>[[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">20</span><span>,</span><span style="color:#d08770;">30</span><span>],[</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">12</span><span>,</span><span style="color:#d08770;">12</span><span>]] 
+</span></code></pre>
+<hr />
+<h3 id="flip">flip</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">flip&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">c</span><span>) </span><span style="color:#b48ead;">-&gt;</span><span> (</span><span style="color:#bf616a;">b </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">c</span><span>)  
+</span><span>flip&#39; f = g  
+</span><span>    </span><span style="color:#b48ead;">where</span><span> g x y = f y x  
+</span></code></pre>
+<p>But -&gt; is right associative by default.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">flip&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">c</span><span>) </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">c  
+</span><span>flip&#39; f y x = f x y
+</span><span>
+</span><span>ghci&gt; flip&#39; zip [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>] &quot;</span><span style="color:#a3be8c;">hello</span><span>&quot;  
+</span><span>[(&#39;</span><span style="color:#a3be8c;">h</span><span>&#39;,</span><span style="color:#d08770;">1</span><span>),(&#39;</span><span style="color:#a3be8c;">e</span><span>&#39;,</span><span style="color:#d08770;">2</span><span>),(&#39;</span><span style="color:#a3be8c;">l</span><span>&#39;,</span><span style="color:#d08770;">3</span><span>),(&#39;</span><span style="color:#a3be8c;">l</span><span>&#39;,</span><span style="color:#d08770;">4</span><span>),(&#39;</span><span style="color:#a3be8c;">o</span><span>&#39;,</span><span style="color:#d08770;">5</span><span>)]  
+</span><span>ghci&gt; zipWith (flip&#39; div) [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>..] [</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>]  
+</span><span>[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>] 
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="maps-and-filters">Maps and filters</h2>
+<hr />
+<h3 id="map">map</h3>
+<p>map takes a function and a list and applies that function to every element in the list, producing a new list.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">map </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">b</span><span>]  
+</span><span>map _ </span><span style="color:#d08770;">[] </span><span>= </span><span style="color:#d08770;">[]  
+</span><span>map f (x:xs) = f x : map f xs 
+</span><span>
+</span><span>ghci&gt; map (+</span><span style="color:#d08770;">3</span><span>) [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span>[</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">9</span><span>]  
+</span><span>ghci&gt; map (++ &quot;</span><span style="color:#a3be8c;">!</span><span>&quot;) [&quot;</span><span style="color:#a3be8c;">BIFF</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">BANG</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">POW</span><span>&quot;]  
+</span><span>[&quot;</span><span style="color:#a3be8c;">BIFF!</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">BANG!</span><span>&quot;,&quot;</span><span style="color:#a3be8c;">POW!</span><span>&quot;]  
+</span><span>ghci&gt; map (replicate </span><span style="color:#d08770;">3</span><span>) [</span><span style="color:#d08770;">3</span><span>..</span><span style="color:#d08770;">6</span><span>]  
+</span><span>[[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">6</span><span>]]  
+</span><span>ghci&gt; map (map (^</span><span style="color:#d08770;">2</span><span>)) [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">8</span><span>]]  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">4</span><span>],[</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">25</span><span>,</span><span style="color:#d08770;">36</span><span>],[</span><span style="color:#d08770;">49</span><span>,</span><span style="color:#d08770;">64</span><span>]]  
+</span><span>ghci&gt; map fst [(</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>),(</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>),(</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">3</span><span>),(</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">6</span><span>),(</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>)]  
+</span><span>[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>] 
+</span></code></pre>
+<hr />
+<h3 id="filter">filter</h3>
+<p>filter is a function that takes a predicate and a list and then returns the list of elements that satisfy the predicate.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">filter </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Bool</span><span>) </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>]  
+</span><span>filter _ </span><span style="color:#d08770;">[] </span><span>= </span><span style="color:#d08770;">[]  
+</span><span>filter p (x:xs)   
+</span><span>    | p x       = x : filter p xs  
+</span><span>    | otherwise = filter p xs
+</span><span>
+</span><span>ghci&gt; filter (&gt;</span><span style="color:#d08770;">3</span><span>) [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>[</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">4</span><span>]  
+</span><span>ghci&gt; filter (==</span><span style="color:#d08770;">3</span><span>) [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>]  
+</span><span>[</span><span style="color:#d08770;">3</span><span>]  
+</span><span>ghci&gt; filter even [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">10</span><span>]  
+</span><span>[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">10</span><span>]  
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> notNull x = not (null x) </span><span style="color:#b48ead;">in</span><span> filter notNull [[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>],</span><span style="color:#d08770;">[]</span><span>,[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>],</span><span style="color:#d08770;">[]</span><span>,</span><span style="color:#d08770;">[]</span><span>,</span><span style="color:#d08770;">[]</span><span>]  
+</span><span>[[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">2</span><span>]]  
+</span><span>ghci&gt; filter (</span><span style="color:#8fa1b3;">`</span><span>elem</span><span style="color:#8fa1b3;">`</span><span> [&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;..&#39;</span><span style="color:#a3be8c;">z</span><span>&#39;]) &quot;</span><span style="color:#a3be8c;">u LaUgH aT mE BeCaUsE I aM diFfeRent</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">uagameasadifeent</span><span>&quot;  
+</span><span>ghci&gt; filter (</span><span style="color:#8fa1b3;">`</span><span>elem</span><span style="color:#8fa1b3;">`</span><span> [&#39;</span><span style="color:#a3be8c;">A</span><span>&#39;..&#39;</span><span style="color:#a3be8c;">Z</span><span>&#39;]) &quot;</span><span style="color:#a3be8c;">i lauGh At You BecAuse u r aLL the Same</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">GAYBALLS</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="quick-sort-with-filter">Quick sort with filter</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">quicksort </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Ord </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>]    
+</span><span>quicksort </span><span style="color:#d08770;">[] </span><span>= </span><span style="color:#d08770;">[]    
+</span><span>quicksort (x:xs) =     
+</span><span>    </span><span style="color:#b48ead;">let</span><span> smallerSorted = quicksort (filter (&lt;=x) xs)  
+</span><span>        biggerSorted = quicksort (filter (&gt;x) xs)   
+</span><span>    </span><span style="color:#b48ead;">in</span><span>  smallerSorted ++ [x] ++ biggerSorted
+</span></code></pre>
+<hr />
+<h3 id="largestdivisible">largestDivisible</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">largestDivisible </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Integral </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a  
+</span><span>largestDivisible = head (filter p [</span><span style="color:#d08770;">100000</span><span>,</span><span style="color:#d08770;">99999</span><span>..])  
+</span><span>    </span><span style="color:#b48ead;">where</span><span> p x = x </span><span style="color:#8fa1b3;">`</span><span>mod</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">3829 </span><span>== </span><span style="color:#d08770;">0
+</span></code></pre>
+<hr />
+<h3 id="takewhile">takeWhile</h3>
+<p>takeWhile takes a predicate and a list and then goes from the beginning of the list and returns its elements while the predicate holds true. Becasue of Haskell's property of laziness, list won't actually map and filter it right away. takeWhile forces the filtering and mapping to occur.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; sum (takeWhile (&lt;</span><span style="color:#d08770;">10000</span><span>) (filter odd (map (^</span><span style="color:#d08770;">2</span><span>) [</span><span style="color:#d08770;">1</span><span>..]))) 
+</span><span>ghci&gt; sum (takeWhile (&lt;</span><span style="color:#d08770;">10000</span><span>) [n^</span><span style="color:#d08770;">2 </span><span>| n &lt;- [</span><span style="color:#d08770;">1</span><span>..], odd (n^</span><span style="color:#d08770;">2</span><span>)])  
+</span><span style="color:#d08770;">166650
+</span></code></pre>
+<hr />
+<h3 id="collatz-sequences">Collatz sequences</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">chain </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Integral </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>]  
+</span><span>chain </span><span style="color:#d08770;">1 </span><span>= [</span><span style="color:#d08770;">1</span><span>]  
+</span><span>chain n  
+</span><span>    | even n =  n:chain (n </span><span style="color:#8fa1b3;">`</span><span>div</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">2</span><span>)  
+</span><span>    | odd n  =  n:chain (n*</span><span style="color:#d08770;">3 </span><span>+ </span><span style="color:#d08770;">1</span><span>)
+</span><span>
+</span><span>ghci&gt; chain </span><span style="color:#d08770;">10  
+</span><span>[</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>ghci&gt; chain </span><span style="color:#d08770;">1  
+</span><span>[</span><span style="color:#d08770;">1</span><span>]  
+</span><span>ghci&gt; chain </span><span style="color:#d08770;">30  
+</span><span>[</span><span style="color:#d08770;">30</span><span>,</span><span style="color:#d08770;">15</span><span>,</span><span style="color:#d08770;">46</span><span>,</span><span style="color:#d08770;">23</span><span>,</span><span style="color:#d08770;">70</span><span>,</span><span style="color:#d08770;">35</span><span>,</span><span style="color:#d08770;">106</span><span>,</span><span style="color:#d08770;">53</span><span>,</span><span style="color:#d08770;">160</span><span>,</span><span style="color:#d08770;">80</span><span>,</span><span style="color:#d08770;">40</span><span>,</span><span style="color:#d08770;">20</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">16</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="collatz-sequences-1">Collatz sequences</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">numLongChains </span><span style="color:#b48ead;">:: Int  
+</span><span>numLongChains = length (filter isLong (map chain [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">100</span><span>]))  
+</span><span>    </span><span style="color:#b48ead;">where</span><span> isLong xs = length xs &gt; </span><span style="color:#d08770;">15
+</span></code></pre>
+<hr />
+<h3 id="let-s-used-in-partially-applied-functions">Let's used in partially applied functions</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> listOfFuns = map </span><span style="color:#8fa1b3;">(*)</span><span> [</span><span style="color:#d08770;">0</span><span>..]  
+</span><span>ghci&gt; (listOfFuns !! </span><span style="color:#d08770;">4</span><span>) </span><span style="color:#d08770;">5  
+</span><span style="color:#d08770;">20
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="lambdas">Lambdas</h2>
+<p><img src="http://s3.amazonaws.com/lyah/lambda.png" alt="" /></p>
+<p>Lambdas are basically anonymous functions that are used because we need some functions only once. </p>
+<hr />
+<h3 id="lambdas-1">Lambdas: \</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">numLongChains </span><span style="color:#b48ead;">:: Int  
+</span><span>numLongChains = length (filter (\xs -&gt; length xs &gt; </span><span style="color:#d08770;">15</span><span>) (map chain [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">100</span><span>]))
+</span><span>
+</span><span>ghci&gt; zipWith (\a b -&gt; (a * </span><span style="color:#d08770;">30 </span><span>+ </span><span style="color:#d08770;">3</span><span>) / b) [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>] [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>]  
+</span><span>[</span><span style="color:#d08770;">153.0</span><span>,</span><span style="color:#d08770;">61.5</span><span>,</span><span style="color:#d08770;">31.0</span><span>,</span><span style="color:#d08770;">15.75</span><span>,</span><span style="color:#d08770;">6.6</span><span>]
+</span><span>
+</span><span>ghci&gt; map (\(a,b) -&gt; a + b) [(</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>),(</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>),(</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">3</span><span>),(</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">6</span><span>),(</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">5</span><span>)]  
+</span><span>[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">7</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="lamda-as-parameters">Lamda as parameters</h3>
+<p>These two are the same</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">addThree </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>addThree x y z = x + y + z 
+</span><span>
+</span><span style="color:#8fa1b3;">addThree </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>addThree = \x -&gt; \y -&gt; \z -&gt; x + y + z
+</span></code></pre>
+<p>Sometimes it is more readable</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">flip&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">c</span><span>) </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">c  
+</span><span>flip&#39; f = \x y -&gt; f y x  
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="only-folds-and-horses">Only folds and horses</h2>
+<p>A fold takes a binary function, a starting value (I like to call it the accumulator) and a list to fold up.</p>
+<hr />
+<h3 id="left-fold-foldl">left fold: foldl</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">sum&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>sum&#39; xs = foldl (\acc x -&gt; acc + x) </span><span style="color:#d08770;">0</span><span> xs
+</span><span>
+</span><span>ghci&gt; sum&#39; [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span style="color:#d08770;">11
+</span></code></pre>
+<p>Or make it curried</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">sum&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>sum&#39; = foldl </span><span style="color:#8fa1b3;">(+) </span><span style="color:#d08770;">0
+</span></code></pre>
+<hr />
+<h3 id="left-fold-foldl-1">left fold: foldl</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">elem&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Eq </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt; Bool  
+</span><span>elem&#39; y ys = foldl (\acc x -&gt; </span><span style="color:#b48ead;">if</span><span> x == y </span><span style="color:#b48ead;">then </span><span style="color:#d08770;">True </span><span style="color:#b48ead;">else</span><span> acc) </span><span style="color:#d08770;">False</span><span> ys  
+</span></code></pre>
+<hr />
+<h3 id="right-fold-foldr">right fold: foldr</h3>
+<p>Parameters order is reversed.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">map&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">b</span><span>]  
+</span><span>map&#39; f xs = foldr (\x acc -&gt; f x : acc) </span><span style="color:#d08770;">[]</span><span> xs
+</span></code></pre>
+<hr />
+<h3 id="foldl1-foldr1">foldl1 &amp; foldr1</h3>
+<p>The first (or last) element of the list to be the starting value.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">maximum&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Ord </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>maximum&#39; = foldr1 (\x acc -&gt; </span><span style="color:#b48ead;">if</span><span> x &gt; acc </span><span style="color:#b48ead;">then</span><span> x </span><span style="color:#b48ead;">else</span><span> acc)  
+</span><span>  
+</span><span style="color:#8fa1b3;">product&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>product&#39; = foldr1 </span><span style="color:#8fa1b3;">(*)  
+</span><span>  
+</span><span style="color:#8fa1b3;">head&#39; </span><span style="color:#b48ead;">::</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>head&#39; = foldr1 (\x _ -&gt; x)  
+</span><span>  
+</span><span style="color:#8fa1b3;">last&#39; </span><span style="color:#b48ead;">::</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>last&#39; = foldl1 (\_ x -&gt; x)
+</span></code></pre>
+<hr />
+<h3 id="scanl-scanr">scanl &amp; scanr</h3>
+<p>Report all the intermediate accumulator states in the form of a list. </p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; scanl </span><span style="color:#8fa1b3;">(+) </span><span style="color:#d08770;">0</span><span> [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>[</span><span style="color:#d08770;">0</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">10</span><span>,</span><span style="color:#d08770;">11</span><span>]  
+</span><span>ghci&gt; scanr </span><span style="color:#8fa1b3;">(+) </span><span style="color:#d08770;">0</span><span> [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>[</span><span style="color:#d08770;">11</span><span>,</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">0</span><span>]  
+</span><span>ghci&gt; scanl1 (\acc x -&gt; </span><span style="color:#b48ead;">if</span><span> x &gt; acc </span><span style="color:#b48ead;">then</span><span> x </span><span style="color:#b48ead;">else</span><span> acc) [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>[</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">9</span><span>,</span><span style="color:#d08770;">9</span><span>]  
+</span><span>ghci&gt; scanl (flip </span><span style="color:#8fa1b3;">(:)</span><span>) </span><span style="color:#d08770;">[]</span><span> [</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>]  
+</span><span>[</span><span style="color:#d08770;">[]</span><span>,[</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>],[</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>]]
+</span></code></pre>
+<hr />
+<h3 id="scanl-scanr-1">scanl &amp; scanr</h3>
+<p>Report all the intermediate accumulator states in the form of a list. </p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">sqrtSums </span><span style="color:#b48ead;">:: Int  
+</span><span>sqrtSums = length (takeWhile (&lt;</span><span style="color:#d08770;">1000</span><span>) (scanl1 </span><span style="color:#8fa1b3;">(+)</span><span> (map sqrt [</span><span style="color:#d08770;">1</span><span>..]))) + </span><span style="color:#d08770;">1
+</span><span>
+</span><span>ghci&gt; sqrtSums  
+</span><span style="color:#d08770;">131  
+</span><span>ghci&gt; sum (map sqrt [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">131</span><span>])  
+</span><span style="color:#d08770;">1005.0942035344083  
+</span><span>ghci&gt; sum (map sqrt [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">130</span><span>])  
+</span><span style="color:#d08770;">993.6486803921487
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="function-application-with">Function application with $</h2>
+<ul>
+<li>$ is called function application but with lowest precedence.</li>
+<li>Usually f a b c is the same as ((f a) b) c) because it's left-associative.</li>
+<li>It becomes right-associative with $</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">($) </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b  
+</span><span>f $ x = f x
+</span></code></pre>
+<hr />
+<h3 id="functions">$ functions</h3>
+<ul>
+<li>So <code>sum (map sqrt [1..130])</code> == <code>sum $ map sqrt [1..130]</code></li>
+<li><code>sum $ map sqrt [1..130]</code> == <code>sqrt $ 3 + 4 + 9</code></li>
+<li><code>sum (filter (&gt; 10) (map (*2) [2..10]))</code> == <code>sum $ filter (&gt; 10) $ map (*2) [2..10]</code></li>
+<li>Since $ is function application, it can be treat as another function:</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; map ($ </span><span style="color:#d08770;">3</span><span>) [(</span><span style="color:#d08770;">4</span><span>+), (</span><span style="color:#d08770;">10</span><span>*), (^</span><span style="color:#d08770;">2</span><span>), sqrt]  
+</span><span>[</span><span style="color:#d08770;">7.0</span><span>,</span><span style="color:#d08770;">30.0</span><span>,</span><span style="color:#d08770;">9.0</span><span>,</span><span style="color:#d08770;">1.7320508075688772</span><span>]
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="function-composition">Function composition</h2>
+<ul>
+<li><img src="http://s3.amazonaws.com/lyah/composition.png" alt="" /></li>
+<li>Haskell does function composition with the . function:</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">(.) </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">b </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">c</span><span>) </span><span style="color:#b48ead;">-&gt;</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">c  
+</span><span>f . g = \x -&gt; f (g x)
+</span></code></pre>
+<hr />
+<h3 id="make-function-on-the-fly-to-pass-to-other-function">Make function on the fly to pass to other function</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; map (\x -&gt; negate (abs x)) [</span><span style="color:#d08770;">5</span><span>,-</span><span style="color:#d08770;">3</span><span>,-</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">7</span><span>,-</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,-</span><span style="color:#d08770;">19</span><span>,</span><span style="color:#d08770;">24</span><span>]  
+</span><span>[-</span><span style="color:#d08770;">5</span><span>,-</span><span style="color:#d08770;">3</span><span>,-</span><span style="color:#d08770;">6</span><span>,-</span><span style="color:#d08770;">7</span><span>,-</span><span style="color:#d08770;">3</span><span>,-</span><span style="color:#d08770;">2</span><span>,-</span><span style="color:#d08770;">19</span><span>,-</span><span style="color:#d08770;">24</span><span>]
+</span><span style="color:#65737e;">-- into
+</span><span>ghci&gt; map (negate . abs) [</span><span style="color:#d08770;">5</span><span>,-</span><span style="color:#d08770;">3</span><span>,-</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">7</span><span>,-</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,-</span><span style="color:#d08770;">19</span><span>,</span><span style="color:#d08770;">24</span><span>]  
+</span><span>[-</span><span style="color:#d08770;">5</span><span>,-</span><span style="color:#d08770;">3</span><span>,-</span><span style="color:#d08770;">6</span><span>,-</span><span style="color:#d08770;">7</span><span>,-</span><span style="color:#d08770;">3</span><span>,-</span><span style="color:#d08770;">2</span><span>,-</span><span style="color:#d08770;">19</span><span>,-</span><span style="color:#d08770;">24</span><span>] 
+</span><span>
+</span><span>ghci&gt; map (\xs -&gt; negate (sum (tail xs))) [[</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">3</span><span>..</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">7</span><span>]]  
+</span><span>[-</span><span style="color:#d08770;">14</span><span>,-</span><span style="color:#d08770;">15</span><span>,-</span><span style="color:#d08770;">27</span><span>]
+</span><span style="color:#65737e;">-- into
+</span><span>ghci&gt; map (negate . sum . tail) [[</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">5</span><span>],[</span><span style="color:#d08770;">3</span><span>..</span><span style="color:#d08770;">6</span><span>],[</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">7</span><span>]]  
+</span><span>[-</span><span style="color:#d08770;">14</span><span>,-</span><span style="color:#d08770;">15</span><span>,-</span><span style="color:#d08770;">27</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="work-well-with">Work well with $</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>sum (replicate </span><span style="color:#d08770;">5</span><span> (max </span><span style="color:#d08770;">6.7 8.9</span><span>))
+</span><span>sum . replicate </span><span style="color:#d08770;">5 </span><span>. max </span><span style="color:#d08770;">6.7</span><span>) </span><span style="color:#d08770;">8.9
+</span><span>sum . replicate </span><span style="color:#d08770;">5 </span><span>. max </span><span style="color:#d08770;">6.7 </span><span>$ </span><span style="color:#d08770;">8.9
+</span><span>
+</span><span>replicate </span><span style="color:#d08770;">100</span><span> (product (map (*</span><span style="color:#d08770;">3</span><span>) (zipWith max [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>] [</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">8</span><span>])))
+</span><span>replicate </span><span style="color:#d08770;">100 </span><span>. product . map (*</span><span style="color:#d08770;">3</span><span>) . zipWith max [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>] $ [</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">8</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="define-pointless-style-function">Define pointless style function</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">sum&#39; </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a     
+</span><span>sum&#39; xs = foldl </span><span style="color:#8fa1b3;">(+) </span><span style="color:#d08770;">0</span><span> xs
+</span><span>sum&#39; = foldl </span><span style="color:#8fa1b3;">(+) </span><span style="color:#d08770;">0
+</span></code></pre>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>fn x = ceiling (negate (tan (cos (max </span><span style="color:#d08770;">50</span><span> x))))
+</span><span>fn = ceiling . negate . tan . cos . max </span><span style="color:#d08770;">50
+</span></code></pre>
+<hr />
+<h3 id="putting-things-together">Putting things together</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">oddSquareSum </span><span style="color:#b48ead;">:: Integer  
+</span><span>oddSquareSum = sum (takeWhile (&lt;</span><span style="color:#d08770;">10000</span><span>) (filter odd (map (^</span><span style="color:#d08770;">2</span><span>) [</span><span style="color:#d08770;">1</span><span>..]))
+</span><span>
+</span><span style="color:#8fa1b3;">oddSquareSum </span><span style="color:#b48ead;">:: Integer  
+</span><span>oddSquareSum = sum . takeWhile (&lt;</span><span style="color:#d08770;">10000</span><span>) . filter odd . map (^</span><span style="color:#d08770;">2</span><span>) $ [</span><span style="color:#d08770;">1</span><span>..]
+</span><span>
+</span><span style="color:#8fa1b3;">oddSquareSum </span><span style="color:#b48ead;">:: Integer  
+</span><span>oddSquareSum =   
+</span><span>    </span><span style="color:#b48ead;">let</span><span> oddSquares = filter odd $ map (^</span><span style="color:#d08770;">2</span><span>) [</span><span style="color:#d08770;">1</span><span>..]  
+</span><span>        belowLimit = takeWhile (&lt;</span><span style="color:#d08770;">10000</span><span>) oddSquares  
+</span><span>    </span><span style="color:#b48ead;">in</span><span>  sum belowLimit
+</span></code></pre>
+
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-9">
+        
+        
+        
+
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+  
+  
+
+  
+  
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+  
+
+  
+  
+</body>
+
+</html>

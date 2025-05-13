@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Rust Kernel Module: Hello World
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Rust Kernel Module: Hello World
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2022-05-18T12:04:23+08:00">May 18, 2022</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>9 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1636 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>In <a href="/posts/rust-kernel-module-00">previous post</a>, we set up our environment to develop Linux kernel module in Rust. Now we can kick start our journey. Like every programming tutorial, we must start with a &quot;Hello World&quot; example. It is the law!</p>
+<p>While there are already many samples under <code>samples/rust</code> directory, I'll still write a simple example to showcase how to add a module to our compiled kernel. Once you learn how to do it, you can add as many as you want.</p>
+<h2 id="the-simplest-module">The Simplest Module</h2>
+<p>To add a kernel module, there are a few files need to configure since we choose to compile Linux kernel on our own. But this is safer approach IMHO. This doesn't need to be the final workflow for you, but you should follow the safety measurement it obeys. First of all, let's add additional option to build a new kernel module called <code>rust_hello</code>. Try to add following configurations and files under other modules:</p>
+<ol>
+<li>In <code>samples/rust/Kconfig</code>:</li>
+</ol>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">config</span><span> SAMPLE_RUST_HELLO
+</span><span>	</span><span style="color:#bf616a;">tristate </span><span>&quot;</span><span style="color:#a3be8c;">Hello</span><span>&quot;
+</span><span>	</span><span style="color:#96b5b4;">help
+</span><span>	  </span><span style="color:#bf616a;">This</span><span> option builds the Rust hello module sample.
+</span><span>
+</span><span>	  </span><span style="color:#bf616a;">To</span><span> compile this as a module, choose M here:
+</span><span>	  </span><span style="color:#bf616a;">the</span><span> module will be called rust_hello.
+</span><span>
+</span><span>	  </span><span style="color:#bf616a;">If</span><span> unsure, say N.
+</span></code></pre>
+<ol start="2">
+<li>In <code>samples/rust/Makefile</code>:</li>
+</ol>
+<pre data-lang="Makefile" style="background-color:#2b303b;color:#c0c5ce;" class="language-Makefile "><code class="language-Makefile" data-lang="Makefile"><span style="color:#bf616a;">obj-</span><span style="color:#b48ead;">$(</span><span style="color:#bf616a;">CONFIG_SAMPLE_RUST_HELLO</span><span style="color:#b48ead;">)	</span><span>+= </span><span style="color:#a3be8c;">rust_hello.o
+</span></code></pre>
+<ol start="3">
+<li>Add a new rust file <code>samples/rust/rust_hello.rs</code>:</li>
+</ol>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#65737e;">// SPDX-License-Identifier: GPL-2.0
+</span><span>
+</span><span style="color:#65737e;">//! Rust hello sample.
+</span><span>
+</span><span style="color:#b48ead;">use </span><span>kernel::prelude::*;
+</span><span>
+</span><span>module! {
+</span><span>    </span><span style="color:#b48ead;">type</span><span>: RustHello,
+</span><span>    name: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">rust_hello</span><span>&quot;,
+</span><span>    author: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">Rust for Linux Contributors</span><span>&quot;,
+</span><span>    description: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">Rust hello sample</span><span>&quot;,
+</span><span>    license: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">GPL v2</span><span>&quot;,
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">struct </span><span>RustHello {
+</span><span>    </span><span style="color:#bf616a;">message</span><span>: String,
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">impl </span><span>kernel::Module </span><span style="color:#b48ead;">for </span><span>RustHello {
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">init</span><span>(</span><span style="color:#bf616a;">_name</span><span>: &amp;</span><span style="color:#b48ead;">&#39;static</span><span> CStr, </span><span style="color:#bf616a;">_module</span><span>: &amp;</span><span style="color:#b48ead;">&#39;static</span><span> ThisModule) -&gt; Result&lt;</span><span style="color:#b48ead;">Self</span><span>&gt; {
+</span><span>        pr_info!(&quot;</span><span style="color:#a3be8c;">Rust hello sample (init)</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>        pr_info!(&quot;</span><span style="color:#a3be8c;">Am I built-in? {}</span><span style="color:#96b5b4;">\n</span><span>&quot;, !cfg!(</span><span style="color:#d08770;">MODULE</span><span>));
+</span><span>
+</span><span>        Ok(RustHello {
+</span><span>            message: &quot;</span><span style="color:#a3be8c;">on the heap!</span><span>&quot;.</span><span style="color:#96b5b4;">try_to_owned</span><span>()?,
+</span><span>        })
+</span><span>    }
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">impl </span><span>Drop </span><span style="color:#b48ead;">for </span><span>RustHello {
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">drop</span><span>(&amp;</span><span style="color:#b48ead;">mut </span><span style="color:#bf616a;">self</span><span>) {
+</span><span>        pr_info!(&quot;</span><span style="color:#a3be8c;">My message is {}</span><span style="color:#96b5b4;">\n</span><span>&quot;, </span><span style="color:#bf616a;">self</span><span>.message);
+</span><span>        pr_info!(&quot;</span><span style="color:#a3be8c;">Rust hello sample (exit)</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<h3 id="build-and-run-the-kernel-again">Build and Run the Kernel again</h3>
+<p>This is in fact just <code>rust_minimal</code> example with renaming. It's okay to skip adding this if you just want to learn how to do it instead of practicing yourself. To enable the module, run <code>make menuconfig</code> and toggle it to <code>M</code> in <code>Kernel hacking --&gt; Sample kernel code --&gt; Rust samples --&gt; Hello</code>. Next, we have to build it and include it into our file system:</p>
+<ol>
+<li>Build Linux kernel again. But this time, it should just build the kernel module we added:</li>
+</ol>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">make</span><span> LLVM=1</span><span style="color:#bf616a;"> -j</span><span>$</span><span style="color:#bf616a;">(nproc)
+</span></code></pre>
+<ol start="2">
+<li>Build new image to include our kernel module. In <code>.github/workflows/qemu-initramfs.desc</code>, add another line under other modules and then build it again:</li>
+</ol>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>file /rust_hello.ko samples/rust/rust_hello.ko 0755 0 0
+</span></code></pre>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">usr/gen_init_cpio</span><span> .github/workflows/qemu-initramfs.desc &gt; qemu-initramfs.img
+</span></code></pre>
+<ol start="3">
+<li>Also add another command under other modules in <code>.github/workflows/qemu-init.sh</code>. This script is what we tell busybox to do upon initialization:</li>
+</ol>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">busybox</span><span> modinfo rust_hello.ko
+</span><span style="color:#bf616a;">busybox</span><span> insmod rust_hello.ko
+</span><span style="color:#bf616a;">busybox</span><span> lsmod
+</span><span style="color:#bf616a;">busybox</span><span> rmmod rust_hello.ko
+</span></code></pre>
+<p>Run the kernel via qemu again. This time you should see the log from the kernel we just built.</p>
+<h3 id="command-helpers-and-tools">Command Helpers and Tools</h3>
+<p>We'll introduce a few commands relate to kernel module. <code>modinfo</code> will show the info of our kernel module. <code>lsmod</code> will show what modules are already loaded within your current kernel. Modules are stored within <code>/proc/modules</code>, so you can also see them with <code>cat /proc/modules</code>. <code>inmosd</code> will load the module you provide, and <code>rmmod</code> will remove it. If you follow this guide from the start, you should see the logs about kernel module when running qemu. But if you run the kernel natively, you can run <code>journalctl</code> to get the logs. Or if you are debugging with GDB like we mentioned before, run <code>lx-dmesg</code> in debugger to see them.</p>
+<p>Now we know how to create, compile, and install the new kernel module. Let's see how the kernel module actually works. Before we deep dive into the code, please allow me to introduce a few tools and commands that will benefit us significantly. The first is documentation, Linux can build and read <code>rustdoc</code> for its <code>kernel</code> crate with this command: </p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">make</span><span> LLVM=1 rustdoc
+</span><span style="color:#bf616a;">xdg-open</span><span> rust/doc/kernel/index.html
+</span></code></pre>
+<p>The documentation is pretty comprehensive, I believe many people can even read it themselves and learn even more beyond our guides could teach. Next is formatting and lints. Linux also supports <code>rustfmt</code> and <code>clippy</code>, so you shouldn't be afraid of inconsistent code style. Rust will guide you how to comply:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">make</span><span> LLVM=1 rustfmt
+</span><span style="color:#bf616a;">make</span><span> LLVM=1 CLIPPY=1
+</span></code></pre>
+<p>Finally, we have language server protocol support. Yes! Linux supports <code>rust_analyzer</code> too! Run the following command to create <code>rust-project.json</code> configuration and you will gain full LSP support on whatever IDE you uses:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">make</span><span> LLVM=1 rust-analyzer
+</span></code></pre>
+<p><img src="https://i.imgur.com/uIEG241.png" alt="" /></p>
+<h2 id="macros-and-types-from-kernel-crate">Macros and Types from <code>kernel</code> Crate</h2>
+<p>Alright! Everything is set! Let's see how does the code work. Unlike normal Rust program, we can't simply use standard library <code>std</code>. But we can still import <code>core</code> and <code>alloc</code> crates, types require heap allocation like <code>String</code> is still possible to use. And the most important crate is probably the <code>kernel</code> crate. It cantains kernel APIs that have been ported or wrapped for usage by Rust code in the kernel and is shared by all of them. Like most rust crates, it provides a prelude module for us to import some common items.</p>
+<p>The first one we must add is <code>module!</code> macro. This is the macro to declare a kernel module. You can see its description from documentation or even just hover it via rust-analyzer. You'll learn its usage, example, and all supported argument and parameter types. There are three argument types you must add to complete the macro:</p>
+<ul>
+<li><code>type</code>: The type we are going to implement the <code>Module</code> trait which we will demonstrate soon.</li>
+<li><code>name</code>: Your kernel module name.</li>
+<li><code>license</code>: Your kernel module license. Some examples include &quot;GPL&quot;, &quot;GPL v2&quot;, &quot;GPL and additional rights&quot;, &quot;Dual BSD/GPL&quot;, &quot;Dual MIT/GPL&quot;, &quot;Dual MPL/GPL&quot; and &quot;Proprietary&quot;.</li>
+</ul>
+<p>To add logics for the kernel module, we can define any type as long as it implements <code>Module</code> trait. The trait's signature looks like this:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">pub trait </span><span>Module: Sized + Sync {
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">init</span><span>(</span><span style="color:#bf616a;">name</span><span>: &amp;</span><span style="color:#b48ead;">&#39;static</span><span> CStr, </span><span style="color:#bf616a;">module</span><span>: &amp;</span><span style="color:#b48ead;">&#39;static</span><span> ThisModule) -&gt; Result&lt;</span><span style="color:#b48ead;">Self</span><span>&gt;;
+</span><span>}
+</span></code></pre>
+<p>The method <code>init</code> is equivalent to the <code>module_init</code> macro in the C API. We create the instance via this method. Since Rust ownership can manage our memory properly, it's not necessary to implement <code>Drop</code> trait which is equivalent to the <code>module_exit</code> macro in the C API. In our hello world example, we still do this to show when will the module exit.</p>
+<p>Notice we use <code>pr_info</code> macro instead of <code>println</code>, but the usage is pretty similar. This maps to kernel's print macros. It follows most log level for different conditions. There are also other print macros like <code>pr_err</code>, <code>pr_alert</code>.</p>
+<h2 id="passing-command-line-arguments-to-a-module">Passing Command Line Arguments to a Module</h2>
+<p>Modules can take command line arguments too, but not from <code>env::args()</code> you might used to. To allow arguments to be passed to your module, declare the parameter types in <code>modules!</code> macro. Let's see the example from <code>samples/rust/rust_module_parameters.rs</code>:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#65737e;">// SPDX-License-Identifier: GPL-2.0
+</span><span>
+</span><span style="color:#65737e;">//! Rust module parameters sample.
+</span><span>
+</span><span style="color:#b48ead;">use </span><span>kernel::prelude::*;
+</span><span>
+</span><span>module! {
+</span><span>    </span><span style="color:#b48ead;">type</span><span>: RustModuleParameters,
+</span><span>    name: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">rust_module_parameters</span><span>&quot;,
+</span><span>    author: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">Rust for Linux Contributors</span><span>&quot;,
+</span><span>    description: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">Rust module parameters sample</span><span>&quot;,
+</span><span>    license: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">GPL v2</span><span>&quot;,
+</span><span>    params: {
+</span><span>        my_bool: </span><span style="color:#b48ead;">bool </span><span>{
+</span><span>            default: </span><span style="color:#d08770;">true</span><span>,
+</span><span>            permissions: </span><span style="color:#d08770;">0</span><span>,
+</span><span>            description: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">Example of bool</span><span>&quot;,
+</span><span>        },
+</span><span>        my_i32: </span><span style="color:#b48ead;">i32 </span><span>{
+</span><span>            default: </span><span style="color:#d08770;">42</span><span>,
+</span><span>            permissions: </span><span style="color:#d08770;">0o644</span><span>,
+</span><span>            description: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">Example of i32</span><span>&quot;,
+</span><span>        },
+</span><span>        my_str: </span><span style="color:#b48ead;">str </span><span>{
+</span><span>            default: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">default str val</span><span>&quot;,
+</span><span>            permissions: </span><span style="color:#d08770;">0o644</span><span>,
+</span><span>            description: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">Example of a string param</span><span>&quot;,
+</span><span>        },
+</span><span>        my_usize: </span><span style="color:#b48ead;">usize </span><span>{
+</span><span>            default: </span><span style="color:#d08770;">42</span><span>,
+</span><span>            permissions: </span><span style="color:#d08770;">0o644</span><span>,
+</span><span>            description: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">Example of usize</span><span>&quot;,
+</span><span>        },
+</span><span>        my_array: ArrayParam&lt;</span><span style="color:#b48ead;">i32</span><span>, 3&gt; {
+</span><span>            default: [</span><span style="color:#d08770;">0</span><span>, </span><span style="color:#d08770;">1</span><span>],
+</span><span>            permissions: </span><span style="color:#d08770;">0</span><span>,
+</span><span>            description: </span><span style="color:#b48ead;">b</span><span>&quot;</span><span style="color:#a3be8c;">Example of array</span><span>&quot;,
+</span><span>        },
+</span><span>    },
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">struct </span><span>RustModuleParameters;
+</span><span>
+</span><span style="color:#b48ead;">impl </span><span>kernel::Module </span><span style="color:#b48ead;">for </span><span>RustModuleParameters {
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">init</span><span>(</span><span style="color:#bf616a;">_name</span><span>: &amp;</span><span style="color:#b48ead;">&#39;static</span><span> CStr, </span><span style="color:#bf616a;">module</span><span>: &amp;</span><span style="color:#b48ead;">&#39;static</span><span> ThisModule) -&gt; Result&lt;</span><span style="color:#b48ead;">Self</span><span>&gt; {
+</span><span>        pr_info!(&quot;</span><span style="color:#a3be8c;">Rust module parameters sample (init)</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>
+</span><span>        {
+</span><span>            </span><span style="color:#b48ead;">let</span><span> lock = module.</span><span style="color:#96b5b4;">kernel_param_lock</span><span>();
+</span><span>            pr_info!(&quot;</span><span style="color:#a3be8c;">Parameters:</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>            pr_info!(&quot;</span><span style="color:#a3be8c;">  my_bool:    {}</span><span style="color:#96b5b4;">\n</span><span>&quot;, my_bool.</span><span style="color:#96b5b4;">read</span><span>());
+</span><span>            pr_info!(&quot;</span><span style="color:#a3be8c;">  my_i32:     {}</span><span style="color:#96b5b4;">\n</span><span>&quot;, my_i32.</span><span style="color:#96b5b4;">read</span><span>(&amp;lock));
+</span><span>            pr_info!(
+</span><span>                &quot;</span><span style="color:#a3be8c;">  my_str:     {}</span><span style="color:#96b5b4;">\n</span><span>&quot;,
+</span><span>                core::str::from_utf8(my_str.</span><span style="color:#96b5b4;">read</span><span>(&amp;lock))?
+</span><span>            );
+</span><span>            pr_info!(&quot;</span><span style="color:#a3be8c;">  my_usize:   {}</span><span style="color:#96b5b4;">\n</span><span>&quot;, my_usize.</span><span style="color:#96b5b4;">read</span><span>(&amp;lock));
+</span><span>            pr_info!(&quot;</span><span style="color:#a3be8c;">  my_array:   {:?}</span><span style="color:#96b5b4;">\n</span><span>&quot;, my_array.</span><span style="color:#96b5b4;">read</span><span>());
+</span><span>        }
+</span><span>
+</span><span>        Ok(RustModuleParameters)
+</span><span>    }
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">impl </span><span>Drop </span><span style="color:#b48ead;">for </span><span>RustModuleParameters {
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">drop</span><span>(&amp;</span><span style="color:#b48ead;">mut </span><span style="color:#bf616a;">self</span><span>) {
+</span><span>        pr_info!(&quot;</span><span style="color:#a3be8c;">Rust module parameters sample (exit)</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>To add a parameter, we declare its type, default value, permission, and description. As we already saw the documentation of <code>module!</code> macro, it supports most primitive types. It can also support arrays via const generic <code>ArrayParam&lt;T, N&gt;</code>. At the time of this post, const generic only support numeric types, but this should cover most of our use cases.</p>
+<p>In the init script <code>.github/workflows/qemu-init.sh</code>, <code>insmod</code> will fill the variables with any command line arguments that are given. The parameter that doesn't get the value from here will set to default value. We can pass the argument like this:</p>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">busybox</span><span> insmod rust_module_parameters.ko \
+</span><span>    my_bool=n \
+</span><span>    my_i32=345543 \
+</span><span>    my_str=🦀mod \
+</span><span>    my_usize=84 \
+</span><span>    my_array=1,2,3
+</span><span style="color:#bf616a;">busybox</span><span>  rmmod rust_module_parameters.ko
+</span></code></pre>
+<p>To read the values, some types require scoped lock, we can get it from <code>module.kernel_param_lock()</code>. Then you'll retrieve values from <code>read()</code> method. The lock will be dropped once it's out of the scope. Kernel parameters are usually used to have the module variable’s default values set, like a port or IO address. If the variables contain the default values, then perform auto-detection (explained elsewhere). Otherwise, keep the current value. This will be made clear later on.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>And that's it! Now you should have the basic idea about how to write and build the kernel module. Feel free to play around with config files, scripts, and kernel modules either it's existing one or the one you create. The documentation is also comprehensive enough, I'm confident many people can even learn it themselves starting from here. But don't worry if you don't know how to proceed. I'll publish more posts in the future. Next time we will try to write another simple kernel module: Character Device drivers.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;rust-kernel-module-00&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Rust Kernel Module: Getting Started
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;rust-kernel-module-02&#x2F;">
+              Rust Kernel Module: Character Device Driver<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>
