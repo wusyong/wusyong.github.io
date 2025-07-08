@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Overview of Servo
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Overview of Servo
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2022-04-21T12:04:23+08:00">April 21, 2022</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>951 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Before we deep dive into the code base of servo, I guess it's better to have a high level overview of it. Servo is a huge project and it contains over million lines of code. Sometimes it might be diificult to graspe where are you looking at or how each component interact with others. Getting a high level overview could help you building your own mental model. So let's get started:</p>
+<p><img src="https://i.imgur.com/hb2SRa6.png" alt="" /></p>
+<p>And that's it! Don't worry about what is each component and how do they do. We'll talk about them along the way. And of course it still simplifies and ignore many parts. These include <a href="https://github.com/servo/webrender">Webrender</a>, <a href="https://github.com/servo/surfman">Surfman</a>, <a href="https://github.com/servo/rust-mozjs">Mozjs</a>, and many other web features like <a href="https://github.com/servo/webxr">WebXR</a>, <a href="https://github.com/servo/media">media</a>, and WebGPU etc.</p>
+<p>What this overview trying to represent is how the main trunk of Servo looks like and where is the part handles web pages mostly. There are other processes and threads, but they will behave similar to how pipelines do.</p>
+<h2 id="constellation">Constellation</h2>
+<p>Let's start with the main process. There isn't acutally a module called main process. But this helps us to understand who takes the big part in the center of Servo. <strong>Every rectangles it contains is a thread.</strong> Threads with plural name mean they could be multi-threads.</p>
+<p>The most important thread we want to focus on is the &quot;<a href="https://github.com/servo/servo/blob/master/components/constellation/constellation.rs">Constellation</a>&quot;. <strong>It is the centeral station of the engine.</strong> It stores core states of the engine like &quot;User Agent&quot; and also handles any workflow involving several components. The constellation the unique thread in Servo and there's no the other one. This means it couldn't get the deadlock and is also responsible for crash reporting.</p>
+<p>Interestingly, the constellatiion doesn't receive all messages from other processes directly. Main process has a IPC Router and receiving messages is its job instead. <strong>Every arrow you see is a <a href="https://docs.rs/crossbeam-channel/latest/crossbeam_channel/">Channel</a>.</strong> This allows the router thread to use <code>select!</code> macro to re-route all IPC messages. The router also allows other threads in other processes to register callbacks to do some operations.</p>
+<h3 id="embedder">Embedder</h3>
+<p>Embedder itself in servo is acutally just a few traits. It's a interface requires code who uses servo to implements. Thinking it's like several methods servo need users to define. So the implementation would be able to receive message from servo and handle its own event loop. For servo's demo, it uses winit's event loop and implements those traits for it.</p>
+<h3 id="compositor">Compositor</h3>
+<p>Graphic compositor is a thread renders the necessary pieces of the web pages. This includes iframe, animation and scroll bars etc. You can think it as a layer design to show what parts should be painted on the screen eventually.</p>
+<h3 id="resource-thread">Resource Thread</h3>
+<p>Resource thread's purpose is just like the name itself. Getting the resources from I/O, either from network or file system. It's a bit weird to include this thread into the main process instead of pipeline. But it will be created soon after constellation, beause it will have to load some initial assets real soon. It's the few thread that doesn't communicate via IPC router. Script threads in pipeline are able to talk to it directly.</p>
+<h2 id="pipeline-s">Pipeline(s)</h2>
+<p>A <a href="https://github.com/servo/servo/blob/master/components/constellation/pipeline.rs">pipeline</a> is a process for servo to load your page and maintain it. It's servo's view of a &quot;web page&quot; or a &quot;iframe&quot;, or we could just call it a &quot;Window&quot;. When the constellation want to load an url, it will get or create a &quot;<a href="https://github.com/servo/servo/blob/master/components/constellation/browsingcontext.rs">BrowsingContext</a>&quot;. It's servo's view of &quot;WindowProxy&quot; and it contains several states related to the page like session history. The constellation will spawn a pipeline and pair with it. You can treat them like a key value pair of a <code>HashMap</code>.</p>
+<p>And yes, you can see there's a IPC router again. This is just like how main process routing incoming messages.</p>
+<h3 id="script-threads">Script Threads</h3>
+<p><a href="https://github.com/servo/servo/blob/master/components/script/script_thread.rs">Script thread</a> is the &quot;main thread&quot; of a pipeline. It runs the <a href="https://html.spec.whatwg.org/multipage/#window-event-loop">window event loop</a> of a web page that belongs to the same <code>BrowsingContext</code> and Origin. A pipeline could possibily share the same script thread because thread itself could potentially process multiple iframe with same origin.</p>
+<p>Script threads also connect the javasvript engine: Spider Monkey. In Rust, it's a wrapper crate called mozjs. Script itself defines the webIDL interface to communicate with it.</p>
+<h3 id="layout-threads">Layout Threads</h3>
+<p>For each pipeline, it will spawn a <a href="https://github.com/servo/servo/blob/master/components/layout_thread/lib.rs">layout thread</a> and it doesn't share between pipeline. It process DOM tree and stylist created frome CSS selector to produce the display lists. These lists are used for final graphic rendering. For example there might be a list to tell we need to render a rectangle and a triangle.</p>
+<h3 id="web-workers">Web workers</h3>
+<p>And of course there will be <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers">web workers</a> running scirpts in the background. But the web workers shown in the picture is more like dedicated workers belong to script thread. There could be another process that has standalone web workers running other web features.</p>
+<h2 id="what-s-next">What's next</h2>
+<p>There you have it! This is basically how the overview of Servo could look like. There are indeed many more processes and threads. But you should already get the insight and idea how will they interact and communicate. In the next post, we'll see how an url being loaded and its journey to finally being rendered.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;servo-00&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Getting Started with Servo
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;rust-kernel-module-00&#x2F;">
+              Rust Kernel Module: Getting Started<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Install Windows 11 the hard way
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Install Windows 11 the hard way
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-03-14T12:01:00+08:00">March 14, 2023</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>944 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Recently, I got my hands on a Framework Laptop DIY Edition. I wanted to set up a dual boot system, but I didn't want to install Windows 11 on my primary SSD due to some bad experiences in the past.</p>
+<p><img src="https://i.imgur.com/L0hdijs.png" alt="" /></p>
+<p>I planned to install Windows 11 on an storage expansion card. While this is possible theoretically, Microsoft's boot driver may not work with its default interface for various reasons. We will have to create the required partitions manually. In this article, I will share my experience for installing Windows on an external drive and provide some tips during the process.</p>
+<h2 id="create-a-usb-installer">Create a USB Installer</h2>
+<p>First of all, we need to create a USB installer for Windows 11. If you have a device with any Windows OS, you can download the <a href="https://www.microsoft.com/software-download/windows11">installation media</a> from the official page. Download it, plug in a USB drive, and follow the instructions. You should complete it in no time.</p>
+<h2 id="boot-into-installer">Boot into Installer</h2>
+<p>Once you boot the laptop, repeatedly press F12 to enter the boot selection screen, and then select your USB device. When the installer appears, proceed through each step until you accept the license agreement. After this point, we won't be able to use the installer any longer. We'll need to create the partitions ourselves.</p>
+<h2 id="create-partitions-manually">Create Partitions Manually</h2>
+<p><strong>Proceed with caution during this step</strong>, as you will need to create several partitions, and selecting the wrong disk may potentially overwrite the internal disk.</p>
+<p>Essentially, Windows requires the following partitions to be created:</p>
+<ul>
+<li>Windows RE Tools partition</li>
+<li>System partition</li>
+<li>MSR partition</li>
+<li>Windows partition</li>
+<li>Recovery image partition</li>
+</ul>
+<p>Now let's use <code>diskpart</code> to open the bult-in partition tool. And then select the disk x where <strong>x is the number of you expansion card</strong>:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>diskpart
+</span><span>
+</span><span>list disk
+</span><span>
+</span><span>select disk x
+</span></code></pre>
+<p>Now, we need to format the disk to GPT format. Please double-check that you have selected the right disk before proceeding!</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>clean
+</span><span>
+</span><span>convert gpt
+</span></code></pre>
+<h3 id="windows-re-tools-partition">Windows RE Tools partition</h3>
+<p>Let's start with RE Tools partition. Note that I increase the size slightly since the size of Windows build has grown too. Some following partitions will also apply to this tip. There's lots of 0 when assigning gpt attributes. Just remember there are <strong>14 zeros</strong>:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>create partition primary size=670
+</span><span>
+</span><span>format quick fs=ntfs label=&quot;Windows RE Tools&quot;
+</span><span>
+</span><span>assign letter=&quot;T&quot;
+</span><span>
+</span><span>set id=&quot;de94bba4-06d1-4d40-a16a-bfd50179d6ac&quot;
+</span><span>
+</span><span>gpt attributes=0x8000000000000001
+</span></code></pre>
+<h3 id="system-msr-partition">System &amp; MSR Partition</h3>
+<p>Next is system partition and MSR partition:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>create partition efi size=100
+</span><span>
+</span><span>format quick fs=fat32 label=&quot;System&quot;
+</span><span>
+</span><span>assign letter=&quot;S&quot;
+</span><span>
+</span><span>create partition msr size=128
+</span></code></pre>
+<h3 id="windows-partition">Windows Partition</h3>
+<p>Now here the important part: you should choose proper size for Windows partition depending on the size of your expansion card. If you use 250GB drive, then set the size to 23000. If you use 1TB drive, then set the size to 949044.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>create partition primary size=230000
+</span><span>
+</span><span>format quick fs=ntfs label=&quot;Windows&quot;
+</span><span>
+</span><span>assign letter=&quot;W&quot;
+</span></code></pre>
+<h3 id="recovery-image-partition">Recovery Image Partition</h3>
+<p>The last is recovery image:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>create partition primary size=5120
+</span><span>
+</span><span>format quick fs=ntfs label=&quot;Recovery Image&quot;
+</span><span>
+</span><span>assign letter=&quot;R&quot;
+</span><span>
+</span><span>set id=&quot;de94bba4-06d1-4d40-a16a-bfd50179d6ac&quot;
+</span><span>
+</span><span>gpt attributes=0x8000000000000001
+</span></code></pre>
+<p>View the disk volume to confirm that the partitions were created successfully. Take note of the drive letter assigned to your USB drive containing the Windows installer. In my case, it's <code>E</code>. If everything goes well, you can exit the <code>diskpart</code> tool.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>list volume
+</span><span>
+</span><span>exit
+</span></code></pre>
+<h2 id="copy-windows-data-to-partitions">Copy Windows Data to Partitions</h2>
+<p>Now we install the Windows 11 by copy data to partition manually. When you see <code>E:\</code> in following instructions, you should replace it to the letter you have. And when you see <code>index</code>, you should enter the Windows 11 version you want to install. Here's overall list, but you probably just need to enter 1 or 6:</p>
+<ol>
+<li>Windows 11 Home</li>
+<li>Windows 11 Home N</li>
+<li>Windows 11 Home Single Language</li>
+<li>Windows 11 Education</li>
+<li>Windows 11 Education N</li>
+<li>Windows 11 Pro</li>
+<li>Windows 11 Pro N</li>
+<li>Windows 11 Pro Education</li>
+<li>Windows 11 Pro Education N</li>
+<li>Windows 11 Pro for Workstations</li>
+<li>Windows 11 Pro N for Workstations</li>
+</ol>
+<p>One last thing to note is that the extension of some files may differ depending on the installer you use. If you can't find <code>install.esd</code>, for example, try looking for <code>install.wim</code>, and vice versa.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>md R:\RecoveryImage
+</span><span>
+</span><span>copy E:\sources\install.esd R:\RecoveryImage\install.esd
+</span><span>
+</span><span>E:\Windows\System32
+</span><span>
+</span><span>dism /Apply-Image /ImageFile:R:\RecoveryImage\install.esd /Index:1 /ApplyDir:W:\
+</span><span>
+</span><span>md T:\Recovery\WindowsRE
+</span><span>
+</span><span>copy W:\Windows\System32\Recovery\winre.wim T:\Recovery\WindowsRE\winre.wim
+</span><span>
+</span><span>bcdboot W:\Windows /s S: /f UEFI
+</span><span>
+</span><span>W:\Windows\System32\reagentc /setosimage /path R:\RecoveryImage /target W:\Windows /index 1
+</span><span>
+</span><span>W:\Windows\System32\reagentc /setreimage /path T:\Recovery\WindowsRE /target W:\Windows
+</span></code></pre>
+<h2 id="restart-and-boot-into-windows">Restart and Boot into Windows</h2>
+<p>If everything goes well, we can exit the installer! Remove the USB drive, restart the machine, and keep pressing F12 again to choose the drive containing Windows 11 to boot. If you want to default to boot Windows, you can press F2 instead to change the boot order. It's in <code>Boot &gt; EFI Boot Order</code>.</p>
+<h2 id="install-driver-bundle">Install Driver Bundle</h2>
+<p>Once you boot into Windows, you will be prompted to complete the setup process. Just proceed as usual. If you finally reach the desktop, you should have a functional Windows installation! However, we're not done yet. We have to install Framework's <a href="https://knowledgebase.frame.work/en_us/framework-laptop-bios-and-driver-releases-12th-gen-intel-core-Bkx2kosqq">Driver Bundle</a>.You can install the bundle and just copy to the USB drive you use for installer. And then plug into the laptop to install it.</p>
+<p>Restart and congratulation! You have a Windows installed in an external disk!</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;building-webkit&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Environment Setup for Building Webkit on Linux
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;verso-0-1&#x2F;">
+              Verso: A new browser based on Servo<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

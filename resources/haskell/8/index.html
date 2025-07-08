@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Making Our Own Types and Typeclasses
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h1 class="title is-2">Making Our Own Types and Typeclasses</h1>
+      <p class="subtitle is-4"></p>
+    </div>
+    <div class="content">
+      <style>
+.textleft {
+  text-align:left;
+}
+.reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+font-family:Arial, Microsoft JhengHei;}
+.reveal .progress {
+    height: 14px !important;
+}
+.progress span {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAMCAIAAAAs6UAAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QUNCQzIyREQ0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QUNCQzIyREU0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpBQ0JDMjJEQjRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpBQ0JDMjJEQzRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PovDFgYAAAAmSURBVHjaYvjPwMAAxjMZmBhA9H8INv4P4TPM/A+m04zBNECAAQBCWQv9SUQpVgAAAABJRU5ErkJggg==) repeat-x !important;
+}
+.progress span:after, .progress span.nyancat {
+    content: "";
+    background: url(data:image/gif;base64,R0lGODlhIgAVAKIHAL3/9/+Zmf8zmf/MmZmZmf+Z/wAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpDMkJBNjY5RTU1NEJFMzExOUM4QUM2MDAwNDQzRERBQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCREIzOEIzMzRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCREIzOEIzMjRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkM1QkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkMyQkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkECQcABwAsAAAAACIAFQAAA6J4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93bqCA7f7TFaYoIFAMMwczB5EkTzJllEUttmIGoG5bfPBjDawD7CsJC67uWcv2CRov929C/q2ZpcBbYBmLGk6W1BRY4MUDnMvJEsBAXdlknk2fCeRk2iJliAijpBlEmigjR0plKSgpKWvEUheF4tUZqZID1RHjEe8PsDBBwkAIfkECQcABwAsAAAAACIAFQAAA6B4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93TqS40XiKSYgTLBgIBAMqE/zmQSaZEzns+jQ9pC/5dQJ0VIv5KMVWxqb36opxHrNvu9ptPfGbmsBbgSAeRdydCdjXWRPchQPh1hNAQF4TpM9NnwukpRyi5chGjqJEoSOIh0plaYsZBKvsCuNjY5ptElgDyFIuj6+vwcJACH5BAkHAAcALAAAAAAiABUAAAOfeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GKifWaddvNQAtszXYCxgR/Zy5jYTFeXmSDiIZGdQEBd06QSBQ5e4cEkE9nnZQaG2J4F4MSLx8rkqUSZBeurhlTUqsLsi60DpZxSWBJugcJACH5BAkHAAcALAAAAAAiABUAAAOgeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GuifWaddvNwMkZtmY7AWMEgGcKY2ExXl5khFMVc0Z1AQF3TpJShDl8iASST2efloV5JTyJFpgOch8dgW9KZxexshGNLqgLtbW0SXFwvaJfCQAh+QQJBwAHACwAAAAAIgAVAAADoXi63P7wmUmrnVGOzbvfRsYYXGGe6MmF4kEOaSGYMwq2LizHfDGwIlLPNKGZfi6gZmggEAy2iVPZEKZqzakq+1xUFFYe90lxTsHmim6HGpvf3eR7skYJ3PC5tyystc0AboFnVXQ9XFJTZIQOYUYFTQEBeWaSVF4bbCeRk1meBJYSL3WbaReMIxQfHXh6jaYXsbEQni6oaF21ERR7l0ksvA0JACH5BAkHAAcALAAAAAAiABUAAAOeeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMfFlA4hTITEMxkIBMOuADwmhzqeM6mashTCXKw2TVKQyKuTRSx2wegnNkyJ1ozpOFiMLqcEU8BZHx6NYW8nVlZefQ1tZgQBAXJIi1eHUTRwi0lhl48QL0sogxaGDhMlUo2gh14fHhcVmnOrrxNqrU9joX21Q0IUElm7DQkAIfkECQcABwAsAAAAACIAFQAAA6J4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93bqCA7f7TFaYoIFAMMwczB5EkTzJllEUttmIGoG5bfPBjDawD7CsJC67uWcv2CRov929C/q2ZpcBbYBmLGk6W1BRY4MUDnMvJEsBAXdlknk2fCeRk2iJliAijpBlEmigjR0plKSgpKWvEUheF4tUZqZID1RHjEe8PsDBBwkAIfkECQcABwAsAAAAACIAFQAAA6B4umv+MDpG6zEj682zsRaWFWRpltoHMuJZCCRseis7xG5eDGp93TqS40XiKSYgTLBgIBAMqE/zmQSaZEzns+jQ9pC/5dQJ0VIv5KMVWxqb36opxHrNvu9ptPfGbmsBbgSAeRdydCdjXWRPchQPh1hNAQF4TpM9NnwukpRyi5chGjqJEoSOIh0plaYsZBKvsCuNjY5ptElgDyFIuj6+vwcJACH5BAkHAAcALAAAAAAiABUAAAOfeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GKifWaddvNQAtszXYCxgR/Zy5jYTFeXmSDiIZGdQEBd06QSBQ5e4cEkE9nnZQaG2J4F4MSLx8rkqUSZBeurhlTUqsLsi60DpZxSWBJugcJACH5BAkHAAcALAAAAAAiABUAAAOgeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMd8MbAiUu802flYGIhwaCAQDKpQ86nUoWqF6dP00wIby572SXE6vyMrlmhuu9GuifWaddvNwMkZtmY7AWMEgGcKY2ExXl5khFMVc0Z1AQF3TpJShDl8iASST2efloV5JTyJFpgOch8dgW9KZxexshGNLqgLtbW0SXFwvaJfCQAh+QQJBwAHACwAAAAAIgAVAAADoXi63P7wmUmrnVGOzbvfRsYYXGGe6MmF4kEOaSGYMwq2LizHfDGwIlLPNKGZfi6gZmggEAy2iVPZEKZqzakq+1xUFFYe90lxTsHmim6HGpvf3eR7skYJ3PC5tyystc0AboFnVXQ9XFJTZIQOYUYFTQEBeWaSVF4bbCeRk1meBJYSL3WbaReMIxQfHXh6jaYXsbEQni6oaF21ERR7l0ksvA0JACH5BAkHAAcALAAAAAAiABUAAAOeeLrc/vCZSaudUY7Nu99GxhhcYZ7oyYXiQQ5pIZgzCrYuLMfFlA4hTITEMxkIBMOuADwmhzqeM6mashTCXKw2TVKQyKuTRSx2wegnNkyJ1ozpOFiMLqcEU8BZHx6NYW8nVlZefQ1tZgQBAXJIi1eHUTRwi0lhl48QL0sogxaGDhMlUo2gh14fHhcVmnOrrxNqrU9joX21Q0IUElm7DQkAOw==) ;
+    width: 34px !important;
+    height: 21px !important;
+    border: none !important;
+    float: right;
+    margin-top: -7px;
+    margin-right: -10px;
+}
+.my-icon-css {
+  width: 100%;
+  height: 200px;
+  background-position:center;
+  background-repeat: no-repeat;
+  background-image:url('https://mir-s3-cdn-cf.behance.net/project_modules/disp/fe36cc42774743.57ee5f329fae6.gif');
+}
+</style>
+<p>{{% section %}}</p>
+<h2 id="making-our-own-types-and-typeclasses">Making Our Own Types and Typeclasses</h2>
+<h4 id="wusyong-wu-yu-wei">@wusyong, 吳昱緯</h4>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="algebraic-data-types-intro">Algebraic data types intro</h2>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Bool </span><span>= </span><span style="color:#d08770;">False </span><span>| </span><span style="color:#d08770;">True  
+</span><span style="color:#b48ead;">data </span><span style="color:#d08770;">Int </span><span>= -</span><span style="color:#d08770;">2147483648 </span><span>| -</span><span style="color:#d08770;">2147483647 </span><span>| ... | -</span><span style="color:#d08770;">1 </span><span>| </span><span style="color:#d08770;">0 </span><span>| </span><span style="color:#d08770;">1 </span><span>| </span><span style="color:#d08770;">2 </span><span>| ... | </span><span style="color:#d08770;">2147483647  
+</span></code></pre>
+<hr />
+<h3 id="value-constructor-with-fields">value constructor with fields</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Shape </span><span>= </span><span style="color:#d08770;">Circle Float Float Float </span><span>| </span><span style="color:#d08770;">Rectangle Float Float Float Float
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Circle  
+</span><span style="color:#d08770;">Circle </span><span>:: </span><span style="color:#d08770;">Float </span><span>-&gt; </span><span style="color:#d08770;">Float </span><span>-&gt; </span><span style="color:#d08770;">Float </span><span>-&gt; </span><span style="color:#d08770;">Shape  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Rectangle  
+</span><span style="color:#d08770;">Rectangle </span><span>:: </span><span style="color:#d08770;">Float </span><span>-&gt; </span><span style="color:#d08770;">Float </span><span>-&gt; </span><span style="color:#d08770;">Float </span><span>-&gt; </span><span style="color:#d08770;">Float </span><span>-&gt; </span><span style="color:#d08770;">Shape
+</span></code></pre>
+<hr />
+<h3 id="usage-in-functions">Usage in functions</h3>
+<ul>
+<li>Parameters are Shape not Circle (just like Bool but not True)</li>
+<li>Can be pattern matched</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">surface </span><span style="color:#b48ead;">:: Shape -&gt; Float  
+</span><span>surface (</span><span style="color:#d08770;">Circle</span><span> _ _ r) = pi * r ^ </span><span style="color:#d08770;">2  
+</span><span>surface (</span><span style="color:#d08770;">Rectangle</span><span> x1 y1 x2 y2) = (abs $ x2 - x1) * (abs $ y2 - y1)
+</span><span>
+</span><span>ghci&gt; surface $ </span><span style="color:#d08770;">Circle 10 20 10  
+</span><span style="color:#d08770;">314.15927  
+</span><span>ghci&gt; surface $ </span><span style="color:#d08770;">Rectangle 0 0 100 100  
+</span><span style="color:#d08770;">10000.0
+</span></code></pre>
+<hr />
+<h3 id="make-shape-type-part-of-the-show-typeclass">make Shape type part of the Show typeclass</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Shape </span><span>= </span><span style="color:#d08770;">Circle Float Float Float </span><span>| </span><span style="color:#d08770;">Rectangle Float Float Float Float </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>)  
+</span></code></pre>
+<hr />
+<h3 id="partially-applied-functions">partially applied functions</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; map (</span><span style="color:#d08770;">Circle 10 20</span><span>) [</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span>[</span><span style="color:#d08770;">Circle 10.0 20.0 4.0</span><span>,</span><span style="color:#d08770;">Circle 10.0 20.0 5.0</span><span>,</span><span style="color:#d08770;">Circle 10.0 20.0 6.0</span><span>,</span><span style="color:#d08770;">Circle 10.0 20.0 6.0</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="more-idiomatic-way">more idiomatic way</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Point </span><span>= </span><span style="color:#d08770;">Point Float Float </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>)  
+</span><span style="color:#b48ead;">data </span><span style="color:#d08770;">Shape </span><span>= </span><span style="color:#d08770;">Circle Point Float </span><span>| </span><span style="color:#d08770;">Rectangle Point Point </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>)
+</span><span>
+</span><span style="color:#8fa1b3;">surface </span><span style="color:#b48ead;">:: Shape -&gt; Float  
+</span><span>surface (</span><span style="color:#d08770;">Circle</span><span> _ r) = pi * r ^ </span><span style="color:#d08770;">2  
+</span><span>surface (</span><span style="color:#d08770;">Rectangle</span><span> (</span><span style="color:#d08770;">Point</span><span> x1 y1) (</span><span style="color:#d08770;">Point</span><span> x2 y2)) = (abs $ x2 - x1) * (abs $ y2 - y1)
+</span><span>
+</span><span>ghci&gt; surface (</span><span style="color:#d08770;">Rectangle</span><span> (</span><span style="color:#d08770;">Point 0 0</span><span>) (</span><span style="color:#d08770;">Point 100 100</span><span>))  
+</span><span style="color:#d08770;">10000.0  
+</span><span>ghci&gt; surface (</span><span style="color:#d08770;">Circle</span><span> (</span><span style="color:#d08770;">Point 0 0</span><span>) </span><span style="color:#d08770;">24</span><span>)  
+</span><span style="color:#d08770;">1809.5574
+</span></code></pre>
+<hr />
+<h3 id="more-utilities">More utilities</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; nudge (</span><span style="color:#d08770;">Circle</span><span> (</span><span style="color:#d08770;">Point 34 34</span><span>) </span><span style="color:#d08770;">10</span><span>) </span><span style="color:#d08770;">5 10  
+</span><span style="color:#d08770;">Circle</span><span> (</span><span style="color:#d08770;">Point 39.0 44.0</span><span>) </span><span style="color:#d08770;">10.0
+</span><span>
+</span><span style="color:#8fa1b3;">baseCircle </span><span style="color:#b48ead;">:: Float -&gt; Shape  
+</span><span>baseCircle r = </span><span style="color:#d08770;">Circle</span><span> (</span><span style="color:#d08770;">Point 0 0</span><span>) r  
+</span><span>  
+</span><span style="color:#8fa1b3;">baseRect </span><span style="color:#b48ead;">:: Float -&gt; Float -&gt; Shape  
+</span><span>baseRect width height = </span><span style="color:#d08770;">Rectangle</span><span> (</span><span style="color:#d08770;">Point 0 0</span><span>) (</span><span style="color:#d08770;">Point</span><span> width height)
+</span><span>
+</span><span>ghci&gt; nudge (baseRect </span><span style="color:#d08770;">40 100</span><span>) </span><span style="color:#d08770;">60 23  
+</span><span style="color:#d08770;">Rectangle</span><span> (</span><span style="color:#d08770;">Point 60.0 23.0</span><span>) (</span><span style="color:#d08770;">Point 100.0 123.0</span><span>)
+</span></code></pre>
+<hr />
+<h3 id="export-module">Export module</h3>
+<p>Export the type with Shape(..) or Shape (Rectangle, Circle) or Shape only with no value</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">module </span><span>Shapes   
+</span><span>( </span><span style="color:#b48ead;">Point</span><span style="color:#8fa1b3;">(..)  
+</span><span>, </span><span style="color:#b48ead;">Shape</span><span style="color:#8fa1b3;">(..)
+</span><span>, </span><span style="color:#8fa1b3;">surface  
+</span><span>, </span><span style="color:#8fa1b3;">nudge  
+</span><span>, </span><span style="color:#8fa1b3;">baseCircle  
+</span><span>, </span><span style="color:#8fa1b3;">baseRect  
+</span><span>) </span><span style="color:#b48ead;">where 
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="record-syntax">Record syntax</h2>
+<p>If we want to define the field name for the data type:</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Person </span><span>= </span><span style="color:#d08770;">Person String String Int Float String String </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>)  
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> guy = </span><span style="color:#d08770;">Person </span><span>&quot;</span><span style="color:#a3be8c;">Buddy</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Finklestein</span><span>&quot; </span><span style="color:#d08770;">43 184.2 </span><span>&quot;</span><span style="color:#a3be8c;">526-2928</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Chocolate</span><span>&quot;  
+</span><span>ghci&gt; guy  
+</span><span style="color:#d08770;">Person </span><span>&quot;</span><span style="color:#a3be8c;">Buddy</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Finklestein</span><span>&quot; </span><span style="color:#d08770;">43 184.2 </span><span>&quot;</span><span style="color:#a3be8c;">526-2928</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Chocolate</span><span>&quot;
+</span><span>
+</span><span style="color:#8fa1b3;">firstName </span><span style="color:#b48ead;">:: Person -&gt; String  
+</span><span>firstName (</span><span style="color:#d08770;">Person</span><span> firstname _ _ _ _ _) = firstname  
+</span><span style="color:#8fa1b3;">lastName </span><span style="color:#b48ead;">:: Person -&gt; String  
+</span><span>lastName (</span><span style="color:#d08770;">Person</span><span> _ lastname _ _ _ _) = lastname  
+</span><span style="color:#8fa1b3;">age </span><span style="color:#b48ead;">:: Person -&gt; Int  
+</span><span>age (</span><span style="color:#d08770;">Person</span><span> _ _ age _ _ _) = age  
+</span><span style="color:#8fa1b3;">height </span><span style="color:#b48ead;">:: Person -&gt; Float  
+</span><span>height (</span><span style="color:#d08770;">Person</span><span> _ _ _ height _ _) = height  
+</span><span style="color:#8fa1b3;">phoneNumber </span><span style="color:#b48ead;">:: Person -&gt; String  
+</span><span>phoneNumber (</span><span style="color:#d08770;">Person</span><span> _ _ _ _ number _) = number  
+</span><span style="color:#8fa1b3;">flavor </span><span style="color:#b48ead;">:: Person -&gt; String  
+</span><span>flavor (</span><span style="color:#d08770;">Person</span><span> _ _ _ _ _ flavor) = flavor  
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> guy = </span><span style="color:#d08770;">Person </span><span>&quot;</span><span style="color:#a3be8c;">Buddy</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Finklestein</span><span>&quot; </span><span style="color:#d08770;">43 184.2 </span><span>&quot;</span><span style="color:#a3be8c;">526-2928</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Chocolate</span><span>&quot;  
+</span><span>ghci&gt; firstName guy  
+</span><span>&quot;</span><span style="color:#a3be8c;">Buddy</span><span>&quot;  
+</span><span>ghci&gt; height guy  
+</span><span style="color:#d08770;">184.2  
+</span><span>ghci&gt; flavor guy  
+</span><span>&quot;</span><span style="color:#a3be8c;">Chocolate</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="record-syntax-1">record syntax</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Person </span><span>= </span><span style="color:#d08770;">Person</span><span> { firstName :: </span><span style="color:#d08770;">String  
+</span><span>                     , lastName :: </span><span style="color:#d08770;">String  
+</span><span>                     , age :: </span><span style="color:#d08770;">Int  
+</span><span>                     , height :: </span><span style="color:#d08770;">Float  
+</span><span>                     , phoneNumber :: </span><span style="color:#d08770;">String  
+</span><span>                     , flavor :: </span><span style="color:#d08770;">String  
+</span><span>                     } </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>)
+</span><span>ghci&gt; :t flavor  
+</span><span style="color:#8fa1b3;">flavor </span><span style="color:#b48ead;">:: Person -&gt; String  
+</span><span>ghci&gt; :t firstName  
+</span><span style="color:#8fa1b3;">firstName </span><span style="color:#b48ead;">:: Person -&gt; String
+</span></code></pre>
+<hr />
+<h3 id="comparison">Comparison</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Car </span><span>= </span><span style="color:#d08770;">Car String String Int </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>)
+</span><span>ghci&gt; </span><span style="color:#d08770;">Car </span><span>&quot;</span><span style="color:#a3be8c;">Ford</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Mustang</span><span>&quot; </span><span style="color:#d08770;">1967  
+</span><span style="color:#d08770;">Car </span><span>&quot;</span><span style="color:#a3be8c;">Ford</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Mustang</span><span>&quot; </span><span style="color:#d08770;">1967
+</span><span>
+</span><span style="color:#b48ead;">data </span><span style="color:#d08770;">Car </span><span>= </span><span style="color:#d08770;">Car</span><span> {company :: </span><span style="color:#d08770;">String</span><span>, model :: </span><span style="color:#d08770;">String</span><span>, year :: </span><span style="color:#d08770;">Int</span><span>} </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>)
+</span><span>ghci&gt; </span><span style="color:#d08770;">Car</span><span> {company=&quot;</span><span style="color:#a3be8c;">Ford</span><span>&quot;, model=&quot;</span><span style="color:#a3be8c;">Mustang</span><span>&quot;, year=</span><span style="color:#d08770;">1967</span><span>}  
+</span><span style="color:#d08770;">Car</span><span> {company = &quot;</span><span style="color:#a3be8c;">Ford</span><span>&quot;, model = &quot;</span><span style="color:#a3be8c;">Mustang</span><span>&quot;, year = </span><span style="color:#d08770;">1967</span><span>}
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="type-parameters">Type parameters</h2>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Maybe</span><span> a = </span><span style="color:#d08770;">Nothing </span><span>| </span><span style="color:#d08770;">Just</span><span> a
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">Haha</span><span>&quot;  
+</span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">Haha</span><span>&quot;  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Just 84  
+</span><span style="color:#d08770;">Just 84  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">Haha</span><span>&quot;  
+</span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">Haha</span><span>&quot; :: </span><span style="color:#d08770;">Maybe</span><span> [</span><span style="color:#d08770;">Char</span><span>]  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Just 84  
+</span><span style="color:#d08770;">Just 84 </span><span>:: (</span><span style="color:#d08770;">Num</span><span> t) =&gt; </span><span style="color:#d08770;">Maybe</span><span> t  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Nothing  
+</span><span style="color:#d08770;">Nothing </span><span>:: </span><span style="color:#d08770;">Maybe</span><span> a  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Just 10 </span><span>:: </span><span style="color:#d08770;">Maybe Double  
+</span><span style="color:#d08770;">Just 10.0
+</span></code></pre>
+<hr />
+<h3 id="the-variable-is-part-of-the-typeclass-the-type-derives">The variable is part of the typeclass the type derives</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Car</span><span> a b c = </span><span style="color:#d08770;">Car</span><span> { company :: a  
+</span><span>                     , model :: b  
+</span><span>                     , year :: c   
+</span><span>                     } </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>)
+</span><span style="color:#8fa1b3;">tellCar </span><span style="color:#b48ead;">:: Car -&gt; String  
+</span><span>tellCar (</span><span style="color:#d08770;">Car</span><span> {company = c, model = m, year = y}) = &quot;</span><span style="color:#a3be8c;">This </span><span>&quot; ++ c ++ &quot; &quot; ++ m ++ &quot;</span><span style="color:#a3be8c;"> was made in </span><span>&quot; ++ show y
+</span><span style="color:#65737e;">-- Compare to original
+</span><span style="color:#8fa1b3;">tellCar </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Show </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; Car String String </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; String  
+</span><span>
+</span><span style="color:#65737e;">-- And can have many instances
+</span><span>ghci&gt; tellCar (</span><span style="color:#d08770;">Car </span><span>&quot;</span><span style="color:#a3be8c;">Ford</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Mustang</span><span>&quot; </span><span style="color:#d08770;">1967</span><span>)  
+</span><span>&quot;</span><span style="color:#a3be8c;">This Ford Mustang was made in 1967</span><span>&quot;  
+</span><span>ghci&gt; tellCar (</span><span style="color:#d08770;">Car </span><span>&quot;</span><span style="color:#a3be8c;">Ford</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Mustang</span><span>&quot; &quot;</span><span style="color:#a3be8c;">nineteen sixty seven</span><span>&quot;)  
+</span><span>&quot;</span><span style="color:#a3be8c;">This Ford Mustang was made in </span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">nineteen sixty seven</span><span style="color:#96b5b4;">\&quot;</span><span>&quot;  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Car </span><span>&quot;</span><span style="color:#a3be8c;">Ford</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Mustang</span><span>&quot; </span><span style="color:#d08770;">1967  
+</span><span style="color:#d08770;">Car </span><span>&quot;</span><span style="color:#a3be8c;">Ford</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Mustang</span><span>&quot; </span><span style="color:#d08770;">1967 </span><span>:: (</span><span style="color:#d08770;">Num</span><span> t) =&gt; </span><span style="color:#d08770;">Car</span><span> [</span><span style="color:#d08770;">Char</span><span>] [</span><span style="color:#d08770;">Char</span><span>] t  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Car </span><span>&quot;</span><span style="color:#a3be8c;">Ford</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Mustang</span><span>&quot; &quot;</span><span style="color:#a3be8c;">nineteen sixty seven</span><span>&quot;  
+</span><span style="color:#d08770;">Car </span><span>&quot;</span><span style="color:#a3be8c;">Ford</span><span>&quot; &quot;</span><span style="color:#a3be8c;">Mustang</span><span>&quot; &quot;</span><span style="color:#a3be8c;">nineteen sixty seven</span><span>&quot; :: </span><span style="color:#d08770;">Car</span><span> [</span><span style="color:#d08770;">Char</span><span>] [</span><span style="color:#d08770;">Char</span><span>] [</span><span style="color:#d08770;">Char</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="map-k-v">Map k v</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data</span><span> (</span><span style="color:#d08770;">Ord</span><span> k) =&gt; </span><span style="color:#d08770;">Map</span><span> k v = ...
+</span><span style="color:#65737e;">-- So we just need
+</span><span style="color:#8fa1b3;">toList </span><span style="color:#b48ead;">:: Map </span><span style="color:#bf616a;">k a </span><span style="color:#b48ead;">-&gt;</span><span> [(</span><span style="color:#bf616a;">k</span><span>, </span><span style="color:#bf616a;">a</span><span>)]
+</span><span style="color:#65737e;">-- instead of
+</span><span style="color:#8fa1b3;">toList </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Ord </span><span style="color:#bf616a;">k</span><span>) </span><span style="color:#b48ead;">=&gt; Map </span><span style="color:#bf616a;">k a </span><span style="color:#b48ead;">-&gt;</span><span> [(</span><span style="color:#bf616a;">k</span><span>, </span><span style="color:#bf616a;">a</span><span>)]
+</span></code></pre>
+<hr />
+<h3 id="example-vector">Example: vector</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Vector</span><span> a = </span><span style="color:#d08770;">Vector</span><span> a a a </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>)  
+</span><span>  
+</span><span style="color:#8fa1b3;">vplus </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">t</span><span>) </span><span style="color:#b48ead;">=&gt; Vector </span><span style="color:#bf616a;">t </span><span style="color:#b48ead;">-&gt; Vector </span><span style="color:#bf616a;">t </span><span style="color:#b48ead;">-&gt; Vector </span><span style="color:#bf616a;">t  
+</span><span>(</span><span style="color:#d08770;">Vector</span><span> i j k) </span><span style="color:#8fa1b3;">`</span><span>vplus</span><span style="color:#8fa1b3;">`</span><span> (</span><span style="color:#d08770;">Vector</span><span> l m n) = </span><span style="color:#d08770;">Vector</span><span> (i+l) (j+m) (k+n)  
+</span><span>  
+</span><span style="color:#8fa1b3;">vectMult </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">t</span><span>) </span><span style="color:#b48ead;">=&gt; Vector </span><span style="color:#bf616a;">t </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">t </span><span style="color:#b48ead;">-&gt; Vector </span><span style="color:#bf616a;">t  
+</span><span>(</span><span style="color:#d08770;">Vector</span><span> i j k) </span><span style="color:#8fa1b3;">`</span><span>vectMult</span><span style="color:#8fa1b3;">`</span><span> m = </span><span style="color:#d08770;">Vector</span><span> (i*m) (j*m) (k*m)  
+</span><span>  
+</span><span style="color:#8fa1b3;">scalarMult </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Num </span><span style="color:#bf616a;">t</span><span>) </span><span style="color:#b48ead;">=&gt; Vector </span><span style="color:#bf616a;">t </span><span style="color:#b48ead;">-&gt; Vector </span><span style="color:#bf616a;">t </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">t  
+</span><span>(</span><span style="color:#d08770;">Vector</span><span> i j k) </span><span style="color:#8fa1b3;">`</span><span>scalarMult</span><span style="color:#8fa1b3;">`</span><span> (</span><span style="color:#d08770;">Vector</span><span> l m n) = i*l + j*m + k*n
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#d08770;">Vector 3 5 8 </span><span style="color:#8fa1b3;">`</span><span>vplus</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Vector 9 2 8  
+</span><span style="color:#d08770;">Vector 12 7 16  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Vector 3 5 8 </span><span style="color:#8fa1b3;">`</span><span>vplus</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Vector 9 2 8 </span><span style="color:#8fa1b3;">`</span><span>vplus</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Vector 0 2 3  
+</span><span style="color:#d08770;">Vector 12 9 19  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Vector 3 9 7 </span><span style="color:#8fa1b3;">`</span><span>vectMult</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">10  
+</span><span style="color:#d08770;">Vector 30 90 70  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Vector 4 9 5 </span><span style="color:#8fa1b3;">`</span><span>scalarMult</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Vector 9.0 2.0 4.0  
+</span><span style="color:#d08770;">74.0  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Vector 2 9 3 </span><span style="color:#8fa1b3;">`</span><span>vectMult</span><span style="color:#8fa1b3;">`</span><span> (</span><span style="color:#d08770;">Vector 4 9 5 </span><span style="color:#8fa1b3;">`</span><span>scalarMult</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Vector 9 2 4</span><span>)  
+</span><span style="color:#d08770;">Vector 148 666 222
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="derived-instances">Derived instances</h2>
+<p>Eq</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Person </span><span>= </span><span style="color:#d08770;">Person</span><span> { firstName :: </span><span style="color:#d08770;">String  
+</span><span>                     , lastName :: </span><span style="color:#d08770;">String  
+</span><span>                     , age :: </span><span style="color:#d08770;">Int  
+</span><span>                     } </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Eq</span><span>)
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> mikeD = </span><span style="color:#d08770;">Person</span><span> {firstName = &quot;</span><span style="color:#a3be8c;">Michael</span><span>&quot;, lastName = &quot;</span><span style="color:#a3be8c;">Diamond</span><span>&quot;, age = </span><span style="color:#d08770;">43</span><span>}  
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> adRock = </span><span style="color:#d08770;">Person</span><span> {firstName = &quot;</span><span style="color:#a3be8c;">Adam</span><span>&quot;, lastName = &quot;</span><span style="color:#a3be8c;">Horovitz</span><span>&quot;, age = </span><span style="color:#d08770;">41</span><span>}  
+</span><span>ghci&gt; mca == adRock  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; mikeD == </span><span style="color:#d08770;">Person</span><span> {firstName = &quot;</span><span style="color:#a3be8c;">Michael</span><span>&quot;, lastName = &quot;</span><span style="color:#a3be8c;">Diamond</span><span>&quot;, age = </span><span style="color:#d08770;">43</span><span>}  
+</span><span style="color:#d08770;">True 
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> beastieBoys = [mca, adRock, mikeD]  
+</span><span>ghci&gt; mikeD </span><span style="color:#8fa1b3;">`</span><span>elem</span><span style="color:#8fa1b3;">`</span><span> beastieBoys  
+</span><span style="color:#d08770;">True
+</span></code></pre>
+<hr />
+<h3 id="show-read">Show &amp; Read</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Person </span><span>= </span><span style="color:#d08770;">Person</span><span> { firstName :: </span><span style="color:#d08770;">String  
+</span><span>                     , lastName :: </span><span style="color:#d08770;">String  
+</span><span>                     , age :: </span><span style="color:#d08770;">Int  
+</span><span>                     } </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Eq</span><span>, </span><span style="color:#a3be8c;">Show</span><span>, </span><span style="color:#a3be8c;">Read</span><span>)
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> mikeD = </span><span style="color:#d08770;">Person</span><span> {firstName = &quot;</span><span style="color:#a3be8c;">Michael</span><span>&quot;, lastName = &quot;</span><span style="color:#a3be8c;">Diamond</span><span>&quot;, age = </span><span style="color:#d08770;">43</span><span>}  
+</span><span>ghci&gt; mikeD  
+</span><span style="color:#d08770;">Person</span><span> {firstName = &quot;</span><span style="color:#a3be8c;">Michael</span><span>&quot;, lastName = &quot;</span><span style="color:#a3be8c;">Diamond</span><span>&quot;, age = </span><span style="color:#d08770;">43</span><span>}  
+</span><span>ghci&gt; &quot;</span><span style="color:#a3be8c;">mikeD is: </span><span>&quot; ++ show mikeD  
+</span><span>&quot;</span><span style="color:#a3be8c;">mikeD is: Person {firstName = </span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">Michael</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">, lastName = </span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">Diamond</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">, age = 43}</span><span>&quot;
+</span><span>ghci&gt; read &quot;</span><span style="color:#a3be8c;">Person {firstName =</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">Michael</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">, lastName =</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">Diamond</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">, age = 43}</span><span>&quot; :: </span><span style="color:#d08770;">Person  
+</span><span style="color:#d08770;">Person</span><span> {firstName = &quot;</span><span style="color:#a3be8c;">Michael</span><span>&quot;, lastName = &quot;</span><span style="color:#a3be8c;">Diamond</span><span>&quot;, age = </span><span style="color:#d08770;">43</span><span>}
+</span><span>ghci&gt; read &quot;</span><span style="color:#a3be8c;">Person {firstName =</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">Michael</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">, lastName =</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">Diamond</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">, age = 43}</span><span>&quot; == mikeD  
+</span><span style="color:#d08770;">True
+</span></code></pre>
+<hr />
+<h3 id="ord">Ord</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Bool </span><span>= </span><span style="color:#d08770;">False </span><span>| </span><span style="color:#d08770;">True </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Ord</span><span>)
+</span><span>ghci&gt; </span><span style="color:#d08770;">True </span><span style="color:#8fa1b3;">`</span><span>compare</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">False  
+</span><span style="color:#d08770;">GT  
+</span><span>ghci&gt; </span><span style="color:#d08770;">True </span><span>&gt; </span><span style="color:#d08770;">False  
+</span><span style="color:#d08770;">True
+</span><span>ghci&gt; </span><span style="color:#d08770;">Nothing </span><span>&lt; </span><span style="color:#d08770;">Just 100  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Nothing </span><span>&gt; </span><span style="color:#d08770;">Just</span><span> (-</span><span style="color:#d08770;">49999</span><span>)  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Just 3 </span><span style="color:#8fa1b3;">`</span><span>compare</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Just 2  
+</span><span style="color:#d08770;">GT  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Just 100 </span><span>&gt; </span><span style="color:#d08770;">Just 50  
+</span><span style="color:#d08770;">True 
+</span></code></pre>
+<hr />
+<h3 id="enum-bounded">Enum &amp; Bounded</h3>
+<ul>
+<li>Value constructors are nullary (take no parameters, i.e. fields).</li>
+<li>Enum typeclass is for things that have predecessors and successors.</li>
+<li>Bounded typeclass is for things that have a lowest possible value and highest possible value.</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Day </span><span>= </span><span style="color:#d08770;">Monday </span><span>| </span><span style="color:#d08770;">Tuesday </span><span>| </span><span style="color:#d08770;">Wednesday </span><span>| </span><span style="color:#d08770;">Thursday </span><span>| </span><span style="color:#d08770;">Friday </span><span>| </span><span style="color:#d08770;">Saturday </span><span>| </span><span style="color:#d08770;">Sunday
+</span></code></pre>
+<hr />
+<h3 id="let-our-enum-to-show-read">Let our enum to show/read</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">Wednesday  
+</span><span style="color:#d08770;">Wednesday  
+</span><span>ghci&gt; show </span><span style="color:#d08770;">Wednesday  
+</span><span>&quot;</span><span style="color:#a3be8c;">Wednesday</span><span>&quot;  
+</span><span>ghci&gt; read &quot;</span><span style="color:#a3be8c;">Saturday</span><span>&quot; :: </span><span style="color:#d08770;">Day  
+</span><span style="color:#d08770;">Saturday
+</span></code></pre>
+<hr />
+<h3 id="let-our-enum-to-eq-ord">Let our enum to eq/ord</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">Saturday </span><span>== </span><span style="color:#d08770;">Sunday  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Saturday </span><span>== </span><span style="color:#d08770;">Saturday  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Saturday </span><span>&gt; </span><span style="color:#d08770;">Friday  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Monday </span><span style="color:#8fa1b3;">`</span><span>compare</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Wednesday  
+</span><span style="color:#d08770;">LT
+</span></code></pre>
+<hr />
+<h3 id="let-our-enum-to-enum-bounded">Let our enum to enum/bounded</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; minBound :: </span><span style="color:#d08770;">Day  
+</span><span style="color:#d08770;">Monday  
+</span><span>ghci&gt; maxBound :: </span><span style="color:#d08770;">Day  
+</span><span style="color:#d08770;">Sunday
+</span><span>ghci&gt; succ </span><span style="color:#d08770;">Monday  
+</span><span style="color:#d08770;">Tuesday  
+</span><span>ghci&gt; pred </span><span style="color:#d08770;">Saturday  
+</span><span style="color:#d08770;">Friday  
+</span><span>ghci&gt; [</span><span style="color:#d08770;">Thursday </span><span>.. </span><span style="color:#d08770;">Sunday</span><span>]  
+</span><span>[</span><span style="color:#d08770;">Thursday</span><span>,</span><span style="color:#d08770;">Friday</span><span>,</span><span style="color:#d08770;">Saturday</span><span>,</span><span style="color:#d08770;">Sunday</span><span>]  
+</span><span>ghci&gt; [minBound .. maxBound] :: [</span><span style="color:#d08770;">Day</span><span>]  
+</span><span>[</span><span style="color:#d08770;">Monday</span><span>,</span><span style="color:#d08770;">Tuesday</span><span>,</span><span style="color:#d08770;">Wednesday</span><span>,</span><span style="color:#d08770;">Thursday</span><span>,</span><span style="color:#d08770;">Friday</span><span>,</span><span style="color:#d08770;">Saturday</span><span>,</span><span style="color:#d08770;">Sunday</span><span>]
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="type-synonyms">Type synonyms</h2>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">type </span><span style="color:#d08770;">String </span><span>= [</span><span style="color:#d08770;">Char</span><span>]
+</span><span>
+</span><span style="color:#b48ead;">type </span><span style="color:#d08770;">PhoneNumber </span><span>= </span><span style="color:#d08770;">String  
+</span><span style="color:#b48ead;">type </span><span style="color:#d08770;">Name </span><span>= </span><span style="color:#d08770;">String  
+</span><span style="color:#b48ead;">type </span><span style="color:#d08770;">PhoneBook </span><span>= [(</span><span style="color:#d08770;">Name</span><span>,</span><span style="color:#d08770;">PhoneNumber</span><span>)]
+</span><span>
+</span><span style="color:#8fa1b3;">inPhoneBook </span><span style="color:#b48ead;">:: Name -&gt; PhoneNumber -&gt; PhoneBook -&gt; Bool  
+</span><span>inPhoneBook name pnumber pbook = (name,pnumber) </span><span style="color:#8fa1b3;">`</span><span>elem</span><span style="color:#8fa1b3;">`</span><span> pbook
+</span></code></pre>
+<hr />
+<h3 id="parameterized">parameterized</h3>
+<ul>
+<li>So we can produces a concrete type, like AssocList Int String</li>
+<li>Concrete type means fully applied types</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">type </span><span style="color:#d08770;">AssocList</span><span> k v = [(k,v)]  
+</span></code></pre>
+<hr />
+<h3 id="partially-apply-type-parameters">partially apply type parameters</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">type </span><span style="color:#d08770;">IntMap</span><span> v = </span><span style="color:#d08770;">Map Int</span><span> v
+</span><span style="color:#65737e;">-- or
+</span><span style="color:#b48ead;">type </span><span style="color:#d08770;">IntMap </span><span>= </span><span style="color:#d08770;">Map Int
+</span></code></pre>
+<hr />
+<h3 id="either-a-b">Either a b</h3>
+<p>Like result in rust</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Either</span><span> a b = </span><span style="color:#d08770;">Left</span><span> a | </span><span style="color:#d08770;">Right</span><span> b </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Eq</span><span>, </span><span style="color:#a3be8c;">Ord</span><span>, </span><span style="color:#a3be8c;">Read</span><span>, </span><span style="color:#a3be8c;">Show</span><span>)
+</span><span>ghci&gt; </span><span style="color:#d08770;">Right 20  
+</span><span style="color:#d08770;">Right 20  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Left </span><span>&quot;</span><span style="color:#a3be8c;">w00t</span><span>&quot;  
+</span><span style="color:#d08770;">Left </span><span>&quot;</span><span style="color:#a3be8c;">w00t</span><span>&quot;  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Right </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;  
+</span><span style="color:#d08770;">Right </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39; :: </span><span style="color:#d08770;">Either</span><span> a </span><span style="color:#d08770;">Char  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Left True  
+</span><span style="color:#d08770;">Left True </span><span>:: </span><span style="color:#d08770;">Either Bool</span><span> b
+</span></code></pre>
+<hr />
+<h3 id="example-lockers">Example: lockers</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">import qualified </span><span>Data.Map </span><span style="color:#b48ead;">as </span><span>Map  
+</span><span style="color:#b48ead;">data </span><span style="color:#d08770;">LockerState </span><span>= </span><span style="color:#d08770;">Taken </span><span>| </span><span style="color:#d08770;">Free </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>, </span><span style="color:#a3be8c;">Eq</span><span>)  
+</span><span style="color:#b48ead;">type </span><span style="color:#d08770;">Code </span><span>= </span><span style="color:#d08770;">String  
+</span><span style="color:#b48ead;">type </span><span style="color:#d08770;">LockerMap </span><span>= </span><span style="color:#d08770;">Map</span><span>.</span><span style="color:#d08770;">Map Int</span><span> (</span><span style="color:#d08770;">LockerState</span><span>, </span><span style="color:#d08770;">Code</span><span>)
+</span><span>
+</span><span style="color:#8fa1b3;">lockerLookup </span><span style="color:#b48ead;">:: Int -&gt; LockerMap -&gt; Either String Code  
+</span><span>lockerLookup lockerNumber map =   
+</span><span>    </span><span style="color:#b48ead;">case </span><span style="color:#d08770;">Map</span><span>.lookup lockerNumber map </span><span style="color:#b48ead;">of   
+</span><span>        </span><span style="color:#d08770;">Nothing </span><span>-&gt; </span><span style="color:#d08770;">Left </span><span>$ &quot;</span><span style="color:#a3be8c;">Locker number </span><span>&quot; ++ show lockerNumber ++ &quot;</span><span style="color:#a3be8c;"> doesn&#39;t exist!</span><span>&quot;  
+</span><span>        </span><span style="color:#d08770;">Just</span><span> (state, code) -&gt; </span><span style="color:#b48ead;">if</span><span> state /= </span><span style="color:#d08770;">Taken   
+</span><span>                                </span><span style="color:#b48ead;">then </span><span style="color:#d08770;">Right</span><span> code  
+</span><span>                                </span><span style="color:#b48ead;">else </span><span style="color:#d08770;">Left </span><span>$ &quot;</span><span style="color:#a3be8c;">Locker </span><span>&quot; ++ show lockerNumber ++ &quot;</span><span style="color:#a3be8c;"> is already taken!</span><span>&quot;
+</span></code></pre>
+<hr />
+<h3 id="example-lockers-1">Example: lockers</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">lockers </span><span style="color:#b48ead;">:: LockerMap  
+</span><span>lockers = </span><span style="color:#d08770;">Map</span><span>.fromList   
+</span><span>    [(</span><span style="color:#d08770;">100</span><span>,(</span><span style="color:#d08770;">Taken</span><span>,&quot;</span><span style="color:#a3be8c;">ZD39I</span><span>&quot;))  
+</span><span>    ,(</span><span style="color:#d08770;">101</span><span>,(</span><span style="color:#d08770;">Free</span><span>,&quot;</span><span style="color:#a3be8c;">JAH3I</span><span>&quot;))  
+</span><span>    ,(</span><span style="color:#d08770;">103</span><span>,(</span><span style="color:#d08770;">Free</span><span>,&quot;</span><span style="color:#a3be8c;">IQSA9</span><span>&quot;))  
+</span><span>    ,(</span><span style="color:#d08770;">105</span><span>,(</span><span style="color:#d08770;">Free</span><span>,&quot;</span><span style="color:#a3be8c;">QOTSA</span><span>&quot;))  
+</span><span>    ,(</span><span style="color:#d08770;">109</span><span>,(</span><span style="color:#d08770;">Taken</span><span>,&quot;</span><span style="color:#a3be8c;">893JJ</span><span>&quot;))  
+</span><span>    ,(</span><span style="color:#d08770;">110</span><span>,(</span><span style="color:#d08770;">Taken</span><span>,&quot;</span><span style="color:#a3be8c;">99292</span><span>&quot;))  
+</span><span>    ]
+</span><span>ghci&gt; lockerLookup </span><span style="color:#d08770;">101</span><span> lockers  
+</span><span style="color:#d08770;">Right </span><span>&quot;</span><span style="color:#a3be8c;">JAH3I</span><span>&quot;  
+</span><span>ghci&gt; lockerLookup </span><span style="color:#d08770;">100</span><span> lockers  
+</span><span style="color:#d08770;">Left </span><span>&quot;</span><span style="color:#a3be8c;">Locker 100 is already taken!</span><span>&quot;  
+</span><span>ghci&gt; lockerLookup </span><span style="color:#d08770;">102</span><span> lockers  
+</span><span style="color:#d08770;">Left </span><span>&quot;</span><span style="color:#a3be8c;">Locker number 102 doesn&#39;t exist!</span><span>&quot;  
+</span><span>ghci&gt; lockerLookup </span><span style="color:#d08770;">110</span><span> lockers  
+</span><span style="color:#d08770;">Left </span><span>&quot;</span><span style="color:#a3be8c;">Locker 110 is already taken!</span><span>&quot;  
+</span><span>ghci&gt; lockerLookup </span><span style="color:#d08770;">105</span><span> lockers  
+</span><span style="color:#d08770;">Right </span><span>&quot;</span><span style="color:#a3be8c;">QOTSA</span><span>&quot;
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="recursive-data-structures">Recursive data structures</h2>
+<ul>
+<li>Algebraic data type only allows concrete types.</li>
+<li>Cons means : in list</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">List</span><span> a = </span><span style="color:#d08770;">Empty </span><span>| </span><span style="color:#d08770;">Cons</span><span> a (</span><span style="color:#d08770;">List</span><span> a) </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>, </span><span style="color:#a3be8c;">Read</span><span>, </span><span style="color:#a3be8c;">Eq</span><span>, </span><span style="color:#a3be8c;">Ord</span><span>)
+</span><span>ghci&gt; </span><span style="color:#d08770;">Empty  
+</span><span style="color:#d08770;">Empty  
+</span><span>ghci&gt; </span><span style="color:#d08770;">5 </span><span style="color:#8fa1b3;">`</span><span>Cons</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Empty  
+</span><span style="color:#d08770;">Cons 5 Empty  
+</span><span>ghci&gt; </span><span style="color:#d08770;">4 </span><span style="color:#8fa1b3;">`</span><span>Cons</span><span style="color:#8fa1b3;">`</span><span> (</span><span style="color:#d08770;">5 </span><span style="color:#8fa1b3;">`</span><span>Cons</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Empty</span><span>)  
+</span><span style="color:#d08770;">Cons 4</span><span> (</span><span style="color:#d08770;">Cons 5 Empty</span><span>)  
+</span><span>ghci&gt; </span><span style="color:#d08770;">3 </span><span style="color:#8fa1b3;">`</span><span>Cons</span><span style="color:#8fa1b3;">`</span><span> (</span><span style="color:#d08770;">4 </span><span style="color:#8fa1b3;">`</span><span>Cons</span><span style="color:#8fa1b3;">`</span><span> (</span><span style="color:#d08770;">5 </span><span style="color:#8fa1b3;">`</span><span>Cons</span><span style="color:#8fa1b3;">` </span><span style="color:#d08770;">Empty</span><span>))  
+</span><span style="color:#d08770;">Cons 3</span><span> (</span><span style="color:#d08770;">Cons 4</span><span> (</span><span style="color:#d08770;">Cons 5 Empty</span><span>))
+</span></code></pre>
+<hr />
+<h3 id="fixity-declarations">fixity declarations</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>infixr </span><span style="color:#d08770;">5 </span><span>:-:  
+</span><span style="color:#b48ead;">data </span><span style="color:#d08770;">List</span><span> a = </span><span style="color:#d08770;">Empty </span><span>| a :-: (</span><span style="color:#d08770;">List</span><span> a) </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>, </span><span style="color:#a3be8c;">Read</span><span>, </span><span style="color:#a3be8c;">Eq</span><span>, </span><span style="color:#a3be8c;">Ord</span><span>)
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#d08770;">3 </span><span>:-: </span><span style="color:#d08770;">4 </span><span>:-: </span><span style="color:#d08770;">5 </span><span>:-: </span><span style="color:#d08770;">Empty  
+</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">3</span><span> (</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">4</span><span> (</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">5 Empty</span><span>))  
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> a = </span><span style="color:#d08770;">3 </span><span>:-: </span><span style="color:#d08770;">4 </span><span>:-: </span><span style="color:#d08770;">5 </span><span>:-: </span><span style="color:#d08770;">Empty  
+</span><span>ghci&gt; </span><span style="color:#d08770;">100 </span><span>:-: a  
+</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">100</span><span> (</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">3</span><span> (</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">4</span><span> (</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">5 Empty</span><span>)))
+</span></code></pre>
+<hr />
+<h3 id="and">* and +</h3>
+<ul>
+<li>infixl 7 *: so 4 * 3 * 2 is (4 * 3) * 2</li>
+<li>infixl 6: so so 5 * 4 + 3 is (5 * 4) + 3</li>
+</ul>
+<hr />
+<h3 id="">++</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>infixr </span><span style="color:#d08770;">5  </span><span>++ 
+</span><span style="color:#8fa1b3;">(++) </span><span style="color:#b48ead;">::</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>]  
+</span><span style="color:#d08770;">[]     </span><span>++ ys = ys  
+</span><span>(x:xs) ++ ys = x : (xs ++ ys)
+</span><span>
+</span><span>infixr </span><span style="color:#d08770;">5  </span><span>.++  
+</span><span style="color:#8fa1b3;">(.++) </span><span style="color:#b48ead;">:: List </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; List </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; List </span><span style="color:#bf616a;">a   
+</span><span style="color:#d08770;">Empty </span><span>.++ ys = ys  
+</span><span>(x :-: xs) .++ ys = x :-: (xs .++ ys)  
+</span><span style="color:#65737e;">-- Notice the pattern matching
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> a = </span><span style="color:#d08770;">3 </span><span>:-: </span><span style="color:#d08770;">4 </span><span>:-: </span><span style="color:#d08770;">5 </span><span>:-: </span><span style="color:#d08770;">Empty  
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> b = </span><span style="color:#d08770;">6 </span><span>:-: </span><span style="color:#d08770;">7 </span><span>:-: </span><span style="color:#d08770;">Empty  
+</span><span>ghci&gt; a .++ b  
+</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">3</span><span> (</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">4</span><span> (</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">5</span><span> (</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">6</span><span> (</span><span style="color:#8fa1b3;">(:-:) </span><span style="color:#d08770;">7 Empty</span><span>))))
+</span></code></pre>
+<hr />
+<h3 id="example-binary-search-tree">Example: binary search tree</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Tree</span><span> a = </span><span style="color:#d08770;">EmptyTree </span><span>| </span><span style="color:#d08770;">Node</span><span> a (</span><span style="color:#d08770;">Tree</span><span> a) (</span><span style="color:#d08770;">Tree</span><span> a) </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>, </span><span style="color:#a3be8c;">Read</span><span>, </span><span style="color:#a3be8c;">Eq</span><span>)
+</span><span>
+</span><span style="color:#8fa1b3;">singleton </span><span style="color:#b48ead;">:: </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Tree </span><span style="color:#bf616a;">a  
+</span><span>singleton x = </span><span style="color:#d08770;">Node</span><span> x </span><span style="color:#d08770;">EmptyTree EmptyTree  
+</span><span>  
+</span><span style="color:#8fa1b3;">treeInsert </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Ord </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Tree </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Tree </span><span style="color:#bf616a;">a  
+</span><span>treeInsert x </span><span style="color:#d08770;">EmptyTree </span><span>= singleton x  
+</span><span>treeInsert x (</span><span style="color:#d08770;">Node</span><span> a left right)   
+</span><span>    | x == a = </span><span style="color:#d08770;">Node</span><span> x left right  
+</span><span>    | x &lt; a  = </span><span style="color:#d08770;">Node</span><span> a (treeInsert x left) right  
+</span><span>    | x &gt; a  = </span><span style="color:#d08770;">Node</span><span> a left (treeInsert x right)
+</span></code></pre>
+<hr />
+<h3 id="example-binary-search-tree-1">Example: binary search tree</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">treeElem </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">Ord </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Tree </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Bool  
+</span><span>treeElem x </span><span style="color:#d08770;">EmptyTree </span><span>= </span><span style="color:#d08770;">False  
+</span><span>treeElem x (</span><span style="color:#d08770;">Node</span><span> a left right)  
+</span><span>    | x == a = </span><span style="color:#d08770;">True  
+</span><span>    | x &lt; a  = treeElem x left  
+</span><span>    | x &gt; a  = treeElem x right
+</span></code></pre>
+<hr />
+<h3 id="example-binary-search-tree-2">Example: binary search tree</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> nums = [</span><span style="color:#d08770;">8</span><span>,</span><span style="color:#d08770;">6</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">5</span><span>]  
+</span><span>ghci&gt; </span><span style="color:#b48ead;">let</span><span> numsTree = foldr treeInsert </span><span style="color:#d08770;">EmptyTree</span><span> nums  
+</span><span>ghci&gt; numsTree  
+</span><span style="color:#d08770;">Node 5</span><span> (</span><span style="color:#d08770;">Node 3</span><span> (</span><span style="color:#d08770;">Node 1 EmptyTree EmptyTree</span><span>) (</span><span style="color:#d08770;">Node 4 EmptyTree EmptyTree</span><span>)) (</span><span style="color:#d08770;">Node 7</span><span> (</span><span style="color:#d08770;">Node 6 EmptyTree EmptyTree</span><span>) (</span><span style="color:#d08770;">Node 8 EmptyTree EmptyTree</span><span>))  
+</span><span>
+</span><span>ghci&gt; </span><span style="color:#d08770;">8 </span><span style="color:#8fa1b3;">`</span><span>treeElem</span><span style="color:#8fa1b3;">`</span><span> numsTree  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; </span><span style="color:#d08770;">100 </span><span style="color:#8fa1b3;">`</span><span>treeElem</span><span style="color:#8fa1b3;">`</span><span> numsTree  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; </span><span style="color:#d08770;">1 </span><span style="color:#8fa1b3;">`</span><span>treeElem</span><span style="color:#8fa1b3;">`</span><span> numsTree  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; </span><span style="color:#d08770;">10 </span><span style="color:#8fa1b3;">`</span><span>treeElem</span><span style="color:#8fa1b3;">`</span><span> numsTree  
+</span><span style="color:#d08770;">False
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h3 id="typeclasses-102">Typeclasses 102</h3>
+<p>Class declaration:</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Eq </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">where  
+</span><span>    </span><span style="color:#8fa1b3;">(==) </span><span style="color:#b48ead;">:: </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Bool  
+</span><span>    </span><span style="color:#8fa1b3;">(/=) </span><span style="color:#b48ead;">:: </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Bool  
+</span><span>    x == y = not (x /= y)  
+</span><span>    x /= y = not (x == y)
+</span></code></pre>
+<hr />
+<h3 id="making-types-instances-of-that-typeclass">Making types instances of that typeclass</h3>
+<p>Minimal complete definition for the typeclass:</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">TrafficLight </span><span>= </span><span style="color:#d08770;">Red </span><span>| </span><span style="color:#d08770;">Yellow </span><span>| </span><span style="color:#d08770;">Green
+</span><span>
+</span><span style="color:#b48ead;">instance Eq TrafficLight where  
+</span><span>    </span><span style="color:#d08770;">Red </span><span>== </span><span style="color:#d08770;">Red </span><span>= </span><span style="color:#d08770;">True  
+</span><span>    </span><span style="color:#d08770;">Green </span><span>== </span><span style="color:#d08770;">Green </span><span>= </span><span style="color:#d08770;">True  
+</span><span>    </span><span style="color:#d08770;">Yellow </span><span>== </span><span style="color:#d08770;">Yellow </span><span>= </span><span style="color:#d08770;">True  
+</span><span>    _ == _ = </span><span style="color:#d08770;">False
+</span></code></pre>
+<hr />
+<h3 id="making-types-instances-of-that-typeclass-1">Making types instances of that typeclass</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; </span><span style="color:#d08770;">Red </span><span>== </span><span style="color:#d08770;">Red  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Red </span><span>== </span><span style="color:#d08770;">Yellow  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; </span><span style="color:#d08770;">Red </span><span style="color:#8fa1b3;">`</span><span>elem</span><span style="color:#8fa1b3;">`</span><span> [</span><span style="color:#d08770;">Red</span><span>, </span><span style="color:#d08770;">Yellow</span><span>, </span><span style="color:#d08770;">Green</span><span>]  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; [</span><span style="color:#d08770;">Red</span><span>, </span><span style="color:#d08770;">Yellow</span><span>, </span><span style="color:#d08770;">Green</span><span>]  
+</span><span>[</span><span style="color:#d08770;">Red</span><span> light,</span><span style="color:#d08770;">Yellow</span><span> light,</span><span style="color:#d08770;">Green</span><span> light]
+</span></code></pre>
+<hr />
+<h3 id="typeclass-of-typeclass">typeclass of typeclass</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">class</span><span> (</span><span style="color:#ebcb8b;">Eq </span><span style="color:#bf616a;">a</span><span>) =&gt; </span><span style="color:#ebcb8b;">Num </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">where  
+</span><span>   ...
+</span></code></pre>
+<hr />
+<h3 id="how-about-maybe-or-list-type">How about Maybe or list type</h3>
+<p>This is wrong even Maybe m is concrete type</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Eq</span><span> (</span><span style="color:#b48ead;">Maybe </span><span style="color:#bf616a;">m</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    </span><span style="color:#d08770;">Just</span><span> x == </span><span style="color:#d08770;">Just</span><span> y = x == y  
+</span><span>    </span><span style="color:#d08770;">Nothing </span><span>== </span><span style="color:#d08770;">Nothing </span><span>= </span><span style="color:#d08770;">True  
+</span><span>    _ == _ = </span><span style="color:#d08770;">False
+</span></code></pre>
+<hr />
+<h3 id="class-constraint">Class constraint</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance</span><span> (</span><span style="color:#b48ead;">Eq </span><span style="color:#bf616a;">m</span><span>) </span><span style="color:#b48ead;">=&gt; Eq</span><span> (</span><span style="color:#b48ead;">Maybe </span><span style="color:#bf616a;">m</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    </span><span style="color:#d08770;">Just</span><span> x == </span><span style="color:#d08770;">Just</span><span> y = x == y  
+</span><span>    </span><span style="color:#d08770;">Nothing </span><span>== </span><span style="color:#d08770;">Nothing </span><span>= </span><span style="color:#d08770;">True  
+</span><span>    _ == _ = </span><span style="color:#d08770;">False
+</span></code></pre>
+<hr />
+<h3 id="info">:info</h3>
+<ul>
+<li>:info Num</li>
+<li>:info Maybe</li>
+</ul>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="a-yes-no-typeclass">A yes-no typeclass</h2>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">class </span><span style="color:#a3be8c;">YesNo </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">where  
+</span><span>    </span><span style="color:#8fa1b3;">yesno </span><span style="color:#b48ead;">:: </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Bool
+</span><span>
+</span><span style="color:#b48ead;">instance YesNo Int where  
+</span><span>    yesno </span><span style="color:#d08770;">0 </span><span>= </span><span style="color:#d08770;">False  
+</span><span>    yesno _ = </span><span style="color:#d08770;">True
+</span><span style="color:#b48ead;">instance YesNo</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">where  
+</span><span>    yesno </span><span style="color:#d08770;">[] </span><span>= </span><span style="color:#d08770;">False  
+</span><span>    yesno _ = </span><span style="color:#d08770;">True
+</span><span style="color:#b48ead;">instance YesNo Bool where  
+</span><span>    yesno = id
+</span><span style="color:#b48ead;">instance YesNo</span><span> (</span><span style="color:#b48ead;">Maybe </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    yesno (</span><span style="color:#d08770;">Just</span><span> _) = </span><span style="color:#d08770;">True  
+</span><span>    yesno </span><span style="color:#d08770;">Nothing </span><span>= </span><span style="color:#d08770;">False
+</span><span style="color:#b48ead;">instance YesNo</span><span> (</span><span style="color:#b48ead;">Tree </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    yesno </span><span style="color:#d08770;">EmptyTree </span><span>= </span><span style="color:#d08770;">False  
+</span><span>    yesno _ = </span><span style="color:#d08770;">True
+</span><span style="color:#b48ead;">instance YesNo TrafficLight where  
+</span><span>    yesno </span><span style="color:#d08770;">Red </span><span>= </span><span style="color:#d08770;">False  
+</span><span>    yesno _ = </span><span style="color:#d08770;">True
+</span></code></pre>
+<hr />
+<h3 id="the-results">The results</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; yesno $ length </span><span style="color:#d08770;">[]  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; yesno &quot;</span><span style="color:#a3be8c;">haha</span><span>&quot;  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; yesno &quot;&quot;  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; yesno $ </span><span style="color:#d08770;">Just 0  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; yesno </span><span style="color:#d08770;">True  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; yesno </span><span style="color:#d08770;">EmptyTree  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; yesno </span><span style="color:#d08770;">[]  
+</span><span style="color:#d08770;">False  
+</span><span>ghci&gt; yesno [</span><span style="color:#d08770;">0</span><span>,</span><span style="color:#d08770;">0</span><span>,</span><span style="color:#d08770;">0</span><span>]  
+</span><span style="color:#d08770;">True  
+</span><span>ghci&gt; :t yesno  
+</span><span style="color:#8fa1b3;">yesno </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">YesNo </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; Bool
+</span></code></pre>
+<hr />
+<h3 id="create-function-for-it">Create function for it</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#8fa1b3;">yesnoIf </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#b48ead;">YesNo </span><span style="color:#bf616a;">y</span><span>) </span><span style="color:#b48ead;">=&gt; </span><span style="color:#bf616a;">y </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">a  
+</span><span>yesnoIf yesnoVal yesResult noResult = </span><span style="color:#b48ead;">if</span><span> yesno yesnoVal </span><span style="color:#b48ead;">then</span><span> yesResult </span><span style="color:#b48ead;">else</span><span> noResult
+</span><span>
+</span><span>ghci&gt; yesnoIf </span><span style="color:#d08770;">[] </span><span>&quot;</span><span style="color:#a3be8c;">YEAH!</span><span>&quot; &quot;</span><span style="color:#a3be8c;">NO!</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">NO!</span><span>&quot;  
+</span><span>ghci&gt; yesnoIf [</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">4</span><span>] &quot;</span><span style="color:#a3be8c;">YEAH!</span><span>&quot; &quot;</span><span style="color:#a3be8c;">NO!</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">YEAH!</span><span>&quot;  
+</span><span>ghci&gt; yesnoIf </span><span style="color:#d08770;">True </span><span>&quot;</span><span style="color:#a3be8c;">YEAH!</span><span>&quot; &quot;</span><span style="color:#a3be8c;">NO!</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">YEAH!</span><span>&quot;  
+</span><span>ghci&gt; yesnoIf (</span><span style="color:#d08770;">Just 500</span><span>) &quot;</span><span style="color:#a3be8c;">YEAH!</span><span>&quot; &quot;</span><span style="color:#a3be8c;">NO!</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">YEAH!</span><span>&quot;  
+</span><span>ghci&gt; yesnoIf </span><span style="color:#d08770;">Nothing </span><span>&quot;</span><span style="color:#a3be8c;">YEAH!</span><span>&quot; &quot;</span><span style="color:#a3be8c;">NO!</span><span>&quot;  
+</span><span>&quot;</span><span style="color:#a3be8c;">NO!</span><span>&quot;
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="the-functor-typeclass">The Functor typeclass</h2>
+<ul>
+<li>f is not a concrete type. It has to be the type that take one type</li>
+<li>list type is part of Functor</li>
+<li>map :: (a -&gt; b) -&gt; [a] -&gt; [b]</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Functor </span><span style="color:#bf616a;">f </span><span style="color:#b48ead;">where  
+</span><span>    </span><span style="color:#8fa1b3;">fmap </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f b
+</span></code></pre>
+<hr />
+<h3 id="map">map</h3>
+<p>Map is just a fmap that works only on lists.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Functor</span><span> [] </span><span style="color:#b48ead;">where  
+</span><span>    fmap = map
+</span><span>
+</span><span style="color:#8fa1b3;">map </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">a</span><span>] </span><span style="color:#b48ead;">-&gt;</span><span> [</span><span style="color:#bf616a;">b</span><span>]  
+</span><span>ghci&gt; fmap (*</span><span style="color:#d08770;">2</span><span>) [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">3</span><span>]  
+</span><span>[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>]  
+</span><span>ghci&gt; map (*</span><span style="color:#d08770;">2</span><span>) [</span><span style="color:#d08770;">1</span><span>..</span><span style="color:#d08770;">3</span><span>]  
+</span><span>[</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">4</span><span>,</span><span style="color:#d08770;">6</span><span>]
+</span></code></pre>
+<hr />
+<h3 id="maybe">Maybe</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Functor Maybe where  
+</span><span>    fmap f (</span><span style="color:#d08770;">Just</span><span> x) = </span><span style="color:#d08770;">Just</span><span> (f x)  
+</span><span>    fmap f </span><span style="color:#d08770;">Nothing </span><span>= </span><span style="color:#d08770;">Nothing
+</span><span>ghci&gt; fmap (++ &quot;</span><span style="color:#a3be8c;"> HEY GUYS IM INSIDE THE JUST</span><span>&quot;) (</span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">Something serious.</span><span>&quot;)  
+</span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">Something serious. HEY GUYS IM INSIDE THE JUST</span><span>&quot;  
+</span><span>ghci&gt; fmap (++ &quot;</span><span style="color:#a3be8c;"> HEY GUYS IM INSIDE THE JUST</span><span>&quot;) </span><span style="color:#d08770;">Nothing  
+</span><span style="color:#d08770;">Nothing  
+</span><span>ghci&gt; fmap (*</span><span style="color:#d08770;">2</span><span>) (</span><span style="color:#d08770;">Just 200</span><span>)  
+</span><span style="color:#d08770;">Just 400  
+</span><span>ghci&gt; fmap (*</span><span style="color:#d08770;">2</span><span>) </span><span style="color:#d08770;">Nothing  
+</span><span style="color:#d08770;">Nothing
+</span></code></pre>
+<hr />
+<h3 id="tree">Tree</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Functor Tree where  
+</span><span>    fmap f </span><span style="color:#d08770;">EmptyTree </span><span>= </span><span style="color:#d08770;">EmptyTree  
+</span><span>    fmap f (</span><span style="color:#d08770;">Node</span><span> x leftsub rightsub) = </span><span style="color:#d08770;">Node</span><span> (f x) (fmap f leftsub) (fmap f rightsub)
+</span><span>ghci&gt; fmap (*</span><span style="color:#d08770;">2</span><span>) </span><span style="color:#d08770;">EmptyTree  
+</span><span style="color:#d08770;">EmptyTree  
+</span><span>ghci&gt; fmap (*</span><span style="color:#d08770;">4</span><span>) (foldr treeInsert </span><span style="color:#d08770;">EmptyTree</span><span> [</span><span style="color:#d08770;">5</span><span>,</span><span style="color:#d08770;">7</span><span>,</span><span style="color:#d08770;">3</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">7</span><span>])  
+</span><span style="color:#d08770;">Node 28</span><span> (</span><span style="color:#d08770;">Node 4 EmptyTree</span><span> (</span><span style="color:#d08770;">Node 8 EmptyTree</span><span> (</span><span style="color:#d08770;">Node 12 EmptyTree</span><span> (</span><span style="color:#d08770;">Node 20 EmptyTree EmptyTree</span><span>)))) </span><span style="color:#d08770;">EmptyTree
+</span></code></pre>
+<hr />
+<h3 id="either">Either</h3>
+<ul>
+<li>Notice it take Either a</li>
+<li>Left can hence be used for error type</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Functor</span><span> (</span><span style="color:#b48ead;">Either </span><span style="color:#bf616a;">a</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    fmap f (</span><span style="color:#d08770;">Right</span><span> x) = </span><span style="color:#d08770;">Right</span><span> (f x)  
+</span><span>    fmap f (</span><span style="color:#d08770;">Left</span><span> x) = </span><span style="color:#d08770;">Left</span><span> x
+</span></code></pre>
+<hr />
+<h3 id="data-map">Data.Map</h3>
+<p>fmap will map a function v -&gt; v' over a map of type Map k v and return a map of type Map k v'.</p>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="kinds-and-some-type-foo">Kinds and some type-foo</h2>
+<ul>
+<li>Type constructors take other types as parameters to eventually produce concrete types. Just like how functions work.</li>
+<li>Types are like are little labels that values carry. These labels are called <strong>Kinds</strong>.</li>
+<li>Kind are type of a type.</li>
+<li>
+<ul>
+<li>means concrete type</li>
+</ul>
+</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; :k </span><span style="color:#d08770;">Int  
+</span><span style="color:#d08770;">Int </span><span>:: *
+</span></code></pre>
+<hr />
+<h3 id="maybe-1">Maybe</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; :k </span><span style="color:#d08770;">Maybe  
+</span><span style="color:#d08770;">Maybe </span><span>:: * -&gt; *
+</span><span>
+</span><span>ghci&gt; :k </span><span style="color:#d08770;">Maybe Int  
+</span><span style="color:#d08770;">Maybe Int </span><span>:: *
+</span></code></pre>
+<hr />
+<h3 id="either-1">Either</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span>ghci&gt; :k </span><span style="color:#d08770;">Either  
+</span><span style="color:#d08770;">Either </span><span>:: * -&gt; * -&gt; *
+</span><span>
+</span><span>ghci&gt; :k </span><span style="color:#d08770;">Either String  
+</span><span style="color:#d08770;">Either String </span><span>:: * -&gt; *  
+</span><span>ghci&gt; :k </span><span style="color:#d08770;">Either String Int  
+</span><span style="color:#d08770;">Either String Int </span><span>:: *
+</span></code></pre>
+<hr />
+<h3 id="functor">Functor</h3>
+<p>So functor wants a partially apply type that takes one parameter.</p>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Functor </span><span style="color:#bf616a;">f </span><span style="color:#b48ead;">where   
+</span><span>    </span><span style="color:#8fa1b3;">fmap </span><span style="color:#b48ead;">::</span><span> (</span><span style="color:#bf616a;">a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">b</span><span>) </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">f b
+</span></code></pre>
+<hr />
+<h3 id="type-foo">type-foo</h3>
+<ul>
+<li>a is *</li>
+<li>j is * -&gt; *</li>
+<li>t is * -&gt; (* -&gt; *) -&gt; *</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">class </span><span style="color:#a3be8c;">Tofu </span><span style="color:#bf616a;">t </span><span style="color:#b48ead;">where  
+</span><span>    </span><span style="color:#8fa1b3;">tofu </span><span style="color:#b48ead;">:: </span><span style="color:#bf616a;">j a </span><span style="color:#b48ead;">-&gt; </span><span style="color:#bf616a;">t a j
+</span></code></pre>
+<hr />
+<h3 id="make-a-type-with-a-kind-of">make a type with a kind of * -&gt; (* -&gt; *) -&gt; *</h3>
+<ul>
+<li>field in ADT must be type</li>
+<li>a is *</li>
+<li>b is * -&gt; *</li>
+<li>Frank is * -&gt; (* -&gt; *) -&gt; *</li>
+</ul>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Frank</span><span> a b  = </span><span style="color:#d08770;">Frank</span><span> {frankField :: b a} </span><span style="color:#b48ead;">deriving</span><span> (</span><span style="color:#a3be8c;">Show</span><span>)
+</span><span>
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Frank</span><span> {frankField = </span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">HAHA</span><span>&quot;}  
+</span><span style="color:#d08770;">Frank</span><span> {frankField = </span><span style="color:#d08770;">Just </span><span>&quot;</span><span style="color:#a3be8c;">HAHA</span><span>&quot;} :: </span><span style="color:#d08770;">Frank</span><span> [</span><span style="color:#d08770;">Char</span><span>] </span><span style="color:#d08770;">Maybe  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Frank</span><span> {frankField = </span><span style="color:#d08770;">Node </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39; </span><span style="color:#d08770;">EmptyTree EmptyTree</span><span>}  
+</span><span style="color:#d08770;">Frank</span><span> {frankField = </span><span style="color:#d08770;">Node </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39; </span><span style="color:#d08770;">EmptyTree EmptyTree</span><span>} :: </span><span style="color:#d08770;">Frank Char Tree  
+</span><span>ghci&gt; :t </span><span style="color:#d08770;">Frank</span><span> {frankField = &quot;</span><span style="color:#a3be8c;">YES</span><span>&quot;}  
+</span><span style="color:#d08770;">Frank</span><span> {frankField = &quot;</span><span style="color:#a3be8c;">YES</span><span>&quot;} :: </span><span style="color:#d08770;">Frank Char []
+</span></code></pre>
+<hr />
+<h3 id="making-instance">Making instance</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">instance Tofu Frank where  
+</span><span>    tofu x = </span><span style="color:#d08770;">Frank</span><span> x
+</span><span>
+</span><span>ghci&gt; tofu (</span><span style="color:#d08770;">Just </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;) :: </span><span style="color:#d08770;">Frank Char Maybe  
+</span><span style="color:#d08770;">Frank</span><span> {frankField = </span><span style="color:#d08770;">Just </span><span>&#39;</span><span style="color:#a3be8c;">a</span><span>&#39;}  
+</span><span>ghci&gt; tofu [&quot;</span><span style="color:#a3be8c;">HELLO</span><span>&quot;] :: </span><span style="color:#d08770;">Frank</span><span> [</span><span style="color:#d08770;">Char</span><span>] </span><span style="color:#d08770;">[]  
+</span><span style="color:#d08770;">Frank</span><span> {frankField = [&quot;</span><span style="color:#a3be8c;">HELLO</span><span>&quot;]}
+</span></code></pre>
+<hr />
+<h3 id="type-bar">type-bar</h3>
+<pre data-lang="haskell" style="background-color:#2b303b;color:#c0c5ce;" class="language-haskell "><code class="language-haskell" data-lang="haskell"><span style="color:#b48ead;">data </span><span style="color:#d08770;">Barry</span><span> t k p = </span><span style="color:#d08770;">Barry</span><span> { yabba :: p, dabba :: t k }
+</span><span>
+</span><span>ghci&gt; :k </span><span style="color:#d08770;">Barry  
+</span><span style="color:#d08770;">Barry </span><span>:: (* -&gt; *) -&gt; * -&gt; * -&gt; *
+</span><span>
+</span><span style="color:#b48ead;">instance Functor</span><span> (</span><span style="color:#b48ead;">Barry </span><span style="color:#bf616a;">a b</span><span>) </span><span style="color:#b48ead;">where  
+</span><span>    fmap f (</span><span style="color:#d08770;">Barry</span><span> {yabba = x, dabba = y}) = </span><span style="color:#d08770;">Barry</span><span> {yabba = f x, dabba = y}
+</span></code></pre>
+<p>{{% /section %}}</p>
+
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-9">
+        
+        
+        
+
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+  
+  
+
+  
+  
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+  
+
+  
+  
+</body>
+
+</html>

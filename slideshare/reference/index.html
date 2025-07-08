@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | 你的不可變引用不是你的不可變引用
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="has-text-centered">
+      <h1 class="title is-2">你的不可變引用不是你的不可變引用</h1>
+      <p class="subtitle is-4"></p>
+    </div>
+    <div class="content">
+      <style>
+.textleft {
+  text-align:left;
+}
+.reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+font-family:Arial, Microsoft JhengHei;}
+.reveal .progress {
+    height: 14px !important;
+}
+.progress span {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAMCAIAAAAs6UAAAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QUNCQzIyREQ0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QUNCQzIyREU0QjdEMTFFMzlEMDM4Qzc3MEY0NzdGMDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpBQ0JDMjJEQjRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpBQ0JDMjJEQzRCN0QxMUUzOUQwMzhDNzcwRjQ3N0YwOCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PovDFgYAAAAmSURBVHjaYvjPwMAAxjMZmBhA9H8INv4P4TPM/A+m04zBNECAAQBCWQv9SUQpVgAAAABJRU5ErkJggg==) repeat-x !important;
+}
+.progress span:after, .progress span.nyancat {
+    content: "";
+    background: url(data:image/gif;base64,R0lGODlhIgAVAKIHAL3/9/+Zmf8zmf/MmZmZmf+Z/wAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpDMkJBNjY5RTU1NEJFMzExOUM4QUM2MDAwNDQzRERBQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCREIzOEIzMzRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCREIzOEIzMjRCN0IxMUUzODhEQjgwOTYzMTgyNTE0QiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkM1QkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkMyQkE2NjlFNTU0QkUzMTE5QzhBQzYwMDA0NDNEREFDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8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) ;
+    width: 34px !important;
+    height: 21px !important;
+    border: none !important;
+    float: right;
+    margin-top: -7px;
+    margin-right: -10px;
+}
+.my-icon-css {
+  width: 100%;
+  height: 200px;
+  background-position:center;
+  background-repeat: no-repeat;
+  background-image:url('https://mir-s3-cdn-cf.behance.net/project_modules/disp/fe36cc42774743.57ee5f329fae6.gif');
+}
+</style>
+<h2 id="ni-de-bu-ke-bian-yin-yong">你的不可變引用</h2>
+<h2 id="bu-shi-ni-de-bu-ke-bian-yin-yong">不是你的不可變引用</h2>
+<h4 id="wusyong-wu-yu-wei">@wusyong, 吳昱緯</h4>
+<hr />
+<h3 id="tl-dr">tl;dr</h3>
+<ul>
+<li><code>&amp;T</code> means &quot;shared reference&quot;</li>
+<li><code>&amp;mut T</code> means &quot;exclusive reference&quot;</li>
+</ul>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="reference-borrowing">Reference &amp; Borrowing</h2>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">struct </span><span>Point {
+</span><span>    </span><span style="color:#bf616a;">x</span><span>: </span><span style="color:#b48ead;">u32</span><span>,
+</span><span>    </span><span style="color:#bf616a;">y</span><span>: </span><span style="color:#b48ead;">u32</span><span>,
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">print_point</span><span>(</span><span style="color:#bf616a;">pt</span><span>: &amp;Point) {
+</span><span>    println!(&quot;</span><span style="color:#a3be8c;">x=</span><span style="color:#d08770;">{}</span><span style="color:#a3be8c;"> y=</span><span style="color:#d08770;">{}</span><span>&quot;, pt.x, pt.y);
+</span><span>}
+</span></code></pre>
+<hr />
+<h3 id="reference-borrowing-1">Reference &amp; Borrowing</h3>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">embiggen_x</span><span>(</span><span style="color:#bf616a;">pt</span><span>: &amp;Point) {
+</span><span>    pt.x = pt.x * </span><span style="color:#d08770;">2</span><span>;
+</span><span>}
+</span></code></pre>
+<pre data-lang="sh" style="background-color:#2b303b;color:#c0c5ce;" class="language-sh "><code class="language-sh" data-lang="sh"><span style="color:#bf616a;">error[E0594]:</span><span> cannot assign to `</span><span style="color:#bf616a;">pt.x</span><span>` which is behind a `&amp;` reference
+</span><span> </span><span style="color:#bf616a;">--</span><span>&gt; src/main.rs
+</span><span>  |
+</span><span style="color:#bf616a;">1 </span><span>| </span><span style="color:#bf616a;">fn</span><span> embiggen_x(pt: &amp;</span><span style="color:#bf616a;">Point</span><span>) {
+</span><span>  |                   </span><span style="color:#bf616a;">------</span><span> help: consider changing this to be a mutable reference: `&amp;</span><span style="color:#bf616a;">mut</span><span> Point`
+</span><span style="color:#bf616a;">2 </span><span>|     </span><span style="color:#bf616a;">pt.x</span><span> = pt.x * 2;
+</span><span>  |     </span><span style="color:#bf616a;">^^^^^^^^^^^^^^^ </span><span>`</span><span style="color:#bf616a;">pt</span><span>` is a `&amp;` reference, so the data it refers to cannot be written
+</span></code></pre>
+<hr />
+<h3 id="reference-borrowing-2">Reference &amp; Borrowing</h3>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">embiggen_x</span><span>(</span><span style="color:#bf616a;">pt</span><span>: &amp;</span><span style="color:#b48ead;">mut</span><span> Point) {
+</span><span>    pt.x = pt.x * </span><span style="color:#d08770;">2</span><span>;
+</span><span>}
+</span></code></pre>
+<hr />
+<h3 id="holup">Holup</h3>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">impl </span><span>AtomicU32 {
+</span><span>    </span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">store</span><span>(&amp;</span><span style="color:#bf616a;">self</span><span>, </span><span style="color:#bf616a;">val</span><span>: </span><span style="color:#b48ead;">u32</span><span>, </span><span style="color:#bf616a;">order</span><span>: Ordering);
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">static </span><span style="color:#d08770;">COUNTER</span><span>: AtomicU32 = AtomicU32::new(</span><span style="color:#d08770;">0</span><span>);
+</span><span>
+</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">reset</span><span>() {
+</span><span>    </span><span style="color:#d08770;">COUNTER</span><span>.</span><span style="color:#96b5b4;">store</span><span>(</span><span style="color:#d08770;">10</span><span>, Ordering::SeqCst);
+</span><span>}
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="multiprocessor-programming">Multiprocessor Programming</h2>
+<p><img src="https://preshing.com/images/weak-strong-table.png" alt="" /></p>
+<hr />
+<h3 id="memory-ordering">Memory Ordering</h3>
+<p><img src="https://i.imgur.com/9rq9LPT.png" alt="" /></p>
+<hr />
+<h3 id="cache">Cache</h3>
+<p><img src="https://preshing.com/images/cpu-diagram.png" alt="" /></p>
+<hr />
+<h3 id="mesi-protocol">MESI protocol</h3>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Modified (M) - modified (dirty). Need to write back data to main memory.
+</span><span>Exclusive (E) - only exists in this cache. Doesn&#39;t need to be synced (clean).
+</span><span>Shared (S) - might exist in other caches. Is current with main memory (clean).
+</span><span>Invalid (I) - cache line is invalid. Another cache has modified it.
+</span></code></pre>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="atomic-type">Atomic type</h2>
+<h4 id="std-sync-atomic-ordering">std::sync::atomic::Ordering</h4>
+<p>Relaxed &lt; Aquire/Release | AcqRel &lt; SeqCst</p>
+<hr />
+<h3 id="relaxed">Relaxed</h3>
+<p>In current CPU:</p>
+<ul>
+<li>Prevent compiler from reordering these instructions</li>
+<li>Might reorder all other memory accesses (on weakly ordered CPUs)</li>
+<li>Okay to use this in counter but not flag.</li>
+</ul>
+<hr />
+<h3 id="relaxed-1">Relaxed</h3>
+<p>In observer CPU:</p>
+<ul>
+<li>Free to reorder any other memory access</li>
+<li>Still can't reorder Relaxed instructions</li>
+</ul>
+<hr />
+<h3 id="relaxed-2">Relaxed</h3>
+<p>on strong ordered CPUs:</p>
+<ul>
+<li>They use Acquire/Release by default</li>
+<li>So this will only serve as hint for compiler</li>
+</ul>
+<hr />
+<h3 id="aquire">Aquire</h3>
+<p>In current CPU:</p>
+<ul>
+<li>Paired with a Release to form a memory sandwich</li>
+<li>Any memory operation written after the Acquire access stays after it</li>
+<li>Weakly ordered CPUs might need instructions like memory fence (MFENCE)</li>
+</ul>
+<hr />
+<h3 id="aquire-1">Aquire</h3>
+<p>In observer CPU:</p>
+<ul>
+<li>Doesn't modify memory, there is nothing to observe.</li>
+<li>Still able to see all memory operations happening from the Acquire load, and to the Release store (global synchronization)</li>
+</ul>
+<hr />
+<h3 id="aquire-2">Aquire</h3>
+<p>on strong ordered CPUs:</p>
+<ul>
+<li>Used by default, so this is basically no-op</li>
+</ul>
+<hr />
+<h3 id="release">Release</h3>
+<p>In current CPU:</p>
+<ul>
+<li>Paired with a Aquire to form a memory sandwich</li>
+<li>Any memory operation written before the Release memory ordering flag stays before it</li>
+<li>Weakly ordered CPUs might need instructions like memory fence (MFENCE)</li>
+<li>Make sure other cores see all these operations.</li>
+</ul>
+<hr />
+<h3 id="release-1">Release</h3>
+<p>In order to make sure global synchronization, we could do either:</p>
+<ul>
+<li>An Acquire load must ensure that it processes all messages and if any other core has invalidated any memory we load, it must fetch the correct value.</li>
+<li>A Release store must be atomic and invalidate all other caches holding that value before it modifies it.</li>
+</ul>
+<hr />
+<h3 id="release-2">Release</h3>
+<p>In observer CPU:</p>
+<ul>
+<li>Might not see these changes in any specific order</li>
+<li>Unless itself uses an Acquire load of the memory</li>
+<li>If so, it will see all memory which has been modified between the Acquire and the Release, including the Release store itself.</li>
+</ul>
+<p>Release is often used together with Acquire to write locks.</p>
+<hr />
+<h3 id="release-3">Release</h3>
+<p>on strong ordered CPUs:</p>
+<ul>
+<li>Shared value are invalidated in all L1 caches where the value is present before it is modified</li>
+<li>Acquire load will already have an updated view of all relevant memory, and a Release store will instantly invalidate any cache lines which contain the data on other cores.</li>
+<li>So that's why it's no-op</li>
+</ul>
+<hr />
+<h3 id="acqrel">AcqRel</h3>
+<ul>
+<li>Just Acquire/Release literally</li>
+</ul>
+<hr />
+<h3 id="seqcst-sequential-consistency">SeqCst (Sequential Consistency)</h3>
+<blockquote>
+<p>8.2.3.4 Loads May Be Reordered with Earlier Stores to Different Locations
+The Intel-64 memory-ordering model allows a load to be reordered with an earlier store to a different location. However, loads are not reordered with stores to the same location.</p>
+</blockquote>
+<p><a href="https://godbolt.org/z/EFK-qU">Godbolt link</a></p>
+<hr />
+<h3 id="seqcst">SeqCst</h3>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">let</span><span> x = X.</span><span style="color:#96b5b4;">load</span><span>(Ordering::Acquire);
+</span><span>X.</span><span style="color:#96b5b4;">store</span><span>(val | x, Ordering::Release); </span><span style="color:#65737e;">// 之前不同位置的寫入
+</span><span style="color:#b48ead;">let</span><span> y = Y.</span><span style="color:#96b5b4;">load</span><span>(Ordering::Acquire);   </span><span style="color:#65737e;">// 讀取
+</span><span>
+</span><span style="color:#65737e;">// 可能會被 CPU 變更成
+</span><span>
+</span><span style="color:#b48ead;">let</span><span> x = X.</span><span style="color:#96b5b4;">load</span><span>(Ordering::Acquire);
+</span><span style="color:#b48ead;">let</span><span> y = Y.</span><span style="color:#96b5b4;">load</span><span>(Ordering::Acquire);
+</span><span>X.</span><span style="color:#96b5b4;">store</span><span>(val | x, Ordering::Release);
+</span></code></pre>
+<hr />
+<h3 id="seqcst-1">SeqCst</h3>
+<blockquote>
+<p>8.2.3.9 Loads and Stores Are Not Reordered with Locked Instructions
+The memory-ordering model prevents loads and stores from being reordered with locked instructions that execute earlier or later. The examples in this section illustrate only cases in which a locked instruction is executed before a load or a store. The reader should note that reordering is prevented also if the locked instruction is executed after a load or a store.</p>
+</blockquote>
+<hr />
+<h3 id="seqcst-2">SeqCst</h3>
+<p>In observer CPU:</p>
+<ul>
+<li>Sequential Consistency: no other memory operations, reads or writes, will happen in between.</li>
+<li>Single total modification order: </li>
+</ul>
+<p>SeqCst is the strongest of the memory orderings. It also has a slightly higher cost than the others.</p>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="reference-in-rust">Reference in Rust</h2>
+<ul>
+<li><code>&amp;T</code> means &quot;shared reference&quot;</li>
+<li><code>&amp;mut T</code> means &quot;exclusive reference&quot;</li>
+</ul>
+<hr />
+<h3 id="interior-mutability">Interior Mutability</h3>
+<p>The term for safe APIs that support mutation through a shared reference in Rust is &quot;interior mutability&quot;.</p>
+<hr />
+<h3 id="unsafecell-t"><code>UnsafeCell&lt;T&gt;</code></h3>
+<ul>
+<li>the only way to hold data that is mutable through a shared reference</li>
+<li>it provides method to return raw pointer</li>
+</ul>
+<hr />
+<h3 id="cell-t"><code>Cell&lt;T&gt;</code></h3>
+<ul>
+<li>!Sync / !Send</li>
+<li>no way to get the content from reference, all access done by copying data</li>
+</ul>
+<hr />
+<h3 id="refcell-t"><code>RefCell&lt;T&gt;</code></h3>
+<ul>
+<li>!Sync / !Send</li>
+<li>dynamically checked borrow rules</li>
+</ul>
+<hr />
+<h3 id="mutex-t"><code>Mutex&lt;T&gt;</code></h3>
+<ul>
+<li>only one of the references may operate on the inner T at a time</li>
+</ul>
+<hr />
+<h3 id="rwlock-t"><code>RwLock&lt;T&gt;</code></h3>
+<ul>
+<li>either all reference used for reading</li>
+<li>or only one for writing</li>
+</ul>
+<p>{{% /section %}}</p>
+<hr />
+<p>{{% section %}}</p>
+<h2 id="thanks">Thanks!</h2>
+<p>{{% /section %}}</p>
+
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-9">
+        
+        
+        
+
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+  
+  
+
+  
+  
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+  
+
+  
+  
+</body>
+
+</html>

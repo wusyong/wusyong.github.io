@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Environment Setup for STM Developement in Rust
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Environment Setup for STM Developement in Rust
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2020-06-30T17:01:00+08:00">June 30, 2020</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>6 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1029 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>STM32 is the recommended choice to start with Embedded System Programming in Rust consider there are many supported libraries for Cortex-m series and STM targets and hals among the ecosystem. If you are already familiar with programing with them, all you have to do is add a few config files in your cargo projects and it's done. If not, fear not then. This post will list all the tools and environment you have to setup. I'm going to use STM32F3DISCOVERY as an example but other STM series should follow similar steps.</p>
+<h2 id="tooling">Tooling</h2>
+<p>First of all, we need to install some tools if you didn't have any embedded setup on your computer before. The common choice for our debuggers are usually GDB with OpenOCD. <code>minicom</code> may be helpful if you want to also try out some serail module. The GDB you have to install may be different depends on your distribution. On Ubuntu/Debian, it will be <code>gdb-multiarch</code>:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> sudo apt-get install \
+</span><span>  gdb-multiarch \
+</span><span>  minicom \
+</span><span>  openocd
+</span></code></pre>
+<p>While others like arch linux will use <code>arm-none-eabi-gdb</code>:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> sudo pacman</span><span style="color:#bf616a;"> -S </span><span>\
+</span><span>  arm-none-eabi-gdb \
+</span><span>  minicom \
+</span><span>  openocd
+</span></code></pre>
+<p>If you want to communicate with bluetooth, there are some more packages recommended to install: <code>bluez</code>, <code>bluez-utils</code>, <code>rfkill</code>.</p>
+<h3 id="udev-rules">udev rules</h3>
+<p>Next, we want to set some rules to let us use those devices directly without root privilege <code>sudo</code>. Here's the example for STM32F3:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat /etc/udev/rules.d/99-ftdi.rules:
+</span><span style="color:#65737e;"># FT232 - USB &lt;-&gt; Serial Converter
+</span><span style="color:#bf616a;">ATTRS{idVendor}</span><span>=</span><span style="color:#a3be8c;">=</span><span>&quot;</span><span style="color:#a3be8c;">0403</span><span>&quot;</span><span style="color:#a3be8c;">, </span><span style="color:#bf616a;">ATTRS{idProduct}</span><span>=</span><span style="color:#a3be8c;">=</span><span>&quot;</span><span style="color:#a3be8c;">6001</span><span>&quot;</span><span style="color:#a3be8c;">, </span><span style="color:#bf616a;">MODE:</span><span>=&quot;</span><span style="color:#a3be8c;">0666</span><span>&quot;
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> cat /etc/udev/rules.d/99-openocd.rules
+</span><span style="color:#65737e;"># STM32F3DISCOVERY rev A/B - ST-LINK/V2
+</span><span style="color:#bf616a;">ATTRS{idVendor}</span><span>=</span><span style="color:#a3be8c;">=</span><span>&quot;</span><span style="color:#a3be8c;">0483</span><span>&quot;</span><span style="color:#a3be8c;">, </span><span style="color:#bf616a;">ATTRS{idProduct}</span><span>=</span><span style="color:#a3be8c;">=</span><span>&quot;</span><span style="color:#a3be8c;">3748</span><span>&quot;</span><span style="color:#a3be8c;">, </span><span style="color:#bf616a;">MODE:</span><span>=&quot;</span><span style="color:#a3be8c;">0666</span><span>&quot;
+</span><span>
+</span><span style="color:#65737e;"># STM32F3DISCOVERY rev C+ - ST-LINK/V2-1
+</span><span style="color:#bf616a;">ATTRS{idVendor}</span><span>=</span><span style="color:#a3be8c;">=</span><span>&quot;</span><span style="color:#a3be8c;">0483</span><span>&quot;</span><span style="color:#a3be8c;">, </span><span style="color:#bf616a;">ATTRS{idProduct}</span><span>=</span><span style="color:#a3be8c;">=</span><span>&quot;</span><span style="color:#a3be8c;">374b</span><span>&quot;</span><span style="color:#a3be8c;">, </span><span style="color:#bf616a;">MODE:</span><span>=&quot;</span><span style="color:#a3be8c;">0666</span><span>&quot;
+</span></code></pre>
+<p>Then reload the rules:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> sudo udevadm control</span><span style="color:#bf616a;"> --reload-rules
+</span></code></pre>
+<p>Finally, let's plug the device and verify the permissions:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> lsusb | </span><span style="color:#bf616a;">grep -i</span><span> stm
+</span><span style="color:#bf616a;">Bus</span><span> 001 Device 006: ID 0483:374b STMicroelectronics ST-LINK/V2.1
+</span></code></pre>
+<p>This means my device is connected to Bus 001 and enumerated as Device 006. Let's check the permissions according to the number we have:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">ls -l</span><span> /dev/bus/usb/001/006
+</span><span style="color:#bf616a;">crw-rw-rw-+</span><span> 1 root root 189, 5 Jun 30 17:31 /dev/bus/usb/001/006
+</span></code></pre>
+<p>We should see that current user does have read/write permissions as <code>crw-rw-rw-</code> shows.</p>
+<h3 id="openocd-connection">OpenOCD connection</h3>
+<p>Once we install the packages, we could start to connect to our device using OpenOCD. The cfg file might be different depends on your device. But if everything works as planned, you should see something like following:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> openocd</span><span style="color:#bf616a;"> -f</span><span> interface/stlink-v2-1.cfg</span><span style="color:#bf616a;"> -f</span><span> target/stm32f3x.cfg
+</span><span style="color:#bf616a;">Open</span><span> On-Chip Debugger 0.10.0
+</span><span style="color:#bf616a;">Licensed</span><span> under GNU GPL v2
+</span><span style="color:#bf616a;">For</span><span> bug reports, read
+</span><span>        </span><span style="color:#bf616a;">http://openocd.org/doc/doxygen/bugs.html
+</span><span style="color:#bf616a;">Info</span><span> : auto-selecting first available session transport &quot;</span><span style="color:#a3be8c;">hla_swd</span><span>&quot;. To override use &#39;</span><span style="color:#a3be8c;">transport select &lt;transport&gt;</span><span>&#39;.
+</span><span style="color:#bf616a;">adapter</span><span> speed: 1000 kHz
+</span><span style="color:#bf616a;">adapter_nsrst_delay:</span><span> 100
+</span><span style="color:#bf616a;">Info</span><span> : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+</span><span style="color:#bf616a;">none</span><span> separate
+</span><span style="color:#bf616a;">Info</span><span> : Unable to match requested speed 1000 kHz, using 950 kHz
+</span><span style="color:#bf616a;">Info</span><span> : Unable to match requested speed 1000 kHz, using 950 kHz
+</span><span style="color:#bf616a;">Info</span><span> : clock speed 950 kHz
+</span><span style="color:#bf616a;">Info</span><span> : STLINK v2 JTAG v27 API v2 SWIM v15 VID 0x0483 PID 0x374B
+</span><span style="color:#bf616a;">Info</span><span> : using stlink api v2
+</span><span style="color:#bf616a;">Info</span><span> : Target voltage: 2.910427
+</span><span style="color:#bf616a;">Info</span><span> : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
+</span></code></pre>
+<p>You should see it says how many breakpoints and watchpoints are there.</p>
+<h3 id="itm">ITM</h3>
+<p>For ITM protocol, there's <code>itmdump</code> we could install from cargo directly:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cargo install itm
+</span></code></pre>
+<p>And then make sure you start the tool in the same directory of where you start OpenOCD:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> touch itm.txt &amp;&amp; </span><span style="color:#bf616a;">itmdump -F -f</span><span> itm.txt
+</span></code></pre>
+<h3 id="other-llvm-tools">Other LLVM tools</h3>
+<p>If you also want to use some LLVM tools like <code>objdump</code>, <code>size</code> and more. There's also a cargo subcommand already:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cargo install cargo-binutils
+</span><span style="color:#bf616a;">$</span><span> rustup component add llvm-tools-preview
+</span><span>
+</span><span style="color:#bf616a;">Then</span><span> you could use thos tools like this:
+</span><span>
+</span><span>```</span><span style="color:#bf616a;">bash
+</span><span style="color:#bf616a;">$</span><span> cargo objdump</span><span style="color:#bf616a;"> --target</span><span> thumbv7em-none-eabihf</span><span style="color:#bf616a;"> --bin</span><span> app</span><span style="color:#bf616a;"> --release</span><span> -- -disassemble -no-show-raw-insn
+</span><span style="color:#bf616a;">$</span><span> cargo size</span><span style="color:#bf616a;"> --target</span><span> thumbv7em-none-eabihf</span><span style="color:#bf616a;"> --bin</span><span> app</span><span style="color:#bf616a;"> --release</span><span> -- -A -x
+</span><span style="color:#bf616a;">...
+</span></code></pre>
+<h2 id="rust-toolchains-configurations">Rust Toolchains &amp; Configurations</h2>
+<p>After installing packages that we needs for general embedded development, we can now start tweaking our rust related
+stuffs. Like other projects we do in Rust, we usually create a cargo project since it can integrate several important
+build tools especially toolchains when we want to do cross compilation. For STM boards, or Arm Cortex-m architectures
+more precisely, here are the targets we could choose:</p>
+<ul>
+<li>Cortex-M0, M0+, and M1 (ARMv6-M architecture): <code>thumbv6m-none-eabi</code></li>
+<li>Cortex-M3 (ARMv7-M architecture): <code>thumbv7m-none-eabi</code></li>
+<li>Cortex-M4 and M7 without hardware floating point (ARMv7E-M architecture): <code>thumbv7em-none-eabi</code></li>
+<li>Cortex-M4F and M7F with hardware floating point (ARMv7E-M architecture): <code>thumbv7em-none-eabihf</code></li>
+</ul>
+<p>To install the toolchain, simply run:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> rustup target add thumbv7em-none-eabihf
+</span></code></pre>
+<h3 id="config-files">Config files</h3>
+<p>Once toolchain is installed, we can cross compile the project to specific target using <code>cargo build --target</code>. But this
+will become tedious and there are more steps need to do when you entering gdb. So instead of typing these command
+manually each time, we could setup config files in the cargo project like this.</p>
+<p><code>.cargo/config</code>:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">[target.thumbv7em-none-eabihf]
+</span><span style="color:#bf616a;">runner</span><span> = &quot;</span><span style="color:#a3be8c;">arm-none-eabi-gdb -q -x openocd.gdb</span><span>&quot;
+</span><span style="color:#bf616a;">rustflags</span><span> = [
+</span><span>  &quot;</span><span style="color:#a3be8c;">-C</span><span>&quot;</span><span style="color:#bf616a;">, </span><span>&quot;</span><span style="color:#a3be8c;">link-arg=-Tlink.x</span><span>&quot;,
+</span><span style="color:#bf616a;">]
+</span><span>
+</span><span style="color:#bf616a;">[build]
+</span><span style="color:#bf616a;">target</span><span> = &quot;</span><span style="color:#a3be8c;">thumbv7em-none-eabihf</span><span>&quot;
+</span></code></pre>
+<p><code>openocd.gdb</code>:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>target remote :3333
+</span><span>set print asm-demangle on
+</span><span>set print pretty on
+</span><span>monitor tpiu config internal itm.txt uart off 8000000
+</span><span>monitor itm port 0 on
+</span><span>load
+</span><span>break main
+</span><span>continue
+</span></code></pre>
+<p>This means we will build the project to specific target <code>thumbv7em-none-eabihf</code> and then run with <code>arm-none-eabi-gdb</code>
+with gdb config file <code>openocd.gdb</code>. Then we will just need to use <code>cargo run</code> to enter the gdb and see how it goes!</p>
+<h2 id="more-references">More References</h2>
+<p>One of great reasons to develop embedded system in Rust is always its community. There are plenty of resources you can
+find in the ecosystem. Here are some I think are useful and might help you too.</p>
+<ul>
+<li><a href="https://github.com/rust-embedded/awesome-embedded-rust">awesome-embedded-rust</a></li>
+<li><a href="https://github.com/rust-embedded/cortex-m-quickstart">cortex-m-quickstart</a></li>
+<li><a href="https://github.com/rtic-rs/cortex-m-rtic">Real-Time Interrupt-driven Concurrency</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;atomic&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              原子類型（Atomics）
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;option&#x2F;">
+              Option 的大小<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

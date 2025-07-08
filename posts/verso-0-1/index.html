@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Verso: A new browser based on Servo
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Verso: A new browser based on Servo
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2024-07-13T12:17:07+08:00">July 13, 2024</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>4 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>771 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p><img src="/images/lookinside.jpg" alt="" /></p>
+<p>Yep, I'm building a new web browser called <a href="https://github.com/versotile-org/verso">Verso</a> based on <a href="https://servo.org/">Servo</a>. If you don't know what is Servo yet, it's a web engine written in Rust from the ground up. I think it would be cool to see a browser that's built on top of it instead of creating yet another chromium fork. I also have personal milestones want to achive. One of them is buildint the UI from Servo itself. Right now I can already render two views: One for the webpage, the other for the navbar UI. The image below is the Verso window navigating the <a href="https://demo.versotile.org/">demo page</a>:</p>
+<p><img src="/images/versodemo.png" alt="" /></p>
+<p>I know it's still a bit rough but what I want to showcase is that the navbar can already perform some basic actions. There are still a few blockers I prefer to resolve first before improving the UI. Like I said I would like to dog food eating which should look inside both Verso/Servo and improve them. Here are some list served as my remainder and hopefully attract some contributors to help as well.</p>
+<h2 id="multi-windows">Multi-Windows</h2>
+<p>Last year, I spent a lot of time to look into multi-views support. And thanks to Delan from Igalia, it's added in Servo <a href="https://servo.org/blog/2024/01/19/embedding-update/">this Januaray</a>. So the next milestone would be adding multi-windows support. I have some idea but not sure how to execute yet. Servo's compositor only accept one rendering context at the moment. With multiple windows, I believe there will be multiple contexts need to handle. Another restrcition is the embedder couldn't access to the compositor directly despite they are in the same thread. They use channels to communicate with each other. I'm thinking maybe I should implement another compositor as experiment to see how it goes.</p>
+<h2 id="better-ipc">Better IPC</h2>
+<p>The navbar UI I showcase in the image above is essentially a web page as well. The embedder sends events and receives messages with existing channels. For example, the UI may send the message by prompting a dialog. But instead of actually showing the dialogs, the embedder will process the message and perform actions like navigating the URL and minimize/maximize the window. But there are some advanced features that current event variants couldn't satisfy them, such as changing the history session and reflect to the input bar. We could try to add more variants but some may contain security violation concerns. Perhaps Servo can public the <a href="https://doc.servo.org/script/dom/index.html">DOM module</a> in scritp crate. And we add a custom DOM API similar to <code>postMessage</code> that only accpets special origin like <code>about:</code>.</p>
+<h2 id="multiprocess">Multiprocess</h2>
+<p>Servo actually has multiprocess mode but it only supports Linux and macOS. I feel like multiprocess is a must have feature after <a href="https://en.wikipedia.org/wiki/Spectre_(security_vulnerability)">Spectre</a>. At least we should provide some basic <a href="https://github.com/servo/servo/issues/20567">site isolation</a>. It would be great that Windows can get the benefits too. To achieve this, we will need to fix this issue: <a href="https://github.com/servo/ipc-channel/issues/310">ipc-channel#310</a> which is caused by <a href="https://github.com/servo/ipc-channel/blob/7f432aab1eb77bb2c860881153799087918558e9/src/platform/windows/mod.rs#L163">this panic</a>. Another good to have is sandboxing but <a href="https://github.com/servo/gaol">gaol</a> hasn't supported Windows yet either. We should either add the support or see if there are other crates already add the implementation like <a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/appcontainer-isolation">AppContainer</a>.</p>
+<h2 id="flatpack-support">Flatpack Support</h2>
+<p>Linux remains as the most difficult target when it comes to packaging. There are so many distributions and package formats. We also have to worry about both X11 and Wayland at the same time. Althouh Servo has a <a href="https://book.servo.org/hacking/setting-up-your-environment.html">book</a> to get started with the setup, it still lists lots of dependencies compared to other platforms. I think we should figure this out in the first place, writing <a href="https://docs.flatpak.org/en/latest/manifests.html">Flatpak manifests</a> to clearify the dependencies, and make the final packaging easier to distribute.</p>
+<h2 id="looking-toward-the-future">Looking toward the future</h2>
+<p>There are more items in the roadmap but I guess these milestones will take quite some time already. I have to say I'm more and more excited to the Verso project as I engage into the Servo community deeper. Nico from Taffy is also trying to add <a href="https://servo.zulipchat.com/#narrow/stream/263398-general/topic/Layout.20library.20without.20the.20rest.20of.20Servo/near/450618586">flexbox support</a> to Servo and it looks pretty promisng! I believe we can see a web browser that's made in Rust in the foreseeable future!</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;install-windows&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Install Windows 11 the hard way
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;verso-compositor-part1&#x2F;">
+              Verso: Writing its own compositor part 1<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

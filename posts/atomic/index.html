@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | 原子類型（Atomics）
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            原子類型（Atomics）
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2020-06-08T12:17:07+08:00">June 08, 2020</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>39 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>7621 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>瞭解原子類型（Atomics）與記憶體順序（Memory Ordering）可以幫助我們更瞭解多執行緒程式設計，但實際上要理解的話可能就會和筆者一樣在網路上找隨機的文章或是官方文件來啃，可能就找個當下適合的選項來用，不再繼續往下理解，直到下一次又遇到更深入的問題。這篇文章算是一個總結，希望從最頭到尾說清楚，並且瞭解 Rust 的很多類型爲何那樣設計，以至於能讓所有人都能寫出安全又高效的多執行緒/並行程式。</p>
+<p>以下會先介紹多處理器程式設計，再來才會說明各個記憶體順序的意義，最後講解原子類型怎麼使用這些順序的，結束之前會再補充其他具有內部可變性的 Rust 類型爲什麼也是合理的。</p>
+<h2 id="duo-chu-li-qi-cheng-shi-she-ji">多處理器程式設計</h2>
+<p>當今幾乎所有程式都已經是跑在多核心 CPU 的機器上了，而這也產生了不少奇妙的問題讓我們得常常處理。在只有一個執行緒的程式是沒有什麼好擔心的，但如果是多核心的話很多麻煩就跟着來了，我們知道編譯器在編譯時會幫忙重新排列你的程式來做最佳化，事實上連 CPU 也會做這樣的事。對於編譯器的重新排列，我們可以檢查產生出來的組合語言知道，但如果是多核心的 CPU 的話我們就沒辦法這樣做了。</p>
+<p>當執行緒跑在不同的 CPU，CPU 會去重新排列指令，而這樣的行爲是很難去 debug 的，我們往往只能觀察它們的行爲、執行結果、pipeline 和 cache 等等才能知道。而這就是原子類型（Atomics）想要解決的，這些類型會確保在共用記憶體時它們的指令不會被重新排列。</p>
+<h3 id="qiang-ji-yi-ti-pai-lie-yu-ruo-ji-yi-ti-pai-lie">強記憶體排列與弱記憶體排列</h3>
+<p>接下來會有很多關於 CPU 的引用都會參考這份文件：<a href="https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf">Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 3A</a>。但實際上不同的 CPU 對於記憶體會提供不同的保障，我們通常可以區分爲強記憶體排列（Strong Memory Ordering）和弱記憶體排列（Weak Memory Ordering），但這也只是簡單區隔而已，很多甚至是介於這兩者之間。爲了歸納這些不同，C++ 有一套 <a href="http://www.stroustrup.com/abstraction-and-machine.pdf">Abstraction Machine</a>，而 Rust 也是借鑑於此。這套模型便是希望讓我們有辦法寫出能跑在任何機器上的程式，無論是強記憶體排列或是弱記憶體排列。你會看到 <a href="https://people.mpi-sws.org/~viktor/papers/cpp2015-invited.pdf">C++ 的 abstraction model</a> 指定了很多存取記憶體的方式，而這幾乎也是必須的，考量到我們得用相同的語法跑在強與弱記憶體排列的處理器上。</p>
+<p>強記憶體排列的 CPU 可以給與我們一些非常重要的保障，這些保障可以讓我們的指令縮減到 no-op。No-op 是指 CPU 可以讓整個語義不發生，不會有任何花費與成本的損失。他做的事情其實也沒啥酷炫的。他就只是提醒編譯器，我們寫的程式哪些的地方是不可以讓記憶體重新排列的；而弱記憶體排列的 CPU 就沒那麼好了，我們得親自設置記憶體柵欄（Memory Fence）以及寫些特殊的指令來防止同步問題。當然要完全明白最好的方式就是親自在弱記憶體排列的 CPU 試試看，不過現在的人所使用的 CPU 幾乎都是強記憶體排列了，所以寫的時候可能就觀察不到差別了，下面在解釋時會特別說明兩者之間分別發生了什麼事情。</p>
+<p>上面說到現在所有的 CPU 幾乎都是強模型了，無論 AMD 或 Intel 都是，它們能夠對特定的指令給與不重新排列的保障，這些保障我們可以在 <a href="https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf">Intel 開發者手冊</a>的第 8.2.2 章看到：</p>
+<blockquote>
+<ul>
+<li>讀取不會和其他的讀取重新排列</li>
+<li>寫入不會和之前的讀取重新排列</li>
+<li>寫入不會和其他的寫入重新排列（有其他例外）</li>
+</ul>
+</blockquote>
+<p>還有最重要的這一條，特別指明不提供保障：</p>
+<blockquote>
+<ul>
+<li>讀取可能會和之前其他位置的寫入重新分配，但不會和之前相同位置的寫入重新分配</li>
+</ul>
+</blockquote>
+<p>這一條要特別注意的原因是因爲和後面的排列選項 <code>SeqCst</code> 有關。先在此注意到就好。接下來的章節會以弱模型爲基準，再補充強模型的說明。</p>
+<h3 id="kuai-qu-ji-yi-ti">快取記憶體</h3>
+<p>通常 CPU 有三層快取記憶體：L1、L2 和 L3。L2 和 L3 會在 CPU之間共享。而每個核心會有自己的 L1 快取記憶體，我們所有要解決的問題就是從這裏開始。L1 快取記憶體用的是 <a href="https://zh.wikipedia.org/zh-tw/MESI%E5%8D%8F%E8%AE%AE">MESI 協議</a>，聽起來好像很複雜，其實就只是字面上的意思。他是指快取可以有四種狀態的縮寫（<a href="https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf">Intel 開發者手冊</a>第 11.4 章有做更詳細的介紹）：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>已修改 Modified (M) - 快取行是髒的（dirty），要寫回主記憶體
+</span><span>獨占 Exclusive (E) - 快取行只在當前快取中，但是乾淨的（clean）
+</span><span>共享 Shared (S) - 快取行也存在於其它快取中且是乾淨的，快取行可以在任意時刻拋棄
+</span><span>無效 Invalid (I) - 快取行是無效的，其他快取修改過了
+</span></code></pre>
+<h3 id="chu-li-qi-zhi-jian-de-tong-xun">處理器之間的通訊</h3>
+<p>既然我們真的得存取並修改 <code>Shared</code> 記憶體，那麼其他核心是怎麼知道它們的 L1 已經無效了。一個快取行被視爲無效的規則就是有其他核心的 L1 修改過了，這時雖然自己的 L1 還是在 <code>Shared</code> 的狀態，但在那邊的卻已經是 <code>Modified</code> 了。所以記憶體之間得有個通訊的方法來通知大家，我們就暫且想像每個核心都有個<em><strong>信箱</strong></em>吧。</p>
+<p>每個信箱都可以存一些訊息，以避免 CPU 一直被傳過來的訊息給中斷，到某個時間點 CPU 會檢查信箱然後依據收到的訊息來更新快取。所以舉個例子的話就是，有個 CPU 修改了某個快取行，傳送了訊息給其他核心。核心檢查信箱收到訊息後，更新他們的快取行。最後 L1 從 主記憶體（或 L2、L3）取得正確的值，讓狀態再次回到 <code>Shared</code>。</p>
+<blockquote>
+<p>在強模型的 CPU 則會有點不同。如果有個 CPU 要修改 <code>Shared</code> 的快取行，它得先通知所有的核心讓該行失效，才能真的進行修改。這類的 CPU 通常會有<a href="https://zh.wikipedia.org/zh-tw/%E5%BF%AB%E5%8F%96%E4%B8%80%E8%87%B4%E6%80%A7">快取一致性</a>來修改個核心的快取。</p>
+</blockquote>
+<h2 id="ji-yi-ti-shun-xu-memory-ordering">記憶體順序（Memory Ordering）</h2>
+<p>現在我們終於對 CPU 的設計以及它們怎麼溝通開始有點概念了。那麼也是時候來看看這些記憶體順序還有它們代表什麼意思了。無論是 C++ 的 <a href="https://en.cppreference.com/w/cpp/atomic/memory_order">std::memory_order</a> 或是 Rust 的 <a href="https://doc.rust-lang.org/std/sync/atomic/enum.Ordering.html">std::sync::atomic::Ordering</a>，都有五個值。接下來在講解時，我們很難真的用程式範例來說明發生什麼事情，不過我們可以想像一個觀察者的 CPU 在一旁觀看發生什麼事情。</p>
+<h3 id="relaxed">Relaxed</h3>
+<p><strong>在目前的 CPU：</strong></p>
+<p>Relaxed 的記憶體順序會防止編譯器重新排列這些指令，但在弱模型的 CPU，它可能還是會重新排列其他所有的記憶體存取。所以如果只是要作爲計數器的話不會有啥問題，但如果是一個要實作在 lock 裡的 flag 的話可能就會出問題了。因爲這樣會無法確保其他一般的記憶體存取有沒有在 flag 之前或之後遭到重新排列。</p>
+<p><strong>在觀察者的 CPU：</strong></p>
+<p>編譯器和 CPU 可以任意重新排列記憶體順序，但是不能夠變更 <code>Relaxed</code> 讀寫之間的順序。也就是說觀察者的 CPU 可能會看到與我們寫出來的程式順序不同，但是它們永遠會看到 <code>Relaxed</code> 操作 A 一定會發生在 <code>Relaxed</code> 操作 B 之前。所以說 <code>Relaxed</code> 是最弱的記憶體順序，它不會爲其他 CPU 做同步的事情。</p>
+<blockquote>
+<p>在強模型的話，所有的記憶體操作預設都是 <code>Acquire</code>/<code>Release</code> 語義的。因此 <code>Relaxed</code> 只會是用來告訴編譯器這些指令不能被重新排列的。在強模型用這個順序的原因有助於編譯器去重新排列其他記憶體存取。這也是爲啥你用 Relaxed 的效果會和 <code>Acquire</code>/<code>Release</code> 一樣，不過要注意這當然指存在強模型系統下，面對不同的 CPU 平時還是依照歸納模型說明的爲準，不然程式是會在不同 CPU 下出錯的。可以參考<a href="https://preshing.com/20121019/this-is-why-they-call-it-a-weakly-ordered-cpu/">這篇文章</a>看看爲何同個程式碼跑在強記憶體排列與弱記憶體排列會不一樣。</p>
+</blockquote>
+<h3 id="aquire">Aquire</h3>
+<p><strong>在目前的 CPU：</strong></p>
+<p>任何在 <code>Acquire</code> 存取之後的記憶體操作都會維持在它之後，它是與 <code>Release</code> 順序一對的，組織成一個「記憶體三明治」。所有在它們之間的記憶體存取會與其他 CPU 進行同步。在弱模型的系統下，這代表在 Aquire 操作之前會需要用到一些特殊的 CPU 指令，強迫目前的核心消化完信箱內的所有訊息，很多 CPU 都有這種序列化和記憶體排序的指令。在 <code>Acquire</code> 讀取之前可能還會在加個記憶體柵欄來防止 CPU 重新排列記憶體存取。這樣 <code>Acquire</code> 的操作就會與其他 CPU 確保修改記憶體是同步的。</p>
+<blockquote>
+<p>記憶體柵欄簡單來說就是個硬體的概念，它會強迫 CPU 在柵欄前完成所有的記憶體讀寫，以防止指令重新排列。這樣一來就能確保沒有任何在柵欄前的操作會與柵欄後的操作重新排列。爲了區分不同操作像是讀寫或者全都有，它們都會有不同的名字。全部讀寫都擋的就叫做 full fence。</p>
+<p>你可以在[Intel 開發者手冊]的第 8.2,8.3,8.5 章看到它們的介紹，像是 MFENCE 就是會序列化所有讀寫的柵欄。不過在強模型系統中我們通常看不太到，因爲它們沒有需求。在弱模型的化就不一樣了，它們是實作 <code>Acquire</code>/<code>Release</code> 幾乎必備的指令。</p>
+</blockquote>
+<p><strong>在觀察者的 CPU：</strong></p>
+<p>因爲 <code>Acquire</code> 是個讀取操作，不會修改記憶體，所以沒有觀察的必要。不過有點要注意的是如果觀察者核心做了 <code>Acquire</code> 的讀取操作時，它就能夠看到所以從 <code>Acquire</code> 發生的記憶體操作，一直到 <code>Release</code> 儲存。這代表有個全域的同步事件正在發生，我們會在後面的 <code>Release</code> 繼續說明。</p>
+<p><code>Acquire</code> 通常用來寫鎖的行爲，讓一些操作可以維持在成功取得鎖之後。所以說 <code>Acquire</code> 只會用在讀取的操作上。在 Rust 的話許多儲存的原子操作要是你用 <code>Acquire</code> 的話會直接 panic。</p>
+<blockquote>
+<p>在強模型系統的話，這個會是 no-op 也就是不會有任何花費，也不會有效能的損失。不過它還會防止編譯器去重新排列那些在 <code>Acquire</code> 之後的記憶體操作被排列到 <code>Acquire</code> 之前。</p>
+</blockquote>
+<h3 id="release">Release</h3>
+<p><strong>在目前的 CPU：</strong></p>
+<p>相對應於 <code>Acquire</code>，任何在 <code>Release</code> 記憶體順序之前的記憶體操作都會在它之前。它是與 Aquire 順序一對的。在弱模型系統中，編譯器可能會再加個記憶體柵欄來確保 CPU 沒有重新排列 <code>Release</code> 之前的記憶體操作到它之後。這邊還有一項保障是所有其他核心做到 <code>Acquire</code> 時一定要看到所有在 <code>Acquire</code> 與 <code>Release</code> 之間的記憶體操作。所以不光是所有操作必須在本地端排序正確，還要確保在此時所有的更動都是可以被其他觀察核心看到的。這就代表在 <code>Acquire</code> 開始之前以及 <code>Release</code> 之後都要進行某種全域同步操作。所以我們有兩種選項：</p>
+<ol>
+<li><code>Acquire</code> 讀取必須要消化所有的訊息，如果有任何其他核心讓任和我們要讀得記憶失效的話，它必須要讀到正確的值才行。</li>
+<li><code>Release</code> 儲存必須是原子的並且讓它曾修改的值在其他所有快取都被失效。</li>
+</ol>
+<p>只進行其中一個操作就足夠了，所以這比後面要講的 <code>SeqCst</code> 弱一些，但是也比較有效率。</p>
+<p><strong>在觀察者的 CPU：</strong></p>
+<p>觀察者的 CPU 可能不會看到任何特定順序的變更，除非他有用到 <code>Acquire</code> 讀取記憶。如果有的話，它將會看到 <code>Acquire</code> 與 <code>Release</code> 的所有記憶體，包含 <code>Release</code> 本身。</p>
+<p><code>Release</code> 通常會和 <code>Acquire</code> 一起用於鎖的實作。對於一個鎖的函式，有些操作通常需要維持在成功獲得鎖之後，一直到鎖被釋放爲止。所以說與 <code>Acquire</code> 相反，在 Rust 許多讀取的原子操作要是用 <code>Release</code> 的話會直接 panic。</p>
+<blockquote>
+<p>在強模型的 CPU，所有的 Shared 值一旦被修改的話，在所有的 L1 快取都會失效。這代表 <code>Acquire</code> 讀取時就會取得更新過的相關記憶體資訊，而 <code>Release</code> 會立即讓在其他核心擁有該資訊的快取行失效。這就是爲何這些語義在這類的系統不會有任何效能花費。</p>
+</blockquote>
+<h3 id="acqrel">AcqRel</h3>
+<p>這是用在需要同時讀取並儲存值的操作，像是 <code>AtomicBool::compare_and_swap</code> 就是這種。因爲這樣的操作需要同時讀取並儲存，這在弱模型系統下就會有影響，僅使用 Relaxed 的話是不夠的。我們也可以把這個操作想成是某種柵欄，在它之前的記憶體操作不會被重新排列到這之後，而在之後的操作也不會被排列到之前。剩下做的事情就和上面的 <code>Acquire</code>/<code>Release</code> 一樣了。</p>
+<h3 id="seqcst">SeqCst</h3>
+<p><strong>在目前的 CPU：</strong></p>
+<p>到這邊強與弱模型的行爲就一樣了，<code>SeqCst</code> 的意思是 Sequential Consistency，我想就翻作順序一致性吧。它和 <code>Acquire</code>/<code>Release</code> 擁有同樣地保障，但還保證能建立「唯一的總修改順序」。</p>
+<p>雖然被視爲最強保障，但其實 <code>SeqCst</code> 還是有被<a href="https://github.com/rust-lang/nomicon/issues/166">質疑</a>是不是該作爲最推薦的順序，也有些人<a href="https://github.com/crossbeam-rs/crossbeam/issues/317">反對</a>使用它。
+很多時候似乎還是很難有個很好的理由說一定得用 <code>SeqCst</code>，甚至有些<a href="https://plv.mpi-sws.org/scfix/paper.pdf">論文</a>有指出它可能是有瑕疵的。總之，這邊只是提一下不是所有人的看法都相同，很多時候說不定 <code>Acquire`/`Release</code> 就能涵蓋所有問題了。</p>
+<p>無論如何，讓我們繼續介紹 <code>SeqCst</code> 吧！我們會需要看個範例和產生的組合語言，以下是 playground 連結： https://godbolt.org/z/EFK-qU</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">use </span><span>std::sync::atomic::{AtomicBool, Ordering};
+</span><span style="color:#b48ead;">static</span><span> X: AtomicBool = AtomicBool::new(</span><span style="color:#d08770;">true</span><span>);
+</span><span style="color:#b48ead;">static</span><span> Y: AtomicBool = AtomicBool::new(</span><span style="color:#d08770;">true</span><span>);
+</span><span>
+</span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">example</span><span>(</span><span style="color:#bf616a;">val</span><span>: </span><span style="color:#b48ead;">bool</span><span>) -&gt; </span><span style="color:#b48ead;">bool </span><span>{
+</span><span>    </span><span style="color:#b48ead;">let</span><span> x = X.</span><span style="color:#96b5b4;">load</span><span>(Ordering::`Acquire`);
+</span><span>    X.</span><span style="color:#96b5b4;">store</span><span>(val | x, Ordering::`Release`);
+</span><span>    </span><span style="color:#b48ead;">let</span><span> y = Y.</span><span style="color:#96b5b4;">load</span><span>(Ordering::`Acquire`);
+</span><span>    x || y
+</span><span>}
+</span></code></pre>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">movb</span><span>    example::X.0.0(%</span><span style="color:#bf616a;">rip</span><span>)</span><span style="color:#bf616a;">, </span><span>%</span><span style="color:#bf616a;">al </span><span style="color:#65737e;"># load(Acquire)
+</span><span style="color:#bf616a;">testb   </span><span>%</span><span style="color:#bf616a;">al</span><span>, %</span><span style="color:#bf616a;">al
+</span><span style="color:#bf616a;">setne   </span><span>%</span><span style="color:#bf616a;">al
+</span><span style="color:#bf616a;">orb     </span><span>%</span><span style="color:#bf616a;">dil</span><span>, %</span><span style="color:#bf616a;">al
+</span><span style="color:#bf616a;">movb    </span><span>%</span><span style="color:#bf616a;">al</span><span>, example::X.0.0(%</span><span style="color:#bf616a;">rip</span><span>) </span><span style="color:#65737e;"># store(Release)
+</span><span style="color:#bf616a;">movb    </span><span>$</span><span style="color:#bf616a;">1</span><span>, %</span><span style="color:#bf616a;">al                   </span><span style="color:#65737e;"># load(Acquire)
+</span><span style="color:#bf616a;">retq
+</span></code></pre>
+<p>不同CPU可能產生的指令會有點不同，但結果都是一樣的。<code>store</code> 會用到 <code>Release</code> 記憶體順序也就是 <code>movb %al, example::X.0.0(%rip)</code>。我們知道這樣就能確保有該值得快取行會立即失效。</p>
+<p>那問題在哪呢？是時候提起之前其中一項不保證的事情了，<a href="https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf">Intel 開發者手冊</a>的第 8.2.3.4 章有在更加詳述：</p>
+<blockquote>
+<p>8.2.3.4 讀取可能會和更早之前不同位置的寫入重新排列
+The Intel-64 記憶體排序模型允許讀取能和之前不同位置的寫入重新排列。但是讀取不會和相同位置的寫入重新排列。</p>
+</blockquote>
+<p>所以也就是說剛剛的範例可能會被改成：</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">let</span><span> x = X.</span><span style="color:#96b5b4;">load</span><span>(Ordering::Acquire);
+</span><span>X.</span><span style="color:#96b5b4;">store</span><span>(val | x, Ordering::Release); # 之前不同位置的寫入
+</span><span style="color:#b48ead;">let</span><span> y = Y.</span><span style="color:#96b5b4;">load</span><span>(Ordering::Acquire);   # 讀取
+</span><span>
+</span><span style="color:#65737e;">// 可能會被 CPU 變更成
+</span><span>
+</span><span style="color:#b48ead;">let</span><span> x = X.</span><span style="color:#96b5b4;">load</span><span>(Ordering::Acquire);
+</span><span style="color:#b48ead;">let</span><span> y = Y.</span><span style="color:#96b5b4;">load</span><span>(Ordering::Acquire);
+</span><span>X.</span><span style="color:#96b5b4;">store</span><span>(val | x, Ordering::Release);
+</span></code></pre>
+<p>如果我們現在改成 <code>SeqCst</code> 的話就可以看到生成的組合語言變成：</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">use </span><span>std::sync::atomic::{AtomicBool, Ordering};
+</span><span style="color:#b48ead;">static</span><span> X: AtomicBool = AtomicBool::new(</span><span style="color:#d08770;">true</span><span>);
+</span><span style="color:#b48ead;">static</span><span> Y: AtomicBool = AtomicBool::new(</span><span style="color:#d08770;">true</span><span>);
+</span><span>
+</span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">example</span><span>(</span><span style="color:#bf616a;">val</span><span>: </span><span style="color:#b48ead;">bool</span><span>) -&gt; </span><span style="color:#b48ead;">bool </span><span>{
+</span><span>    </span><span style="color:#b48ead;">let</span><span> x = X.</span><span style="color:#96b5b4;">load</span><span>(Ordering::SeqCst);
+</span><span>    X.</span><span style="color:#96b5b4;">store</span><span>(val | x, Ordering::SeqCst);
+</span><span>    </span><span style="color:#b48ead;">let</span><span> y = Y.</span><span style="color:#96b5b4;">load</span><span>(Ordering::SeqCst);
+</span><span>    x || y
+</span><span>}
+</span></code></pre>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">movb</span><span>    example::X.0.0(%</span><span style="color:#bf616a;">rip</span><span>)</span><span style="color:#bf616a;">, </span><span>%</span><span style="color:#bf616a;">al
+</span><span style="color:#bf616a;">testb   </span><span>%</span><span style="color:#bf616a;">al</span><span>, %</span><span style="color:#bf616a;">al
+</span><span style="color:#bf616a;">setne   </span><span>%</span><span style="color:#bf616a;">al
+</span><span style="color:#bf616a;">orb     </span><span>%</span><span style="color:#bf616a;">dil</span><span>, %</span><span style="color:#bf616a;">al
+</span><span style="color:#bf616a;">xchgb   </span><span>%</span><span style="color:#bf616a;">al</span><span>, example::X.0.0(%</span><span style="color:#bf616a;">rip</span><span>)
+</span><span style="color:#bf616a;">movb    </span><span>$</span><span style="color:#bf616a;">1</span><span>, %</span><span style="color:#bf616a;">al
+</span><span style="color:#bf616a;">retq
+</span></code></pre>
+<p>我們可以看到讀取的指令變成了 <code>xchgb %al, example::X.0.0(%rip)</code>，這是一個原子的操作，[<code>xchgb</code> 有個 <code>lock</code> 的前綴]，<code>lock</code> 相關的指令會確保其他所有核心的快取行存取到的記憶體在獲取時會鎖住，然後在修改時變成無效。除此之外它還可以作爲 full fence，<a href="https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf">Intel 開發者手冊</a>的第 8.2.3.9 章就如此說道：</p>
+<blockquote>
+<p>8.2.3.9 Lock 指令的讀取和寫入不會被重新排列
+記憶體排序模型會阻止 lock 指令的讀取和寫入無論是之前或之後都不會被重新排列。此區塊的範例僅展示 lock 指令在讀取或寫入之前的狀況。讀者請注意到 lock 指令後的讀取或寫入是不會被重新排列的。</p>
+</blockquote>
+<p><strong>在觀察者的 CPU：</strong></p>
+<p>對於觀察者來說，這項變更非常地顯著。首先就是順序一致性，如果我們要求一個讀取一定得在某個 flag 釋放之後，理論上我們是可以觀察到 Acquire/Release 語義下，它卻在 Release 操作之前就讀取了。使用 lock 可以防止這樣的情況，所以除了擁有 Acquire/Release 的保證以外，它還確保覺不會有其他記憶體的操作會在之間發生，無論是<strong>讀取</strong>還是寫入。</p>
+<p>再來就是唯一的總修改順序，<code>SeqCst</code> 在弱模型的 CPU 可以提供一些我們在強模型 CPU 就有的保障，最重要的就是這個唯一總修改順序。如果我們有兩個觀察者核心，他們將會在 <code>SeqCst</code> 操作下看到相同的順序，Acquire/Release 則沒辦法提供這項保證。一號觀察者可能會看到兩個變動但順序和二號觀察者不同。假如有個一號核心用 <code>Aquire</code> 拿到了 flag X ，而二號核心也一樣以此方式拿到了 Y。兩者再做相同的操作最後使用 <code>Release</code> 將 flag 改回去。這樣不會阻止一號觀察者先看到 flag X 變回去再來看到 Y 變回去，但二號觀察者卻看到相反地順序。<code>SeqCst</code> 可以防止這發生。在強模型下，甚至連儲存都會馬上被其他核心看到，所以修改的順序在這不會是問題。</p>
+<p>**所以說 <code>SeqCst</code> 是最強的記憶體順序，但同時花費也比其他順序高一些。**你可以看到上面的每個原子指令都會有些開銷，因爲這會用到 CPU 的快取一致機制以及鎖定其他快取的記憶體位置等等。</p>
+<h2 id="yuan-zi-cao-zuo-atomic-operation">原子操作（Atomic Operation）</h2>
+<p>除了上述講到的記憶體柵欄，使用 <code>std::sync::atomic</code> 提供的原子類型還可以使用到一些 CPU 重要的指令，這些是我們平常在 Rust 看不到得：</p>
+<p>在 [Implementing Scalable Atomic Locks for Multi-Core Intel® EM64T and IA32 Architectures] 一文中有提到:</p>
+<blockquote>
+<p>User level locks involve utilizing the atomic instructions of processor to atomically update a memory space. The atomic instructions involve utilizing a lock prefix on the instruction and having the destination operand assigned to a memory address. The following instructions can run atomically with a lock prefix on current Intel processors: ADD, ADC, AND, BTC, BTR, BTS, CMPXCHG, CMPXCH8B, DEC, INC, NEG, NOT, OR, SBB, SUB, XOR, XADD, and XCHG...</p>
+</blockquote>
+<p>也就是說當我們使用原子類型的方法，像是 <code>AtomicUsize</code> 的 <code>fetch_add</code> 的話，編譯器實際上會變更原本指令的行爲，在 CPU 除了加兩個數字以外還會做其他事。用組合語言來看的話就會像是 <code>lock addq ...</code> 而不僅僅是我們平常預期的 <code>addq ...</code>。</p>
+<p>一個原子操作其實是一系列的執行操作組合成一個不可分割的操作單位。任何觀察者是沒辦法看到底下的細部操作或者嘗試在操作執行時獲得相同的資料的。任何在其他核心且會造成的的 B 操作都得等擁有相同資料的操作 A 先完成才行。我們用計數器來舉個例子，總共有三個步驟：讀取資料、修改資料、儲存資料。每一步之間，其他核心都可以跟着採取想要的操作進行讀寫。通常我們希望可以在我們讀取資料一直到儲存回去時，不被其他人干擾到，確定操作正確無誤，這就是原子操作想要解決的。</p>
+<p>原子類型常見的用途之一就是 spinlock，而最簡單的範例大概長得像這樣：https://godbolt.org/z/GxS_bp</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">static </span><span style="color:#d08770;">LOCKED</span><span>: AtomicBool = AtomicBool::new(</span><span style="color:#d08770;">false</span><span>);
+</span><span style="color:#b48ead;">static mut </span><span style="color:#d08770;">COUNTER</span><span>: </span><span style="color:#b48ead;">usize </span><span>= </span><span style="color:#d08770;">0</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">spinlock</span><span>(</span><span style="color:#bf616a;">inc</span><span>: </span><span style="color:#b48ead;">usize</span><span>) {
+</span><span>    </span><span style="color:#b48ead;">while </span><span style="color:#d08770;">LOCKED</span><span>.</span><span style="color:#96b5b4;">compare_and_swap</span><span>(</span><span style="color:#d08770;">false</span><span>, </span><span style="color:#d08770;">true</span><span>, Ordering::Acquire) {}
+</span><span>    </span><span style="color:#b48ead;">unsafe </span><span>{ </span><span style="color:#d08770;">COUNTER </span><span>+= inc };
+</span><span>    </span><span style="color:#d08770;">LOCKED</span><span>.</span><span style="color:#96b5b4;">store</span><span>(</span><span style="color:#d08770;">false</span><span>, Ordering::Release);
+</span><span>}
+</span></code></pre>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">xorl    </span><span>%</span><span style="color:#bf616a;">eax</span><span>, %</span><span style="color:#bf616a;">eax
+</span><span style="color:#bf616a;">lock</span><span>    cmpxchgb %</span><span style="color:#bf616a;">cl</span><span>, example::LOCKED(%</span><span style="color:#bf616a;">rip</span><span>)
+</span><span style="color:#bf616a;">jne</span><span>     .LBB0_1
+</span><span style="color:#bf616a;">movb    </span><span>$</span><span style="color:#bf616a;">0</span><span>, example::LOCKED(%</span><span style="color:#bf616a;">rip</span><span>)
+</span><span style="color:#bf616a;">retq
+</span></code></pre>
+<p><code>lock cmpxchgb %cl, example::LOCKED(%rip)</code> 就是我們的 <code>compare_and_swap</code>，<code>lock cmpxchgb</code> 就是我們的 lock 操作，它會讀取 flag 的值然後如果條件符合的話就變更它。我們可以看到<a href="https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-3a-part-1-manual.pdf">Intel 開發者手冊</a>的第 8.2.5 章的說明：</p>
+<blockquote>
+<p>多處理器的同步機制可能會需要依賴強記憶體排列的模型。在這裏一個程式可以用 lock 指令像是 <code>XCHG</code> 指令或是 <code>LOCK</code> 前綴來確保記憶體的讀取、修改、寫入都是原子的。Lock 指令通常就像 I/O 操作一樣，它們等待之前所有的指令完成以及所有緩充區的寫入都寫進記憶體了。</p>
+</blockquote>
+<p>接下來要釐清的就是 lock 指令前綴是在做什麼了。用最簡短的方式說明的話就是當有記憶體讀取時，它就馬上將該快取行設置爲已修改（Modified）。這樣一來從記憶一被讀取到核心的 L1 快取開始就是 Modified 的了。接着就算每個核心都還沒開始處理他們信箱的訊息，處理器就會用[快取一致性機制]讓所有其他核心的狀態都直接變爲無效（Invalid）了。</p>
+<p>如果說訊息傳遞是一般的同步方式的話，那 lock 操作以及其他記憶體順序或序列化操作則是包含更昂貴但強大的機制可以繞過訊息傳遞，直接鎖定其他核心的快取行，讓任何讀寫都沒辦法在這過程中實現，然後將它們設爲無效（Invalid），進而引導快取去索取更新的值。</p>
+<p>快取行通常在 64 位元的系統都是 64 bytes，不同 CPU 可能還是會有差。不過會特別提起的原因是如果鎖定機制在鎖定時會橫跨兩行快取行的話，花費會變得更昂貴，因爲這會需要再用到一些硬體的技術像是 bus locking 以及更多等等。而且對於會橫跨快取行的原子操作在不同架構擁有支援也大相徑庭。</p>
+<h2 id="rust-de-yin-yong-xing-tai">Rust 的引用型態</h2>
+<p>到這邊就算是講完整個原子類型了，希望這些說明能幫到想瞭解的人，至少能夠深入去理解整個原子操作的心智模型我覺得非常有利於往後實際的使用。而在 Rust 也是如此，所以差不多也是時候來深入理解一下 Rust 的引用形態了。我想熟悉 Rust 的人讀完上面應該就會發現這和 Rust 的引用 <code>&amp;</code> 和 <code>&amp;mut</code> 有點像，尤其是整個 MESI 協議定義的狀態。當然我們在學的時候，大家是稱 <code>&amp;</code> 爲 不可變引用（Immutable Reference）；稱 <code>&amp;mut</code> 爲 不可變引用（Mutable Reference）。書上會說對於那些可以違反 Rust 的型態模型的型態，像是我們本文的重點 Atomics 以及其他諸如 Rc/RefCell 等等，是因爲它們有內部可變性（interior mutability），才能在不可變引用做改變。現在你可以換個角度來看了，<strong><code>&amp;</code> 就是共享引用（Shared Reference），而 <code>&amp;mut</code> 則是獨佔引用（Exclusive Reference）</strong>。這剛剛好可以對應到 MESI 的 E 和 S，擁有這樣的模型可以作出其他語言做不到的優化。在 Rust 裡，也確實只有被視爲 <code>Exclusive</code> 記憶體能夠被修改。</p>
+<p><em><strong>這代表只要我們不違反修改 <code>Shared</code> 記憶體的規則的話，所有的 Rust 程式可以將所有核心上的 L1 快取視爲是有更新到最新，而且無需進行同步的。</strong></em></p>
+<p>當然我們是需要在不同核心間共享記憶體的，但是顯式地表達出來，並特別注意的話是可以寫出品質更好地程式碼的。</p>
+<h3 id="nei-bu-ke-bian-xing">內部可變性</h3>
+<p>既然我們可以更改我們觀看得角度，那麼我們也可以一一來解釋哪些具有內部可變性的型態是說的通的了。標準函式庫裡的 <a href="https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html"><code>UnsafeCell&lt;T&gt;</code></a> <em>唯一</em> 可以擁有可變資料的共享引用，這是一個底層的 unsafe 元件平時這個型態我們是不會直接使用的。其他所有具有內部可變性的型態都是以此打造出安全的界面和不同的功能需求，畢竟 Rust 的初衷就一款能寫出安全程式的語言，這些型態本來必須達到這樣的條件。所以除了原子類型以外，標準函式庫內中含有內部可變性的類型有：</p>
+<h4 id="cell-t"><a href="https://doc.rust-lang.org/std/cell/struct.Cell.html"><code>Cell&lt;T&gt;</code></a></h4>
+<p>我們可以改變 <code>Cell&lt;T&gt;</code> 的值，就算有其他的引用存在。但這是安全的因爲它的 API 有保障：</p>
+<ul>
+<li>不同的執行緒絕對不可能引用同個 <code>Cell&lt;T&gt;</code>，這是因爲 <code>Cell&lt;T&gt;</code> 本來就沒有 <code>Sync</code> trait，也就是說 <code>Cell&lt;T&gt;</code> 只能存在單一執行緒。</li>
+<li>沒有辦法取得 <code>Cell&lt;T&gt;</code> 裏面內容的引用，因爲要是能這樣拿到引用的話，就有可能去改變內部的值違反規則了。它所有的存取動作都是將 <code>Cell&lt;T&gt;</code> 裡的資料複製出去。</li>
+</ul>
+<h4 id="refcell-t"><a href="https://doc.rust-lang.org/std/cell/struct.RefCell.html"><code>RefCell&lt;T&gt;</code></a></h4>
+<p>我們可以改變 <code>RefCell&lt;T&gt;</code> 的值，就算有其他的引用存在。但這是安全的因爲它的 API 有保障：</p>
+<ul>
+<li><code>RefCell&lt;T&gt;</code> 一樣也只能存在單一執行緒，它和 <code>Cell&lt;T&gt;</code> 一樣都不能在多執行緒間引用。</li>
+<li>而在單一執行緒時，動態借用檢查規則會去檢測並防止取得 <code>RefCell&lt;T&gt;</code> 引用並拿到內部資料的人改變其值。</li>
+</ul>
+<h4 id="mutex-t"><a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex&lt;T&gt;</code></a></h4>
+<p>我們可以改變 <code>Mutex&lt;T&gt;</code> 的值，就算有其他的引用存在。但這是安全的因爲它的 API 有保障：</p>
+<ul>
+<li>只有一個引用可以對內部的 <code>T</code> 進行操作，無論是讀取或寫入。其他的存取都會被擋住直到當前的人將鎖釋放。</li>
+</ul>
+<h4 id="rwlock-t"><a href="https://doc.rust-lang.org/std/sync/struct.RwLock.html"><code>RwLock&lt;T&gt;</code></a></h4>
+<p>我們可以改變 <code>RwLock&lt;T&gt;</code> 的值，就算有其他的引用存在。但這是安全的因爲它的 API 有保障：</p>
+<ul>
+<li>只有一個引用可以對內部的 <code>T</code> 改變其值，而且必須在沒有任何引用用來讀取的情況下。要是這條件成立的話，其他的存取都會被擋住。也就是同時只能有一個寫入，或者多個讀取。</li>
+</ul>
+<h2 id="zong-jie">總結</h2>
+<p>這篇原本是想寫個簡單概述，不過看着像是 <a href="https://docs.rs/dtolnay/0.0.9/dtolnay/macro._02__reference_types.html">dtolnay</a> 和  <a href="https://cfsamsonbooks.gitbook.io/explaining-atomics-in-rust/">cfsamson</a> 的文章，覺得還是都寫下來好了，以上的資訊大部分都來自於此。回過頭來看，我也一樣不覺得一開始在學習時用可變與不可變是錯的，畢竟 Rust 的學習曲線在一開始就算蠻斗的了。不過要是能夠轉換觀看這些類型的心智模型的話，我自己覺得很多事反而更說的通了，不必特地去煩惱哪些型態有內部可變性而哪些沒有，又或者得想很久爲什麼這些 API 得這樣設計。這篇文章的確主軸仍然是原子類型，但我想順便偷渡一下這些觀點，可以發現 Rust 的整個設計模型的確可以直接的對應到底曾的記憶體管理設計。在寫程式時，變能夠特地注意到這些特點，進而寫出品質非常好的程式出來。</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;poj-lite&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Peh-oe-ji Lite
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;rust-mbed&#x2F;">
+              Environment Setup for STM Developement in Rust<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

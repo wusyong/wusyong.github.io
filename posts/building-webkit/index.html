@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Environment Setup for Building Webkit on Linux
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Environment Setup for Building Webkit on Linux
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-03-04T12:01:00+08:00">March 04, 2023</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>4 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>737 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Although I've always wanted to contribute to Webkit, I've often found the issues to be too difficult or too time-consuming to tackle amidst my regular workload. However, I recently found myself with enough free time after Rust Nation, and decided to take on an issue that seemed straightforward enough to contribute to. Indeed the <a href="https://trac.webkit.org/wiki">Webkit wiki</a> provides comprehensive information for contributors, I wanted to share my own steps and tips for setting up the environment in the hopes of helping future developers get started on Webkit more quickly and painlessly.</p>
+<h2 id="choose-git-repo-as-source">Choose git repo as Source</h2>
+<p>Back in the days, I used to download release tarballs to test and debug, only to discover that they could conflict with builds installed by package managers in my distribution. Even worse, their build scripts didn't provide an uninstall option, so once you run <code>ninja install</code>, there's no turning back. Because of this, I recommend building from the git repository, even though it takes longer to build from scratch. This way, you can avoid conflicts with other builds and easily uninstall if necessary.</p>
+<p>Since Webkit has migrated to git, it's really easy to access it. Their main upstream is now on <a href="https://github.com/WebKit/WebKit">Github</a>!</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git clone https://github.com/WebKit/WebKit.git WebKit
+</span></code></pre>
+<h2 id="installing-dependencies">Installing Dependencies</h2>
+<p>Before starting to build the project, it's important to make sure that all dependencies are up-to-date. Luckily, Webkit provides a flatpak runtime and SDK to simplify this process. However, these files can be quite large and need to be re-downloaded each time a new version is released. The worst part is that download speeds can sometimes be painfully slow. I've tried changing DNS or using a VPN, but none of them helped. If you find that the download speed is unreasonably low, try rerunning the following command. Whole flatpak dependency could be 5+ GB and take hours to download.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Tools/Scripts/update-webkitgtk-libs
+</span></code></pre>
+<h2 id="building-and-running">Building and Running</h2>
+<p>The steps to build and run Webkit are quite straightforward; you can follow the instructions provided on the project's wiki, specifically the <a href="https://trac.webkit.org/wiki/BuildingGtk">build page</a>). However, it's important to note that building the project can take several hours to complete. If you want to perform debug builds, simply pass <code>--debug</code> to each command. But the debug build will run pretty slow:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Tools/Scripts/build-webkit --gtk
+</span><span>Tools/Scripts/run-minibrowser --gtk
+</span></code></pre>
+<p>The source code of mini browser demo can be found in <code>Tools/MiniBrowser/gtk/main.c</code>. It has a custom url scheme <code>minibrowser-about</code>. But if you type <code>about:</code> it will also redirect to this scheme.</p>
+<p>Webit can also perform incremental compilation. So if you just edit some GTK related files under <code>Source/</code>, it should take a few minutes to compile again. But if you have to edit the interface of WebCore, it will need to relink the libraries and hence take several hours to compile again. Try some advices from <a href="https://trac.webkit.org/wiki/WebKitGTK/SpeedUpBuild">this page</a>, if you want to speed up the build time.</p>
+<h2 id="debugging-and-testing">Debugging and Testing</h2>
+<p>When you start fixing some issues or adding some features, you might want to search the codebase. Since the codebase of Webkit is huge, I suggest just browse the code through https://searchfox.org/wubkat/source. Even using ripgrep can take minutes to do the job.</p>
+<p><a href="https://trac.webkit.org/wiki/WebKitGTK/Debugging">Debugging page</a> on wiki has pretty good adivce about how to debug Webkit. There are two test suites that might relate to you when you need to perform some testing. And if you want specific test, simply add the path of the test to them:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Tools/Scripts/run-webkit-tests --gtk  http/tests/media/video-play-stall.html
+</span><span>Tools/Scripts/run-gtk-tests WebKitBuild/GTK/Release/bin/TestWebKitAPI/WebKitGTK/TestWebKitWebContext
+</span></code></pre>
+<h2 id="contributing">Contributing</h2>
+<p>Again, <a href="https://www.webkit.org/contributing-code/">contributing page</a> has detailed walkthrough about it. Basically, yo need to make sure the tests you would like to run have to pass at least. And then check your code obeys the code style guidline:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Tools/Scripts/check-webkit-style
+</span></code></pre>
+<p>If you haven't made any commit yet, be sure to run the checkout setup script:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Tools/Scripts/git-webkit setup
+</span></code></pre>
+<p>This will give you a commit template when you are adding commit. You'll just need to fill out the required information. The last thing to note is webkit only allow one commit per PR. So remember to squash or amend the commit when updating PRs.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;gat&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              GAT 懶人包
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;install-windows&#x2F;">
+              Install Windows 11 the hard way<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

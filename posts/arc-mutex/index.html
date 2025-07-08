@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | 在 Rust 中讓型別能夠跨執行緒的方法
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;&#x2F;posts">
+            Posts
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            在 Rust 中讓型別能夠跨執行緒的方法
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yu Wei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2020-12-30T12:04:23+08:00">December 30, 2020</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>8 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1441 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>最近我需要用到 Cache 的功能，但在 crates.io 找了一遍後並沒有滿意的 crates，大部分都包含了 unsafe 與裸指標的引用。我自己並不排斥 unsafe 的使用，只要有詳細的註解能讓我理解使用的必要原因就好。不過這些都沒有跑過 <a href="https://github.com/rust-lang/miri">miri</a>，而與其要解決出錯的未定義行為，我覺得不如自己寫一個最適用於自己使用情境的一個還比較實際。所以寫了一個之後，我在 benchmark 的同時剛好需要讓該型別能跨執行緒使用，加了一些簡單的修改後我發現這個或許能幫助到剛好正在學習怎麼寫 concurrency 的人，所以我把修改時的思路與過程記錄下來。</p>
+<p>當然在現在的程式設計中也有許多其他技巧可以使用，像是 channel、atomics 或者 lock-free 等等。但在這邊只是要用最簡單的方式而已：開多條 thread 並使用互斥鎖。這樣的方式雖然簡單，但沒有處理好的話卻也常常造成許多錯誤。不過在安全的 Rust 中就提供了許多保障，讓你在使用它們的同時就免除了許多不必要的危害。</p>
+<blockquote>
+<p>雖然 Rust 能幫你預防 data race 甚至所有記憶體不安全的問題，但 race condition 仍然是會發生的，因為整個系統環境本來就是在互相競爭的，使用者還是有可能寫出死鎖。</p>
+</blockquote>
+<p>首先 Rust 大部分的基礎型別都有 <a href="https://doc.rust-lang.org/std/marker/trait.Sync.html"><code>Sync</code></a> 和 <a href="https://doc.rust-lang.org/std/marker/trait.Send.html"><code>Send</code></a> traits，以這些定義的型別也會擁有這些 traits，這用來表明該型別是可以安全在執行緒間同步與傳遞的。不過因為所有權的關係一個數值就算有這些 traits 也只能被一個 thread 所擁有，要讓多條 thread 可以擁有同個實例的話，通常我們就會使用 <a href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc</code></a> 型別，此型別在 <code>clone</code> 時不會複製數值，而是仍引用原本的實例然後增加原子引用計數。<code>Arc</code> 型別擁有 <code>Deref</code> trait 讓使用者可以拿到原本的引用。不過此引用是不可變的引用，想要拿到可變得用的話，我們就會再繼續加上 <a href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex</code></a> 來繼續取得可變引用。<strong>所以通常要讓一個型別可以跨執行緒並可變的話，我們會很直覺地使用 <code>Arc&lt;Mutex&lt;T&gt;&gt;</code>。</strong> 而且這些型別的 API 仍然遵守著 Rust 的所有權與生命週期規則，這直接讓 Data Race 的產生成為不可能。</p>
+<p><img src="/images/slap.png" alt="" /></p>
+<p>不過我所實作的 Cache 內部還分成了數個 shard，所以與其將整個型別用 <code>Arc&lt;Mutex&lt;T&gt;&gt;</code> 包起來，我採用了別種選擇：讓 Mutex 鎖的是各個 shard。這樣當某個 shard 被鎖起來時，其他 shard 在別條 thread 仍能使用。而在此 <a href="https://github.com/wusyong/sosi/commit/24de852ad155e9078c99423dbda668cc41848ef5">commit</a> 短短幾行修改中，產生了一些有趣的變化，在之後的 benchmark 時我發現變的更好使用了！</p>
+<p><img src="https://i.imgur.com/W7lTPbE.png" alt="" /></p>
+<p>首先，我對每個 thread 加上了 <code>Mutex</code>，而要取得每個 shard 的話就是呼叫 <code>lock().unwrap()</code>。取鎖得到的回傳值是一種 <code>Result</code> 型別的原因是因為要是該鎖在其他 thread panic 的話就會被污染。被污染的鎖就會回傳 <code>Err</code>。不過要是確定 thread 不會 panic 的話，直接 unwrap 是不會有問題的，以我自己的經驗要是真的在除錯時也比較容易。這邊最有趣的地方在於原本需要 <code>&amp;mut self</code> 的方法可以改成 <code>&amp;self</code> 就好了，因為 Mutex 提供的是內部可變性，<code>lock()</code> 的需求也只要 <code>&amp;self</code>。</p>
+<p>這邊沒有加上 <code>Arc</code> 的原因是因為是使用者才要決定要不要傳給其他 thread，所以使用者不需要的話他們本來就能直接使用，而需要跨執行緒的話，他們就會本能地使用 <code>Arc</code> 包裝起來，而且因為所有方法都只需要不可變引用，所以他們不必再定義 Mutex(要真的定義也不是不行，只是最後會發現完全不需要鎖)。這樣一來就完成能夠跨平台的型別，確保外部不變的同時，提供內部可變性。</p>
+<p>以上是快樂的部分，而在剛剛的 commit 中有再定義另一個型別，這則是比較惱人的部分。或者說「遇過太多次這樣的錯誤，所以下意識就會寫的部分」，在剛剛的 commit 中有再定義另一個型別：</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">pub struct </span><span>LookupRef&lt;</span><span style="color:#b48ead;">&#39;a</span><span>, T&gt;(MutexGuard&lt;</span><span style="color:#b48ead;">&#39;a</span><span>, LRUCache&lt;T&gt;&gt;, </span><span style="color:#b48ead;">usize</span><span>);
+</span><span>
+</span><span style="color:#b48ead;">impl</span><span>&lt;</span><span style="color:#b48ead;">&#39;a</span><span>, T&gt; LookupRef&lt;</span><span style="color:#b48ead;">&#39;a</span><span>, T&gt; {
+</span><span>    </span><span style="color:#65737e;">/// Get the value of the lookup reference and actually update the entry to the head of its
+</span><span>    </span><span style="color:#65737e;">/// cache shard.
+</span><span>    </span><span style="color:#b48ead;">pub fn </span><span style="color:#8fa1b3;">value</span><span>(&amp;</span><span style="color:#b48ead;">mut </span><span style="color:#bf616a;">self</span><span>) -&gt; Option&lt;&amp;</span><span style="color:#b48ead;">mut</span><span> T&gt; {
+</span><span>        </span><span style="color:#bf616a;">self</span><span>.</span><span style="color:#d08770;">0.</span><span style="color:#96b5b4;">lookup</span><span>(</span><span style="color:#bf616a;">self</span><span>.</span><span style="color:#d08770;">1</span><span>)
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>這是因為 <code>lock()</code> 的回傳值 <code>MutexGuard</code> 是個引用型別，其產生的引用的生命週期當然不能超過它，不然就無效而無法擁有鎖提供的保障了。在 Cache 的 lookup 會希望取得該值的引用，所以常見的做法是把 <code>MutexGuard</code> 延長給使用者，在那裏使用完後才釋放鎖。</p>
+<p>以上就是要讓型別跨執行緒時常見的思路，除了 <code>Mutex</code> 以外，<code>RwLock</code> 與 Atomic 型別也都適用這樣的思維。在一開始使用這些型別時，的確可能會覺得卡卡的。但習慣後會發現實際要寫的程式並不多，而且可以安全地定義並使用，享受 fealess concurrency 帶來的好處。</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;wasm&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Webassembly 與它們的產地
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;wusyong.github.io&#x2F;posts&#x2F;fn&#x2F;">
+              fn 與 Fn<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://wusyong.github.io/elasticlunr.min.js"></script>
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>
