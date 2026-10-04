@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="Servo is a browser engine developed by Mozilla and now running individually. It shared many philosophies from gecko and one of its original goals is to make mor…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="Getting Started with Servo" />
+  <meta property="og:description" content="Servo is a browser engine developed by Mozilla and now running individually. It shared many philosophies from gecko and one of its original goals is to make mor…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/servo-00/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/servo-00/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | Getting Started with Servo
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Getting Started with Servo
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2022-04-03T12:04:23+08:00">April 03, 2022</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>3 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>685 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/tutorial/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Tutorial</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/servo/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Servo</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p><a rel="external" href="https://servo.org/">Servo</a> is a browser engine developed by Mozilla and now running individually. It shared many philosophies from <a rel="external" href="https://wiki.mozilla.org/Gecko:Overview">gecko</a> and one of its original goals is to make more components in a browser more modular. Despite it's not pretty active after the <a rel="external" href="https://www.theverge.com/2020/8/11/21363424/mozilla-layoffs-quarter-staff-250-people-new-revenue-focus">layoff</a> of Mozilla, there are many crates still being maintained pretty well. Crates like url, html5ever, selector are widely used by many organizations like Deno, Vercel, and Rome. There are also non-web related crates that are actually came from Servo too, such as bindgen, core-foundation, brotli. Servo itself shaped the foundation of many rust ecosystems and is still worth exploring it IMHO. It still has the potential to become a competent engine for general usage. I would like to encourage people to participate Servo again and getting familiar with it. And perhaps in the future, we can push its boundary further. In this post, I want you to let you know how to run a minimum demo to play around with it.</p>
+<h2 id="setting-up-environment">Setting up environment</h2>
+<blockquote>
+<p>Aka the most difficult part.</p>
+</blockquote>
+<p>Setting environment is usually the least interesting part, but bare with me, it will become better after this step. Basically you should just need to follow these <a rel="external" href="https://github.com/servo/servo/blob/79444349a6506947e08e35fbeeb36e8a21d94c93/README.md#setting-up-your-environment">instructions</a> from Servo's README and it will be good to go.</p>
+<h2 id="building">Building</h2>
+<p>Mozilla has a passion that really really likes to utilize python scripts for building projects. So in Servo, it uses <code>./mach</code> build scripts to do most jobs. Servo comes with two build mode: <code>dev</code> and <code>release</code>. One for developing and debugging purpose, the other for optimized build. To build the project, run one of the following commands:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">./mach</span><span style="color: #98C379;"> build</span><span style="color: #D19A66;"> --dev</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">./mach</span><span style="color: #98C379;"> build</span><span style="color: #D19A66;"> --release</span></span></code></pre>
+<p>This will build library crates under <a rel="external" href="https://github.com/servo/servo/tree/master/components">components</a> directory and build <a rel="external" href="https://github.com/servo/servo/tree/79444349a6506947e08e35fbeeb36e8a21d94c93/ports/winit">winit port</a> binary. There are other ports can be built, but winit one is the most common option when developing it.</p>
+<p>Since this is a fairly large project, it usually takes several minutes to complete the build. If you are developing it and just want to check build errors, you can run this command:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">./mach</span><span style="color: #98C379;"> check</span></span></code></pre><h2 id="running">Running</h2>
+<p>To run the winit port binary, we could run one of the following commands with file path or url as argument:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">./mach</span><span style="color: #98C379;"> run</span><span style="color: #D19A66;"> --dev</span><span> [url/path]</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;"># For example</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">./mach</span><span style="color: #98C379;"> run</span><span style="color: #D19A66;"> --release</span><span style="color: #98C379;"> https://www.google.com</span></span></code></pre>
+<p>Unlike <code>cargo run</code>, this will not run the build command again. It executes the built binary directly and open a window as a web page. There are more arguments and shortcut listed in Servo's <a rel="external" href="https://github.com/servo/servo/blob/79444349a6506947e08e35fbeeb36e8a21d94c93/README.md#commandline-arguments">README</a>.</p>
+<h2 id="testing">Testing</h2>
+<p>There are several test suite with commands to run them. But what we care about the most right now is the compatibility of <a rel="external" href="https://wpt.fyi/results/?label=master&amp;product=servo&amp;aligned">wpt.fyi</a>. It's a test suite to check how complete a web engine is. Wpt runs daily pipeline for Servo, and Servo also include these tests too. To run a wpt test, we can choose one test under <code>tests/wpt</code> directory and run following command:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">./mach</span><span style="color: #98C379;"> test-wpt tests/wpt/mozilla/tests/mozilla/input_value.html</span></span></code></pre>
+<p>You can also just run the directory, it will run all tests under that directory. As the time of this post written, the main focus is full coverage of CSS 2 which tests can be found at <code>tests/wpt/web-platform-tests/css/CSS2</code>. We will talk about wpt testing and how to debug them in the future posts.</p>
+<h2 id="documentation">Documentation</h2>
+<p>The generated documentation can be found on <a rel="external" href="https://doc.servo.org/servo/index.html">official website</a>. But of course this means only default features. If you want to see the documentation from different features, you can go with <code>./mach doc</code>.</p>
+<h2 id="summary">Summary</h2>
+<p>That's pretty much it! There are definitely more commands and tools you can use. You can run <code>./mach --help</code> or browse Servo's <a rel="external" href="https://github.com/servo/servo/wiki">wiki</a> search them. In the next post, I would like to talk about the overview structure of Servo. So people can get the idea how it looks like and could dive into the part they are interested the most.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/mutex/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Mutex 的大小
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/servo-01/">
+              Overview of Servo<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

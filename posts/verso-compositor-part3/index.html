@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="The multi-window has landed! We are fortunate that refactoring worked as planned. Although it opened some follow-up issues to triage, I&#39;m glad we got the initia…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="Verso: initial multi-window support" />
+  <meta property="og:description" content="The multi-window has landed! We are fortunate that refactoring worked as planned. Although it opened some follow-up issues to triage, I&#39;m glad we got the initia…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/verso-compositor-part3/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/verso-compositor-part3/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | Verso: initial multi-window support
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Verso: initial multi-window support
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2024-08-10T12:17:07+08:00">August 10, 2024</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>4 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>781 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/research/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Research</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/web/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Web</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/browser/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Browser</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>The <a rel="external" href="https://github.com/versotile-org/verso/pull/109#event-13818698306">multi-window</a> has landed! We are fortunate that refactoring worked as planned. Although it opened some <a rel="external" href="https://github.com/versotile-org/verso/pull/109#issuecomment-2277526692">follow-up</a>
+issues to triage, I'm glad we got the initial support to open more windows instead of just only one in the very beginning.
+This is one of the most difficult challenge when it comes to develop GUI tools and frameworks. This opens more
+opportunities to implement further features such as prompt dialog and directory selector, etc. This post is actually the
+third part of previous series, but I think it worths an unique title for it. In this post, I'll explain
+what are the key changes to enable multiple windows.</p>
+<p><img src="/images/multiwindow.webp" alt="" /></p>
+<h2 id="multiple-surfaces">Multiple surfaces</h2>
+<p>To achieve multi-window, we need, of course, multiple windows (Duh). Winit can already open and manage more than one window.
+What we need to do next is create individual surfaces for each window. A <a rel="external" href="https://docs.rs/surfman/0.9.5/surfman/platform/unix/wayland/surface/struct.Surface.html">surface</a> is a collection of pixel buffers that
+are rendered via GPU and displayed in the final target. The target could be either a window or a texture that can be
+saved in the file or offscreen. In our case, we only need the window surface for now. We will explore offscreen rendering
+in the future. We extended the capability of <code>RenderingContext</code> to be able to create and destroy additional surfaces in
+<a rel="external" href="https://github.com/servo/servo/pull/32933">Servo#32933</a>. And then we try to <a rel="external" href="https://github.com/versotile-org/verso/blob/07a88a86347c67639f2262fb94acce713d989d5a/src/compositor.rs#L1292">swap the surface</a> whenever we need the Compositor to deal with different windows.</p>
+<p>This change is easier said then done. Although it essentially just needs to add the method of swapping surfaces to the
+Compositor, updating the window fields to a hashmap of windows requires a lot of fields to be updated as well.
+I'm also surprised that many changes in the PR are actually updating the parts related to windows instead of dealing with surface.</p>
+<h2 id="multiple-display-lists">Multiple display lists</h2>
+<p>Let the Compositor manage multiple surfaces is the first half. The other half is telling <a rel="external" href="https://docs.rs/webrender/latest/webrender/">WebRender</a> to render the correct
+display list. A <a rel="external" href="https://docs.rs/webrender_api/0.61.0/webrender_api/struct.Transaction.html#method.set_display_list">display list</a> is used to supply a new frame to the WebRender. When <a rel="external" href="https://docs.rs/webrender_api/0.61.0/webrender_api/struct.DisplayListBuilder.html">building</a> the display list, we could
+decide which webviews are in such window and <a rel="external" href="https://docs.rs/webrender_api/0.61.0/webrender_api/struct.DisplayListBuilder.html#method.push_iframe">push</a> to the list. Finally, we will see the Compositor displays the different
+surface when we swap the window. It will call the method that can <a rel="external" href="https://github.com/versotile-org/verso/blob/07a88a86347c67639f2262fb94acce713d989d5a/src/compositor.rs#L1047">update the display list</a> when the surface is changed.</p>
+<p>And that's how Verso gets its initial support of multi-window. There are some follow-up issues we need to triage further. For
+example, it seems to have some trouble when we try to close the window on macOS and X11. On Wayland, it still displays in the
+same window. We will have to spend some more time to fix these issues and polish the multi-window feature.
+Nevertheless, I'm still happy with what Verso achieved. Because even Firefox is still creating <a rel="external" href="https://github.com/servo/webrender/blob/9c4012b33b7b2ab316867865b47c694a7e1d4303/webrender/src/renderer/mod.rs#L1237">multiple contexts</a> to
+deal with multi-window. We managed to do it with a single context with multiple surfaces.</p>
+<h2 id="what-s-next">What's next?</h2>
+<p>After we polish the multi-window feature. We will explore the multi-process mode, which is already a configuration option in
+Servo, but it only supports Linux and macOS for now. I want to even improve it via sandboxing on all platforms. Then, we
+plan to figure out the set-up of Gstreamer with the best DX experience and enable the media feature back.
+We should also revision the IPC mechanism again since we can communicate with the Constellation directly now. If I still have
+some free time, I would like to implement <a rel="external" href="https://github.com/servo/servo/issues/32898">ReadableStream</a> in the script crate again. So we can remove the heavy patch from mozjs.</p>
+<p>There are many challenging tasks ahead, but I'm excited to see what Verso will become. I'm also looking for new sponsors since
+this work is probably the final grant from NLNet. If you are also interested in supporting Verso, a new web browser written in
+Rust, please don't hesitate to <a rel="external" href="https://opencollective.com/verso">donate</a> or <a href="mailto:yuweiwu@pm.me">contact me</a>.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/verso-compositor-part2/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Verso: Writing its own compositor part 2
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/servo-ai-policy/">
+              Why I voted for Servo&#39;s AI policy change despite I don&#39;t use those tools<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

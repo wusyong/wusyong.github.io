@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="在 Rust 中預設是不能使用 Null 指標/引用的，而當時的設計者 Tony Hoare 也說了這是造成數十億損失的錯誤設計。所以通常我們會使用 Option 型態來表示可能會有 Null 值的型態。這麼做帶來很多好處，所有型態預設都是沒有 Null 的，而 Option&amp;lt;T&amp;gt; 剛好也形成一種 mona…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="Option 的大小" />
+  <meta property="og:description" content="在 Rust 中預設是不能使用 Null 指標/引用的，而當時的設計者 Tony Hoare 也說了這是造成數十億損失的錯誤設計。所以通常我們會使用 Option 型態來表示可能會有 Null 值的型態。這麼做帶來很多好處，所有型態預設都是沒有 Null 的，而 Option&amp;lt;T&amp;gt; 剛好也形成一種 mona…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/option/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/option/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | Option 的大小
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Option 的大小
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2020-07-27T17:35:00+08:00">July 27, 2020</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>1 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>436 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/research/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Research</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/memory/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>memory</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>在 Rust 中預設是不能使用 <code>Null</code> 指標/引用的，而當時的設計者 Tony Hoare 也說了這是造成<a rel="external" href="https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare/">數十億損失的錯誤設計</a>。所以通常我們會使用 <code>Option</code> 型態來表示可能會有 <code>Null</code> 值的型態。這麼做帶來很多好處，所有型態預設都是沒有 <code>Null</code> 的，而 <code>Option&lt;T&gt;</code> 剛好也形成一種 monadic structure。你可以在不和原生型態衝突的狀況下，自己定義他的運算行爲。</p>
+<p>但是對於資源吃緊的裝置來說，我們就會在意型態的大小了。我們很清楚的知道 <code>u64</code> 就是有 64 bits 所以會佔 8 bytes，但是 <code>Option&lt;u64&gt;</code> 的話就需要多一個 bit 來儲存 <code>None</code>，所以一開始想的話我們應該會覺得它應該會佔 9 bytes，但結果卻是 16 bytes。</p>
+<p><a rel="external" href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=636100b0d6ec110d614828933b70124d">playground</a></p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #61AFEF;">assert_eq!</span><span>(</span><span style="color: #D19A66;">9</span><span>,</span><span style="color: #E5C07B;"> std</span><span>::</span><span style="color: #E5C07B;">mem</span><span>::</span><span style="color: #61AFEF;">size_of</span><span>::&lt;</span><span style="color: #E5C07B;">Option</span><span>&lt;</span><span style="color: #E5C07B;">u64</span><span>&gt;&gt;());</span></span></code></pre><pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">thread</span><span style="color: #98C379;"> &#39;main&#39; panicked at &#39;assertion failed: `(left == right)`</span></span>
+<span class="giallo-l"><span style="color: #98C379;">  left: `9`,</span></span>
+<span class="giallo-l"><span style="color: #98C379;"> right: `16`&#39;, src/main.rs:2:5</span></span></code></pre>
+<p>這是因爲像是在 64-bit 的平台上的 CPU 都是 word-oriented，所有的形態預設都需要 align 爲 8 bytes 的界限。這樣就造成了一些效能的損失，當然這些在平常的應用開發不太重要，編譯器甚至能優化掉，但如果是要寫非常注重空間或記憶體消耗的話（像是寫 file system, kernel module 或 嵌入式系統），可能就需要一些考慮了。爲此 <code>std::num</code> 提供了沒有零的原生型態像是 <code>NonZeroU8</code>, <code>NonZeroUsize</code> 等等。因爲他們的 0 是用不到的，所以作爲 <code>Option</code> 型態的話，就可以剛好給 <code>None</code> 使用。這樣一來大小絕對就和原本的型態一樣了。</p>
+<p><a rel="external" href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=241f3744d24b83f655fe2f99385b72bf">playground</a></p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #61AFEF;">assert_eq!</span><span>(</span><span style="color: #D19A66;">8</span><span>,</span><span style="color: #E5C07B;"> std</span><span>::</span><span style="color: #E5C07B;">mem</span><span>::</span><span style="color: #61AFEF;">size_of</span><span>::&lt;</span><span style="color: #E5C07B;">Option</span><span>&lt;</span><span style="color: #E06C75;">std</span><span>::</span><span style="color: #E06C75;">num</span><span>::</span><span style="color: #E5C07B;">NonZeroU64</span><span>&gt;&gt;());</span></span></code></pre>
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/rust-mbed/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Environment Setup for STM Development in Rust
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/rust-esp/">
+              Environment Setup for ESP Development in Rust<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

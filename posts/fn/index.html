@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="大家在其他語言中大部分的時候可能可以將 fn 與 Fn 視為同樣的語意來處理，可是這在 Rust 中會需要多一些操作，比方說以下的做法就是不可行的： fn foo&amp;lt;A, B&amp;gt;(f1: Fn(A) -&amp;gt; B, f2: Fn(B) -&amp;gt; A) { todo!() } 因為 fn 才是函式（更確切地說…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="fn 與 Fn" />
+  <meta property="og:description" content="大家在其他語言中大部分的時候可能可以將 fn 與 Fn 視為同樣的語意來處理，可是這在 Rust 中會需要多一些操作，比方說以下的做法就是不可行的： fn foo&amp;lt;A, B&amp;gt;(f1: Fn(A) -&amp;gt; B, f2: Fn(B) -&amp;gt; A) { todo!() } 因為 fn 才是函式（更確切地說…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/fn/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/fn/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | fn 與 Fn
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            fn 與 Fn
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2021-01-01T12:04:23+08:00">January 01, 2021</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>1 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>436 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/research/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Research</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/fn/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>fn</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>大家在其他語言中大部分的時候可能可以將 <code>fn</code> 與 <code>Fn</code> 視為同樣的語意來處理，可是這在 Rust 中會需要多一些操作，比方說以下的做法就是不可行的：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">fn</span><span style="color: #61AFEF;"> foo</span><span>&lt;</span><span style="color: #E5C07B;">A</span><span>,</span><span style="color: #E5C07B;"> B</span><span>&gt;(</span><span style="color: #E06C75;">f1</span><span>:</span><span style="color: #61AFEF;"> Fn</span><span>(</span><span style="color: #E5C07B;">A</span><span>) -&gt;</span><span style="color: #E5C07B;"> B</span><span>,</span><span style="color: #E06C75;"> f2</span><span>:</span><span style="color: #61AFEF;"> Fn</span><span>(</span><span style="color: #E5C07B;">B</span><span>) -&gt;</span><span style="color: #E5C07B;"> A</span><span>) {</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">    todo!</span><span>()</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>因為 <code>fn</code> 才是函式（更確切地說是函式指標），而 <code>Fn</code> 是 trait，我們得改成用 <code>fn</code> 或是真的要用 <code>Fn</code> 的話則是採用泛型 <code>impl trait</code> 甚至是 Trait Object <code>&amp;dyn trait</code> 等等。選擇 <code>impl trait</code> 的話會寫成像這樣：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">fn</span><span style="color: #61AFEF;"> foo</span><span>&lt;</span><span style="color: #E5C07B;">A</span><span>,</span><span style="color: #E5C07B;"> B</span><span>&gt;(</span><span style="color: #E06C75;">f1</span><span>:</span><span style="color: #C678DD;"> impl</span><span style="color: #61AFEF;"> Fn</span><span>(</span><span style="color: #E5C07B;">A</span><span>) -&gt;</span><span style="color: #E5C07B;"> B</span><span>,</span><span style="color: #E06C75;"> f2</span><span>:</span><span style="color: #C678DD;"> impl</span><span style="color: #61AFEF;"> Fn</span><span>(</span><span style="color: #E5C07B;">B</span><span>) -&gt;</span><span style="color: #E5C07B;"> A</span><span>) {</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">    todo!</span><span>()</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>會有這樣的差別的原因是，除了普通的函式以外，閉包也擁有 <code>Fn</code> trait，閉包通常會再有個 context struct 來保存狀態，在大多數的語言中會選擇 Box 起來變成同樣的指標，讓型別之間的區別抹去。在 Rust 預設則不是如此，型別之間的區別是存在的，所以真的想在執行時視為同樣的型別處理，我們就會用 Trait Object <code>Box&lt;dyn trait&gt;</code>，但這樣就是動態調度（Dynamic Dispatch），和其他語言一樣會有額外的開銷。</p>
+<p><code>Fn</code> 預設的行為則不然，它是 trait，用在泛型上會是靜態調度（Static Dispatch），在執行時是沒有任何額外的開銷（不過因為是靜態的，你的程式碼大小的確會增加）。有趣的是 <code>fn</code> 因為是指標，所以拿來當作參數使用的話其實是動態調度的，和使用 <code>Fn</code> 的泛型靜態調度有一點不一樣。詳細的區別可以看看以下例子：<a rel="external" href="https://godbolt.org/z/bexE6v">https://godbolt.org/z/bexE6v</a></p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span>#![feature(test)]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>#[inline(never)]</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">fn</span><span style="color: #61AFEF;"> foo</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">    std</span><span>::</span><span style="color: #E5C07B;">hint</span><span>::</span><span style="color: #61AFEF;">black_box</span><span>(());</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>#[inline(never)]</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">fn</span><span style="color: #61AFEF;"> bar</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">    std</span><span>::</span><span style="color: #E5C07B;">hint</span><span>::</span><span style="color: #61AFEF;">black_box</span><span>(());</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">    std</span><span>::</span><span style="color: #E5C07B;">hint</span><span>::</span><span style="color: #61AFEF;">black_box</span><span>(());</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">pub fn</span><span style="color: #61AFEF;"> run1</span><span>() {</span></span>
+<span class="giallo-l"><span>    #[inline(never)]</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    fn</span><span style="color: #61AFEF;"> run</span><span>(</span><span style="color: #E06C75;">f</span><span>:</span><span style="color: #C678DD;"> fn</span><span>()) {</span><span style="color: #61AFEF;"> f</span><span>() }</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">    run</span><span>(</span><span style="color: #E06C75;">foo</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">    run</span><span>(</span><span style="color: #E06C75;">bar</span><span>);</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">pub fn</span><span style="color: #61AFEF;"> run2</span><span>() {</span></span>
+<span class="giallo-l"><span>    #[inline(never)]</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    fn</span><span style="color: #61AFEF;"> run</span><span>(</span><span style="color: #E06C75;">f</span><span>:</span><span style="color: #C678DD;"> impl</span><span style="color: #61AFEF;"> Fn</span><span>()) {</span><span style="color: #61AFEF;"> f</span><span>() }</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">    run</span><span>(</span><span style="color: #E06C75;">foo</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">    run</span><span>(</span><span style="color: #E06C75;">bar</span><span>);</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>而產生的組合語言則是如此：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="plain"><span class="giallo-l"><span>example::foo:</span></span>
+<span class="giallo-l"><span>        push    rax</span></span>
+<span class="giallo-l"><span>        mov     rax, rsp</span></span>
+<span class="giallo-l"><span>        pop     rax</span></span>
+<span class="giallo-l"><span>        ret</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>example::bar:</span></span>
+<span class="giallo-l"><span>        push    rax</span></span>
+<span class="giallo-l"><span>        mov     rax, rsp</span></span>
+<span class="giallo-l"><span>        pop     rax</span></span>
+<span class="giallo-l"><span>        ret</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>example::run1:</span></span>
+<span class="giallo-l"><span>        push    rax</span></span>
+<span class="giallo-l"><span>        lea     rdi, [rip + example::foo]</span></span>
+<span class="giallo-l"><span>        call    example::run1::run</span></span>
+<span class="giallo-l"><span>        lea     rdi, [rip + example::bar]</span></span>
+<span class="giallo-l"><span>        pop     rax</span></span>
+<span class="giallo-l"><span>        jmp     example::run1::run</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>example::run1::run:</span></span>
+<span class="giallo-l"><span>        jmp     rdi</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>example::run2:</span></span>
+<span class="giallo-l"><span>        push    rax</span></span>
+<span class="giallo-l"><span>        call    example::run2::run</span></span>
+<span class="giallo-l"><span>        pop     rax</span></span>
+<span class="giallo-l"><span>        jmp     example::run2::run</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>example::run2::run:</span></span>
+<span class="giallo-l"><span>        jmp     example::foo</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>example::run2::run:</span></span>
+<span class="giallo-l"><span>        jmp     example::bar</span></span></code></pre>
+<p><code>run1</code> 會接受的參數是個指標，而 <code>run2</code> 才會確切呼叫實際個別函式。</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/arc-mutex/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              在 Rust 中讓型別能夠跨執行緒的方法
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/memory-safety/">
+              你想要多安全的記憶體安全？<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

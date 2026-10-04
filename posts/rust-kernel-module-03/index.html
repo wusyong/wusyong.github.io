@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="Let&#39;s talk about pinning! This is a concept we usually don&#39;t encounter often. It&#39;s introduced in the update of Rust 1.36 which brings async syntax and many othe…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="Rust Kernel Module: Pinning" />
+  <meta property="og:description" content="Let&#39;s talk about pinning! This is a concept we usually don&#39;t encounter often. It&#39;s introduced in the update of Rust 1.36 which brings async syntax and many othe…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/rust-kernel-module-03/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/rust-kernel-module-03/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | Rust Kernel Module: Pinning
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Rust Kernel Module: Pinning
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2022-06-04T12:04:23+08:00">June 04, 2022</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>3 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>621 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/research/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Research</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/linux/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Linux</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/kernel/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Kernel</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Let's talk about pinning! This is a concept we usually don't encounter often. It's introduced in the update of Rust 1.36 which brings async syntax and many other related types to build the async executor. And <code>Pin</code> is one of them. If you want to understand it comprehensively, documentation of <a rel="external" href="https://doc.rust-lang.org/std/pin/index.html"><code>std::pin</code></a> has excellent explanation of why we need to pin the data. But in short, it's basically a type to pin data to its location in memory.</p>
+<p>This is in fact rarely seen in the world of C/C++ which doesn't construct movable objects frequently. Even when we work with <code>std::move</code> in C++, we will make sure move constructor is equal to delete. However, cases like moving data are the default behavior in Rust. Its cloning requires explicit semantics.</p>
+<h2 id="the-problem-requires-pinning">The problem requires pinning</h2>
+<p>When everything is under the context of Rust, it's of course not a problem. Ownership model can take care of it. But this is not the case in our kernel module. Instead of rewriting everything in Rust, it's still more reasonable to build on top of something that already exists. This is how <code>kernel</code> crate wraps around the existing kernel interface. And that's why you see we reuse the <code>refcount_t</code> wrapped by <code>Ref</code> type instead of using <code>Arc</code> like normal rust program.</p>
+<p>This is the point that pinning matters to us. Because many kernel data structures are actually self-referential. Either it is a list self-reference itself directly, or it points to other structure which points back to it eventually.</p>
+<p>Let's look at the definition from kernel's mutex which we will discuss how to use it soon in the future post. It has a <code>wait_list</code> which is an intrusive, circular, double-linked list.</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="c"><span class="giallo-l"><span style="color: #C678DD;">struct</span><span> mutex {</span></span>
+<span class="giallo-l"><span style="color: #56B6C2;">	atomic_long_t</span><span>		owner;</span></span>
+<span class="giallo-l"><span style="color: #56B6C2;">	raw_spinlock_t</span><span>		wait_lock;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">#ifdef</span><span style="color: #61AFEF;"> CONFIG_MUTEX_SPIN_ON_OWNER</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	struct</span><span> optimistic_spin_queue osq;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">#endif</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	struct</span><span> list_head	wait_list;</span><span style="color: #7F848E;font-style: italic;"> // &lt;==================</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">#ifdef</span><span style="color: #61AFEF;"> CONFIG_DEBUG_MUTEXES</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	void			*</span><span>magic;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">#endif</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">#ifdef</span><span style="color: #61AFEF;"> CONFIG_DEBUG_LOCK_ALLOC</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	struct</span><span> lockdep_map	dep_map;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">#endif</span></span>
+<span class="giallo-l"><span>};</span></span></code></pre>
+<p><img src="https://i.imgur.com/Q3NJqn1.png" alt="" /></p>
+<p>If we represent it visually, you can tell it's self-referenced as soon as you see it. When we define the abstraction in Rust, we of course include this binding and the data we want to protect. So this list is included in the type of <code>Mutex</code>:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">pub struct</span><span style="color: #E5C07B;"> Mutex</span><span>&lt;</span><span style="color: #E5C07B;">T</span><span>: ?</span><span style="color: #E5C07B;">Sized</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    mutex</span><span>:</span><span style="color: #E5C07B;"> Opaque</span><span>&lt;</span><span style="color: #E06C75;">bindings</span><span>::</span><span style="color: #E06C75;">mutex</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    _pin</span><span>:</span><span style="color: #E5C07B;"> PhantomPinned</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    data</span><span>:</span><span style="color: #E5C07B;"> UnsafeCell</span><span>&lt;</span><span style="color: #E5C07B;">T</span><span>&gt;,</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>And because we already know Rust is move by default. When type like this is contained in the field of other struct, it's very trivial to move it in basic operations. For example if we declare a struct contains a mutex and we want to make it a reference count object, we will see the problem as shown in below:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #E5C07B;">Ref</span><span>::</span><span style="color: #61AFEF;">new</span><span>(</span><span style="color: #E5C07B;">AStruct</span><span>{</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">    //...</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    innner</span><span>:</span><span style="color: #E5C07B;"> Mutex</span><span>::</span><span style="color: #61AFEF;">new</span><span>(</span><span style="color: #E5C07B;">Inner</span><span> {</span><span style="color: #7F848E;font-style: italic;"> /* ... */</span><span> })</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>})</span></span></code></pre>
+<p><img src="https://i.imgur.com/NkYoZXv.png" alt="" /></p>
+<p>We have an original list in inner field, and when we called <code>Ref::new</code>, we need to move that structure to the <code>Ref</code> type we are going to create. This means create and copy the object bit by bit from the original. And because we copy the data the pointer points to instead of pointing to the newly created one, this causes the new list points to the old one.</p>
+<h3 id="miscdev-initialization">Miscdev initialization</h3>
+<p>This also happens to misc device we just learned. Its definition also has an intrusive, circular, double-linked list. That's why methods signature of <code>miscdev::Registration</code> always requires <code>Pin</code> upon registration:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="c"><span class="giallo-l"><span style="color: #C678DD;">struct</span><span> miscdevice  {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	int</span><span> minor;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	const char *</span><span>name;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	const struct</span><span> file_operations </span><span style="color: #C678DD;">*</span><span>fops;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	struct</span><span> list_head list;</span><span style="color: #7F848E;font-style: italic;"> // &lt;==================</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	struct</span><span> device </span><span style="color: #C678DD;">*</span><span>parent;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	struct</span><span> device </span><span style="color: #C678DD;">*</span><span>this_device;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	const struct</span><span> attribute_group </span><span style="color: #C678DD;">**</span><span>groups;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">	const char *</span><span>nodename;</span></span>
+<span class="giallo-l"><span style="color: #56B6C2;">	umode_t</span><span> mode;</span></span>
+<span class="giallo-l"><span>};</span></span></code></pre><pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">pub fn</span><span style="color: #61AFEF;"> new_pinned</span><span>(</span><span style="color: #E06C75;">name</span><span>:</span><span style="color: #E5C07B;"> fmt</span><span>::</span><span style="color: #E5C07B;">Arguments</span><span>&lt;&#39;</span><span style="color: #E5C07B;">_</span><span>&gt;,</span><span style="color: #E06C75;"> open_data</span><span>:</span><span style="color: #E5C07B;"> T</span><span>::</span><span style="color: #E5C07B;">OpenData</span><span>) -&gt;</span><span style="color: #E5C07B;"> Result</span><span>&lt;</span><span style="color: #E5C07B;">Pin</span><span>&lt;</span><span style="color: #E5C07B;">Box</span><span>&lt;</span><span style="color: #E5C07B;">Self</span><span>&gt;&gt;&gt; {</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">    Options</span><span>::</span><span style="color: #61AFEF;">new</span><span>().</span><span style="color: #61AFEF;">register_new</span><span>(</span><span style="color: #E06C75;">name</span><span>,</span><span style="color: #E06C75;"> open_data</span><span>)</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">pub fn</span><span style="color: #61AFEF;"> register</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">    self</span><span>:</span><span style="color: #E5C07B;"> Pin</span><span>&lt;&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> Self</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    name</span><span>:</span><span style="color: #E5C07B;"> fmt</span><span>::</span><span style="color: #E5C07B;">Arguments</span><span>&lt;&#39;</span><span style="color: #E5C07B;">_</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    open_data</span><span>:</span><span style="color: #E5C07B;"> T</span><span>::</span><span style="color: #E5C07B;">OpenData</span><span>,</span></span>
+<span class="giallo-l"><span>) -&gt;</span><span style="color: #E5C07B;"> Result</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">    Options</span><span>::</span><span style="color: #61AFEF;">new</span><span>().</span><span style="color: #61AFEF;">register</span><span>(</span><span style="color: #E5C07B;">self</span><span>,</span><span style="color: #E06C75;"> name</span><span>,</span><span style="color: #E06C75;"> open_data</span><span>)</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>You can call <code>new</code> and pin it manually before <code>register</code>, or just call <code>new_pinned</code> to do both thing at the same time. The interface enforces you to pin the date before registration.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>And that's the reason we use <code>new_pinned</code> to create the misc device in previous post. The question we haven't solved is how do we also pin the mutex we just mentioned. This will leave to the next post to answer and I think it will also be the good timing to introduce what built-in concurrent primitives we can use in kernel.</p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a rel="external" href="https://youtu.be/fVEeqo40IyQ">Rust for Linux by Miguel Ojeda and Wedson Almeida Filho</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/rust-kernel-module-02/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Rust Kernel Module: Character Device Driver
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/the-next-step/">
+              After half a year, what now?<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="用 Rust 接 V8 本身不難，rusty_v8 已經做好大部分的 binding。真正麻煩的是 GC：只要少 trace 一個指標，或是在錯的時間點讀了一個指標，就可能變成 use-after-free。如果再打開 concurrent marking，讓 GC 在背景 thread 上一邊走訪物件、main th…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="如何使用 V8 並安全地開啟 concurrent GC" />
+  <meta property="og:description" content="用 Rust 接 V8 本身不難，rusty_v8 已經做好大部分的 binding。真正麻煩的是 GC：只要少 trace 一個指標，或是在錯的時間點讀了一個指標，就可能變成 use-after-free。如果再打開 concurrent marking，讓 GC 在背景 thread 上一邊走訪物件、main th…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/v8-concurrent-gc/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/v8-concurrent-gc/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | 如何使用 V8 並安全地開啟 concurrent GC
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            如何使用 V8 並安全地開啟 concurrent GC
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-10-04T16:00:00+08:00">October 04, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>10 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>4103 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/research/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Research</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/v8/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>V8</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/gc/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>GC</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/browser/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Browser</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>用 Rust 接 V8 本身不難，<a rel="external" href="https://github.com/denoland/rusty_v8">rusty_v8</a> 已經做好大部分的 binding。真正麻煩的是 GC：只要少 trace 一個指標，或是在錯的時間點讀了一個指標，就可能變成 use-after-free。如果再打開 concurrent marking，讓 GC 在背景 thread 上一邊走訪物件、main thread 一邊修改，事情又更複雜了。</p>
+<p>這篇文章以一個用 Rust 寫的 DOM 為例，說明怎麼把 Rust 的物件放進 V8 的 heap、怎麼把 GC 的規則盡量交給 Rust 編譯器檢查，以及為了讓 concurrent marking 在 Rust 裡也站得住腳，rusty_v8 需要改哪些東西。</p>
+<h2 id="wei-shen-mo-dom-yao-fang-zai-v8-de-heap-shang">為什麼 DOM 要放在 V8 的 heap 上</h2>
+<p>DOM 節點和 JS 物件會互相引用。節點指向自己的 JS wrapper，也指向 event listener 的 function；JS 這邊則透過 wrapper 指回節點。如果 DOM 用 Rust 自己的 <code>Rc</code> 管理、JS 物件由 V8 管理，兩邊的循環就沒有人能回收：V8 看不到 Rust 那一半的引用，Rust 的引用計數也看不到 JS 那一半。</p>
+<p>Blink 的解法是 unified heap：DOM 配置在 cppgc（也就是 Blink 的 Oilpan）的 heap 上，這個 heap 接在 V8 的 isolate 上，一次 GC 同時 trace JS 物件和 DOM 節點，循環自然就能回收。rusty_v8 也支援這種用法，建立 isolate 時把一個 <code>CppHeap</code> 交給它就好：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">let</span><span style="color: #E06C75;"> heap</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> v8</span><span>::</span><span style="color: #E5C07B;">cppgc</span><span>::</span><span style="color: #E5C07B;">Heap</span><span>::</span><span style="color: #61AFEF;">create</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">    v8</span><span>::</span><span style="color: #E5C07B;">V8</span><span>::</span><span style="color: #61AFEF;">get_current_platform</span><span>(),</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">    v8</span><span>::</span><span style="color: #E5C07B;">cppgc</span><span>::</span><span style="color: #E5C07B;">HeapCreateParams</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">        marking_support</span><span>:</span><span style="color: #E5C07B;"> v8</span><span>::</span><span style="color: #E5C07B;">cppgc</span><span>::</span><span style="color: #E5C07B;">MarkingType</span><span>::</span><span style="color: #E5C07B;">Incremental</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">        sweeping_support</span><span>:</span><span style="color: #E5C07B;"> v8</span><span>::</span><span style="color: #E5C07B;">cppgc</span><span>::</span><span style="color: #E5C07B;">SweepingType</span><span>::</span><span style="color: #E5C07B;">IncrementalAndConcurrent</span><span>,</span></span>
+<span class="giallo-l"><span>    },</span></span>
+<span class="giallo-l"><span>);</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">let</span><span style="color: #E06C75;"> isolate</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> v8</span><span>::</span><span style="color: #E5C07B;">Isolate</span><span>::</span><span style="color: #61AFEF;">new</span><span>(</span><span style="color: #E5C07B;">v8</span><span>::</span><span style="color: #E5C07B;">CreateParams</span><span>::</span><span style="color: #61AFEF;">default</span><span>().</span><span style="color: #61AFEF;">cpp_heap</span><span>(</span><span style="color: #E06C75;">heap</span><span>));</span></span></code></pre>
+<p>接著 DOM 節點就可以是一個 cppgc 的 GC 物件：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span>#[derive(</span><span style="color: #E5C07B;">GcObject</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">struct</span><span style="color: #E5C07B;"> Node</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">    // 被 trace 的區域</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    parent</span><span>:</span><span style="color: #E5C07B;"> Edge</span><span>&lt;</span><span style="color: #E5C07B;">Node</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    first_child</span><span>:</span><span style="color: #E5C07B;"> Edge</span><span>&lt;</span><span style="color: #E5C07B;">Node</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    last_child</span><span>:</span><span style="color: #E5C07B;"> Edge</span><span>&lt;</span><span style="color: #E5C07B;">Node</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    previous_sibling</span><span>:</span><span style="color: #E5C07B;"> Edge</span><span>&lt;</span><span style="color: #E5C07B;">Node</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    next_sibling</span><span>:</span><span style="color: #E5C07B;"> Edge</span><span>&lt;</span><span style="color: #E5C07B;">Node</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    first_listener</span><span>:</span><span style="color: #E5C07B;"> Edge</span><span>&lt;</span><span style="color: #E5C07B;">Listener</span><span>&gt;,</span><span style="color: #7F848E;font-style: italic;">  // event listener 的 linked list</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    wrapper</span><span>:</span><span style="color: #E5C07B;"> WrapperSlot</span><span>,</span><span style="color: #7F848E;font-style: italic;">            // JS 的 wrapper（JsEdge）</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    kind</span><span>:</span><span style="color: #E5C07B;"> NodeKindData</span><span>,</span><span style="color: #7F848E;font-style: italic;">              // 種類、不可變的 per-kind 資料、per-kind 的 Edge</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">    // 不被 trace 的區域</span></span>
+<span class="giallo-l"><span>    #[no_trace]</span><span style="color: #E06C75;"> state</span><span>:</span><span style="color: #E5C07B;"> RefCell</span><span>&lt;</span><span style="color: #E5C07B;">NodeState</span><span>&gt;,</span><span style="color: #7F848E;font-style: italic;">  // attribute、computed style、文字內容</span></span>
+<span class="giallo-l"><span>    #[no_trace]</span><span style="color: #E06C75;"> id</span><span>:</span><span style="color: #E5C07B;"> NodeId</span><span>,</span></span>
+<span class="giallo-l"><span>    #[no_trace]</span><span style="color: #E06C75;"> canary</span><span>:</span><span style="color: #E5C07B;"> Canary</span><span>,</span><span style="color: #7F848E;font-style: italic;">             // debug build 的 use-after-free 偵測</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p><code>Edge&lt;T&gt;</code> 是指向另一個 GC 物件的強指標，底層是 cppgc 的 <code>Member</code>；<code>JsEdge&lt;T&gt;</code> 是指向 JS 值的指標，底層是 V8 的 <code>TracedReference</code>。後面會一直提到這兩個型別。</p>
+<h2 id="gc-hui-zai-shen-mo-shi-hou-chu-shi">GC 會在什麼時候出事</h2>
+<p>在進入 concurrent 之前，先列出 GC 和 Rust 放在一起時，有哪些地方會出錯：</p>
+<ol>
+<li><strong>少 trace 一個指標</strong>：GC 以為那個物件沒人用，把它回收掉，之後再讀就是 use-after-free。</li>
+<li><strong>在錯的時間點持有指標</strong>：手上拿著一個 <code>&amp;Node</code>，中間呼叫了某個會配置 GC 物件的函式，GC 剛好在這時執行，這個 reference 就懸空了。</li>
+<li><strong>漏掉 write barrier</strong>：incremental marking 分好幾段做完，如果在兩段之間把一個還沒標記的物件接到已經標記完的物件上，GC 不會再回頭看那個父節點，新的物件就會被當成垃圾。</li>
+<li><strong>Finalizer 做太多事</strong>：cppgc 的 finalizer 會在任意的配置點執行，可能剛好在一個 DOM 修改操作的中間。如果 finalizer 去碰 DOM，就會看到修改到一半的樹。</li>
+<li><strong>Concurrent marking 時的 data race</strong>：marker thread 在背景讀節點，main thread 同時在寫。</li>
+</ol>
+<p>C++ 的 Blink 靠的是 coding convention、clang plugin 和大量的測試。Rust 則有機會做得更好：<strong>讓上面這些規則盡量由編譯器檢查</strong>，剩下編譯器管不到的，明確寫成文件，並用執行期檢查和測試守住。</p>
+<h2 id="xian-chu-li-dan-thread-de-bu-fen">先處理單 thread 的部分</h2>
+<h3 id="scope-gc-zhi-neng-zai-mei-ren-chi-you-zhi-biao-shi-zhi-xing">Scope：GC 只能在沒人持有指標時執行</h3>
+<p>所有 DOM 存取都要先從持有 isolate 的 <code>DomIsolate</code> 拿一個 scope：只讀的 <code>DomReadScope</code>，或可以修改的 <code>DomMutationScope</code>。兩種 scope 都借用 <code>&amp;mut DomIsolate</code>：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">impl</span><span style="color: #E5C07B;"> DomIsolate</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    pub fn</span><span style="color: #61AFEF;"> read</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> self</span><span>) -&gt;</span><span style="color: #E5C07B;"> DomReadScope</span><span>&lt;&#39;</span><span style="color: #E5C07B;">_</span><span>&gt; { ... }</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    pub fn</span><span style="color: #61AFEF;"> mutate</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> self</span><span>) -&gt;</span><span style="color: #E5C07B;"> DomMutationScope</span><span>&lt;&#39;</span><span style="color: #E5C07B;">_</span><span>&gt; { ... }</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    pub fn</span><span style="color: #61AFEF;"> evaluate_classic_script</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> self</span><span>, ...) { ... }</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    pub fn</span><span style="color: #61AFEF;"> run_platform_tasks</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> self</span><span>) { ... }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>重點在於，<strong>所有可能觸發 GC 的入口也都要 <code>&amp;mut DomIsolate</code></strong>：建立節點、執行 script、跑 V8 的 platform task。所以只要你手上還有一個 scope，borrow checker 就不會讓你呼叫任何會 GC 的東西。</p>
+<p>從 scope 讀出來的節點是 <code>NodeRef&lt;'a&gt;</code>，它借用 scope，scope 結束它就不能再用：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">let</span><span style="color: #E06C75;"> escaped</span><span style="color: #56B6C2;"> =</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    let</span><span style="color: #E06C75;"> scope</span><span style="color: #56B6C2;"> =</span><span style="color: #E06C75;"> dom</span><span>.</span><span style="color: #61AFEF;">read</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    document</span><span>.</span><span style="color: #61AFEF;">get</span><span>(&amp;</span><span style="color: #E06C75;">scope</span><span>).</span><span style="color: #61AFEF;">first_child</span><span>()</span></span>
+<span class="giallo-l"><span>};</span><span style="color: #7F848E;font-style: italic;"> // error: `scope` does not live long enough</span></span></code></pre>
+<p>要在 scope 之外持有節點，就用 <code>NodeHandle</code>，它是一個 cppgc 的 <code>Persistent</code>，也就是 root。這樣一來，在 DOM 的操作以外，<strong>不存在任何沒被 root 的 GC 指標</strong>，GC 不管什麼時候執行、掃不掃 stack 都是安全的。</p>
+<p>修改操作也只接受 <code>&amp;NodeHandle</code>，不接受 <code>NodeRef</code>，所以「一邊讀一邊改」會編譯失敗。常見的寫法是先讀、收集 handle，再改：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">let</span><span style="color: #E06C75;"> children</span><span>:</span><span style="color: #E5C07B;"> Vec</span><span>&lt;</span><span style="color: #E5C07B;">NodeHandle</span><span>&gt;</span><span style="color: #56B6C2;"> =</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    let</span><span style="color: #E06C75;"> scope</span><span style="color: #56B6C2;"> =</span><span style="color: #E06C75;"> m</span><span>.</span><span style="color: #61AFEF;">read</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    parent</span><span>.</span><span style="color: #61AFEF;">get</span><span>(&amp;</span><span style="color: #E06C75;">scope</span><span>).</span><span style="color: #61AFEF;">children</span><span>().</span><span style="color: #61AFEF;">map</span><span>(</span><span style="color: #56B6C2;">|</span><span style="color: #E06C75;">c</span><span style="color: #56B6C2;">|</span><span style="color: #E06C75;"> c</span><span>.</span><span style="color: #61AFEF;">to_handle</span><span>()).</span><span style="color: #61AFEF;">collect</span><span>()</span></span>
+<span class="giallo-l"><span>};</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">for</span><span style="color: #E06C75;"> child</span><span style="color: #C678DD;"> in</span><span> &amp;</span><span style="color: #E06C75;">children</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    m</span><span>.</span><span style="color: #61AFEF;">remove</span><span>(</span><span style="color: #E06C75;">child</span><span>);</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h3 id="stack-sao-miao-he-platform-task">Stack 掃描和 platform task</h3>
+<p>cppgc 一般的 GC 會保守地掃描 stack 和 register，所以在修改操作裡，剛配置、還沒接到樹上的節點只要放在 stack 的區域變數裡就不會被回收。但 V8 的 incremental marking task 是從 platform task 發起的，這時 V8 假設 stack 上沒有 heap 指標，<strong>不掃描 stack</strong>。</p>
+<p>也就是說，platform task 只能在 event loop 的最外層執行。可以用兩個方式守住這點：包一層要 <code>&amp;mut self</code> 的 <code>run_platform_tasks()</code>，並在 <code>clippy.toml</code> 裡直接禁止 rusty_v8 原本的 API：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="toml"><span class="giallo-l"><span style="color: #E06C75;">disallowed-methods</span><span> = [</span></span>
+<span class="giallo-l"><span>    {</span><span style="color: #E06C75;"> path</span><span> =</span><span style="color: #98C379;"> &quot;v8::platform::Platform::pump_message_loop&quot;</span><span>,</span><span style="color: #E06C75;"> reason</span><span> =</span><span style="color: #98C379;"> &quot;use the &amp;mut self wrapper&quot;</span><span> },</span></span>
+<span class="giallo-l"><span>    {</span><span style="color: #E06C75;"> path</span><span> =</span><span style="color: #98C379;"> &quot;v8::platform::Platform::run_idle_tasks&quot;</span><span>,</span><span style="color: #E06C75;"> reason</span><span> =</span><span style="color: #98C379;"> &quot;use the &amp;mut self wrapper&quot;</span><span> },</span></span>
+<span class="giallo-l"><span>]</span></span></code></pre><h3 id="binding-he-js-de-zhi-xing-hu-chi">Binding 和 JS 的執行互斥</h3>
+<p>JS 呼叫 binding 時，binding 要能拿到 DOM。一個做法是：執行 script 的入口（<code>evaluate_classic_script</code> 等）先把 DOM 狀態的指標放進 isolate 的一個私有 slot，binding 再從 <code>BindingContext</code> 取出來。<code>BindingContext</code> 的 <code>mutate()</code>、<code>read()</code> 和拿 JS scope 的 <code>scope()</code> 都借用整個 context，所以<strong>持有 DOM scope 時拿不到 JS scope</strong>：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">let mut</span><span style="color: #E06C75;"> cx</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> BindingContext</span><span>::</span><span style="color: #61AFEF;">new</span><span>(</span><span style="color: #E06C75;">scope</span><span>).</span><span style="color: #61AFEF;">unwrap</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">let</span><span style="color: #E06C75;"> m</span><span style="color: #56B6C2;"> =</span><span style="color: #E06C75;"> cx</span><span>.</span><span style="color: #61AFEF;">mutate</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">let</span><span style="color: #E06C75;"> _</span><span style="color: #56B6C2;"> =</span><span style="color: #E06C75;"> args</span><span>.</span><span style="color: #61AFEF;">get</span><span>(</span><span style="color: #D19A66;">0</span><span>).</span><span style="color: #61AFEF;">to_rust_string_lossy</span><span>(</span><span style="color: #E06C75;">cx</span><span>.</span><span style="color: #61AFEF;">scope</span><span>());</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// error[E0499]: cannot borrow `cx` as mutable more than once at a time</span></span></code></pre>
+<p>這看起來有點嚴格，但很必要：<code>to_rust_string_lossy</code> 可能呼叫物件的 <code>toString</code>，執行任意 JS，而那段 JS 又可能呼叫另一個 binding、開出另一個 DOM scope。所以 binding 的寫法一律是先轉換參數、再開 DOM scope，關掉之後才建立回傳值。</p>
+<h3 id="finalizer-bu-zhun-you-drop">Finalizer 不准有 <code>Drop</code></h3>
+<p>因為 finalizer 會在任意的配置點執行，derive macro 可以直接禁止 GC 型別實作 <code>Drop</code>。用的是 pin-project 的技巧：替所有 <code>T: Drop</code> 實作一個 trait，再替這個型別實作一次，型別有 <code>Drop</code> 就會衝突：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">trait</span><span style="color: #E5C07B;"> MustNotImplDrop</span><span> {}</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">impl</span><span>&lt;</span><span style="color: #E5C07B;">T</span><span>: ::</span><span style="color: #E5C07B;">core</span><span>::</span><span style="color: #E5C07B;">ops</span><span>::</span><span style="color: #E5C07B;">Drop</span><span>&gt;</span><span style="color: #E5C07B;"> MustNotImplDrop</span><span style="color: #C678DD;"> for</span><span style="color: #E5C07B;"> T</span><span> {}</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">impl</span><span style="color: #E5C07B;"> MustNotImplDrop</span><span style="color: #C678DD;"> for</span><span> #</span><span style="color: #E06C75;">name</span><span> {}</span></span></code></pre><pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="plain"><span class="giallo-l"><span>error[E0119]: conflicting implementations of trait `MustNotImplDrop` for type `G`</span></span></code></pre>
+<p><code>#[no_trace]</code> 欄位裡的型別還是可以有 <code>Drop</code>（例如 <code>String</code>），但它們必須實作 <code>unsafe trait NoTrace</code>，契約是「不含 GC 指標，<code>Drop</code> 只釋放記憶體，不碰 DOM、scope、root 或 thread-local，也不 panic」。</p>
+<h3 id="mei-ge-lan-wei-du-yao-gui-dao-yi-ge-qu-yu">每個欄位都要歸到一個區域</h3>
+<p><code>#[derive(GcObject)]</code> 和 <code>#[derive(Trace)]</code> 會替每個欄位產生一個編譯期斷言：沒標 <code>#[no_trace]</code> 的欄位必須實作 <code>Trace</code>，標了的必須實作 <code>NoTrace</code>。所以漏 trace 一個指標是不可能的，因為 <code>Edge</code> 沒有實作 <code>NoTrace</code>；<code>Vec&lt;Edge&gt;</code>、<code>Option&lt;Edge&gt;</code>、<code>RefCell&lt;Edge&gt;</code> 也都沒有實作 <code>Trace</code>，直接編譯失敗：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="plain"><span class="giallo-l"><span>error[E0277]: the trait bound `RefCell&lt;Edge&lt;G&gt;&gt;: Trace` is not satisfied</span></span>
+<span class="giallo-l"><span> --&gt; tests/ui/refcell_edge.rs:8:11</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>8 |     next: RefCell&lt;Edge&lt;G&gt;&gt;,</span></span>
+<span class="giallo-l"><span>  |           ^^^^^^^^^^^^^^^^ the trait `Trace` is not implemented for `RefCell&lt;Edge&lt;G&gt;&gt;`</span></span></code></pre>
+<p>為什麼連 <code>RefCell&lt;Edge&gt;</code> 都不行？因為它可以讓你拿到 <code>&amp;mut Edge</code>，繞過 write barrier。<code>Edge</code> 唯一的寫入方式是 <code>Edge::set</code>，而它只在 DOM 的 crate 內部可見，並且要一個 <code>&amp;mut DomMutationScope</code>：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">pub</span><span>(</span><span style="color: #C678DD;">crate</span><span>)</span><span style="color: #C678DD;"> fn</span><span style="color: #61AFEF;"> set</span><span>(</span></span>
+<span class="giallo-l"><span>    &amp;</span><span style="color: #E5C07B;">self</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    _scope</span><span>: &amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> DomMutationScope</span><span>&lt;&#39;</span><span style="color: #E5C07B;">_</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    target</span><span>: &amp;</span><span style="color: #C678DD;">impl</span><span style="color: #E5C07B;"> GetRustObj</span><span>&lt;</span><span style="color: #E5C07B;">T</span><span>&gt;,</span></span>
+<span class="giallo-l"><span>) {</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">    // SAFETY: on the heap&#39;s thread (the scope borrows the isolate), and</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">    // `target` is on the same heap.</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    unsafe</span><span> {</span><span style="color: #E5C07B;"> self</span><span>.slot.</span><span style="color: #61AFEF;">assign</span><span>(</span><span style="color: #E06C75;">target</span><span>) }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>它最終呼叫 C++ 的 <code>Member::operator=</code>，也就是 atomic store 加上 write barrier。沒有 <code>&amp;mut</code> 存取、沒有 <code>Clone</code>、沒有帶值的建構子，barrier 就繞不過去。</p>
+<p>到這裡為止，incremental marking 下的安全性已經大致成立：marking 分段做，但每一段都在 main thread 上執行。</p>
+<h2 id="da-kai-concurrent-marking-zhi-hou">打開 concurrent marking 之後</h2>
+<p>Concurrent marking 時，V8 會在背景的 worker thread 上呼叫我們的 <code>trace()</code>，而 main thread 同時在修改 DOM。這時有兩件事要成立：</p>
+<ul>
+<li>marker thread 讀到的東西，不會和 main thread 的寫入發生 data race；</li>
+<li>在 Rust 的語意下，這件事也不違反 aliasing 規則。</li>
+</ul>
+<p>第二點是 C++ 不用煩惱、Rust 卻必須面對的問題。</p>
+<h3 id="trace-sync"><code>Trace: Sync</code></h3>
+<p>第一步是讓型別系統表達「被 trace 的區域可以被另一個 thread 讀」：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">pub unsafe trait</span><span style="color: #E5C07B;"> Trace</span><span>:</span><span style="color: #E5C07B;"> Sync</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    fn</span><span style="color: #61AFEF;"> trace</span><span>(&amp;</span><span style="color: #E5C07B;">self</span><span>,</span><span style="color: #E06C75;"> visitor</span><span>: &amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> Visitor</span><span>);</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p><code>Trace</code> 要求 <code>Sync</code>，所以 <code>#[derive(Trace)]</code> 的型別整個都必須是 <code>Sync</code>。GC 物件只能透過 <code>&amp;</code> 存取，所以被 trace 的區域除了 slot 本身以外都是不可變的；需要修改的資料，例如 attribute 或 computed style，一律放進 <code>#[no_trace]</code> 的 <code>RefCell</code> 或 <code>Cell</code>，marker 從來不讀它們。</p>
+<p>換句話說，<strong>marker thread 唯一會和 main thread 同時碰到的東西，就是 slot</strong>。只要 slot 的讀寫是安全的，整個 <code>trace()</code> 就是安全的。</p>
+<h3 id="shang-you-member-de-san-ge-wen-ti">上游 <code>Member</code> 的三個問題</h3>
+<p>問題是 slot 本身。上游 rusty_v8 的 <code>Member</code>、<code>WeakMember</code> 和 <code>TracedReference</code> 在 concurrent 下有三個問題：</p>
+<p><strong>1. Aliasing。</strong> 上游的寫入方法是 <code>Member::set(&amp;mut self)</code>、<code>TracedReference::reset(&amp;mut self)</code>，trace 則是 <code>&amp;self</code>。concurrent marking 時，marker thread 正在 trace 一個 slot、main thread 同時寫入它，等於兩個 thread 同時持有同一塊記憶體的 <code>&amp;</code> 和 <code>&amp;mut</code>。即使 C++ 那邊兩邊都是 atomic 存取，這在 Rust 裡仍然是 undefined behavior。</p>
+<p><strong>2. 對齊。</strong> 上游把 slot 存成 <code>[u8; N]</code>，對齊只有 1，而 C++ 把它當成 <code>std::atomic</code> 存取，必須對齊。這不是理論上的問題：我實際碰過一個放在 enum variant 裡的 <code>Edge</code>，被編譯器排在 offset 1。在 ARM64 上，沒對齊的 atomic 存取不保證是 atomic。</p>
+<p><strong>3. 發布新物件。</strong> cppgc 配置一個物件時，會先跑建構子，再用 release store 把物件標記成「已建構完成」；marker 在 trace 一個物件之前，一定先用 acquire 讀這個位元。但上游的 <code>make_garbage_collected</code> 是在<strong>標記完成之後</strong>才寫入 Rust 的資料，包括 <code>trace()</code> 要用的 <code>dynamic</code> 指標。這形式上是 data race，在 ARM64 上 marker 甚至可能讀到舊的 <code>dynamic</code> 指標然後 crash。</p>
+<h3 id="zi-ji-de-slot-xing-bie">自己的 slot 型別</h3>
+<p>我在 <a rel="external" href="https://github.com/wusyong/rusty_v8">rusty_v8 的 fork</a> 裡，在上游的型別旁邊加了 <code>MemberSlot</code>、<code>WeakMemberSlot</code> 和 <code>TracedSlot</code>。它們呼叫一樣的 C 函式，只是換了在 Rust 這邊的表示方式：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">pub struct</span><span style="color: #E5C07B;"> MemberSlot</span><span>&lt;</span><span style="color: #E5C07B;">T</span><span>:</span><span style="color: #E5C07B;"> GarbageCollected</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    storage</span><span>:</span><span style="color: #E5C07B;"> UnsafeCell</span><span>&lt;</span><span style="color: #E5C07B;">MemberStorage</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    _phantom</span><span>:</span><span style="color: #E5C07B;"> PhantomData</span><span>&lt;</span><span style="color: #E5C07B;">T</span><span>&gt;,</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// SAFETY: the only data is the C++ object in the `UnsafeCell`, and no</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// Rust reference to it is ever created: every access is a C++ call</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// through a raw pointer. Of those, only `trace` may run off the heap&#39;s</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// thread (on a marker thread), and it only reads, with an atomic load</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// (`GetAtomic`). Writes (`assign`, `clear`, `copy_from`) are atomic</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// stores (`operator=`&#39;s `SetRawAtomic`) on the heap&#39;s thread, ...</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">unsafe impl</span><span>&lt;</span><span style="color: #E5C07B;">T</span><span>:</span><span style="color: #E5C07B;"> GarbageCollected</span><span>&gt;</span><span style="color: #E5C07B;"> Sync</span><span style="color: #C678DD;"> for</span><span style="color: #E5C07B;"> MemberSlot</span><span>&lt;</span><span style="color: #E5C07B;">T</span><span>&gt; {}</span></span></code></pre>
+<p>設計的重點有三個：</p>
+<ul>
+<li>
+<p><strong>bytes 放在 <code>UnsafeCell</code> 裡，從不建立指向它們的 Rust reference</strong>。每次寫入和 trace 都只把 raw 指標交給 C++，和標準函式庫的 <code>AtomicPtr</code> 是同一個模式。這樣 Rust 這邊就沒有 <code>&amp;mut</code> 和 <code>&amp;</code> 同時存在的問題，所有同步都交給 C++ 的 atomic。</p>
+</li>
+<li>
+<p><strong>對齊等於大小</strong>。<code>Member</code> 在開了 cppgc pointer compression 時是 4 bytes，沒開時是 8 bytes。大小從 build 時產生的常數讀，再用 const assert 檢查：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span>#[repr(</span><span style="color: #E5C07B;">C</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">struct</span><span style="color: #E5C07B;"> MemberStorage</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">  _align</span><span>: [&lt;</span><span style="color: #E5C07B;">Bytes</span><span>&lt;</span><span style="color: #E5C07B;">MEMBER_SIZE</span><span>&gt;</span><span style="color: #C678DD;"> as</span><span style="color: #E5C07B;"> AlignedAs</span><span>&gt;::</span><span style="color: #E5C07B;">Unit</span><span>;</span><span style="color: #D19A66;"> 0</span><span>],</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">  _bytes</span><span>: [</span><span style="color: #E5C07B;">u8</span><span>;</span><span style="color: #D19A66;"> MEMBER_SIZE</span><span>],</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">const</span><span style="color: #E06C75;"> _</span><span>: ()</span><span style="color: #56B6C2;"> =</span><span style="color: #61AFEF;"> assert!</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">  size_of</span><span>::&lt;</span><span style="color: #E5C07B;">MemberStorage</span><span>&gt;()</span><span style="color: #56B6C2;"> ==</span><span style="color: #D19A66;"> MEMBER_SIZE</span></span>
+<span class="giallo-l"><span style="color: #56B6C2;">    &amp;&amp;</span><span style="color: #61AFEF;"> align_of</span><span>::&lt;</span><span style="color: #E5C07B;">MemberStorage</span><span>&gt;()</span><span style="color: #56B6C2;"> ==</span><span style="color: #D19A66;"> MEMBER_SIZE</span></span>
+<span class="giallo-l"><span>);</span></span></code></pre></li>
+<li>
+<p><strong>接 <code>&amp;self</code> 的方法全都是 <code>unsafe</code></strong>，契約寫明它能在哪個 thread 上執行：<code>assign</code>、<code>clear</code>、<code>get</code> 只能在 heap 的 thread 上，<code>trace</code> 只能從擁有這個 slot 的 GC 物件的 <code>trace</code> 呼叫。這是 <code>unsafe impl Sync</code> 成立的前提。如果哪天有人加了一個 safe 的 <code>&amp;self</code> 寫入方法，<code>Sync</code> 就不再成立，而編譯器完全不會發現。這也是整個設計裡最需要人工審查的一條。</p>
+</li>
+</ul>
+<p>DOM 的 <code>Edge</code> 只是包一層 <code>MemberSlot</code>，再加上 DOM 自己的規則（寫入要 <code>DomMutationScope</code>、只在 DOM 的 crate 裡），所以它自動是 <code>Sync</code>。為了避免有人不小心用回上游的型別，<code>clippy.toml</code> 也禁止它們：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="toml"><span class="giallo-l"><span style="color: #E06C75;">disallowed-types</span><span> = [</span></span>
+<span class="giallo-l"><span>    {</span><span style="color: #E06C75;"> path</span><span> =</span><span style="color: #98C379;"> &quot;v8::cppgc::Member&quot;</span><span>,</span><span style="color: #E06C75;"> reason</span><span> =</span><span style="color: #98C379;"> &quot;use v8::cppgc::MemberSlot (our fork)&quot;</span><span> },</span></span>
+<span class="giallo-l"><span>    {</span><span style="color: #E06C75;"> path</span><span> =</span><span style="color: #98C379;"> &quot;v8::cppgc::WeakMember&quot;</span><span>,</span><span style="color: #E06C75;"> reason</span><span> =</span><span style="color: #98C379;"> &quot;use v8::cppgc::WeakMemberSlot (our fork)&quot;</span><span> },</span></span>
+<span class="giallo-l"><span>    {</span><span style="color: #E06C75;"> path</span><span> =</span><span style="color: #98C379;"> &quot;v8::TracedReference&quot;</span><span>,</span><span style="color: #E06C75;"> reason</span><span> =</span><span style="color: #98C379;"> &quot;use v8::cppgc::TracedSlot (our fork)&quot;</span><span> },</span></span>
+<span class="giallo-l"><span>]</span></span></code></pre><h3 id="zai-jian-gou-zi-li-xie-ru-rust-de-zi-liao">在建構子裡寫入 Rust 的資料</h3>
+<p>第三個問題最早是用兩個 fence 補的：寫入 slot 時一個 release fence，trace 時一個 acquire fence。後來我直接改了 <code>RustObj</code> 的建構子，讓它接一個初始化 callback：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="cpp"><span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// Called from the constructor, so the Rust data is written before</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// cppgc marks the object fully constructed (a release store, after the</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// constructor returns). Concurrent markers trace an object only after</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// reading that bit with acquire, so they see the Rust data without any</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// further synchronization. It must not allocate on the cppgc heap.</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">using</span><span style="color: #E5C07B;"> RustObjInit</span><span style="color: #C678DD;"> = void</span><span> (</span><span style="color: #C678DD;">*</span><span>)(</span><span style="color: #E06C75;">RustObj</span><span style="color: #C678DD;">*</span><span style="color: #E06C75;"> self</span><span>,</span><span style="color: #C678DD;"> void*</span><span style="color: #E06C75;"> data</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">class</span><span style="color: #E5C07B;"> RustObj</span><span> :</span><span style="color: #C678DD;"> public</span><span> v8::Object::</span><span style="color: #E5C07B;">Wrappable</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;"> public:</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">  RustObj</span><span>(</span><span style="color: #E5C07B;">RustObjInit</span><span style="color: #E06C75;font-style: italic;"> init</span><span>,</span><span style="color: #C678DD;"> void*</span><span style="color: #E06C75;font-style: italic;"> data</span><span>) {</span><span style="color: #61AFEF;"> init</span><span>(</span><span style="color: #E5C07B;">this</span><span>,</span><span style="color: #E06C75;"> data</span><span>); }</span></span>
+<span class="giallo-l"><span>  ...</span></span>
+<span class="giallo-l"><span>};</span></span></code></pre>
+<p>這樣 Rust 的資料就在 cppgc 的 release store <strong>之前</strong>寫好，搭上 cppgc 本來就有的 acquire，marker 一定讀得到完整的物件。fence 就可以拿掉了。</p>
+<p>這個問題有個討厭的地方：<strong>測試完全測不出來</strong>。x86-64 不會重排寫入，所以在 x86 上本來就不會出事；ARM64 會重排，但 stress 也很難碰上。我試過在 ARM64 上把 release fence 拿掉，測試照樣通過。所以這裡只能靠對照 cppgc 的原始碼來確認。</p>
+<h3 id="tracedreference-he-js-zhi"><code>TracedReference</code> 和 JS 值</h3>
+<p><code>JsEdge</code> 包的是 <code>TracedSlot</code>，用在節點的 wrapper 和 listener 的 callback 上。它的情況比 <code>Member</code> 簡單一些：slot 只存一個指向 V8 traced handle 節點的指標，讀寫都是 relaxed atomic（<code>SetSlotThreadSafe</code> / <code>GetSlotThreadSafe</code>）；節點的內容則由 V8 自己用 release / acquire 發布。marking 中 destroy 一個 handle 時，V8 只把物件清掉，節點留到最後的 pause 才釋放，所以 marker 就算讀到舊的 slot，指向的也還是活著的節點。Blink 依賴的是同一套機制，<code>TracedSlot</code> 不需要自己再做同步。</p>
+<p>寫入時的 barrier 也由 V8 負責：marking 進行中寫入 <code>TracedReference</code> 時，V8 會當場標記新的值。</p>
+<h2 id="shou-zhu-dui-v8-de-jia-she">守住對 V8 的假設</h2>
+<p>上面的論證有很大一部分建立在「V8 是這樣實作的」之上：<code>Member::operator=</code> 是 atomic store 加 barrier、marker 用 atomic load 讀、有 finalizer 的物件不會在背景 thread 上被釋放、cppgc 不會搬動一般的物件……這些都是讀 V8 原始碼得到的結論，我們證明不了，而且升級 V8 時可能改變。</p>
+<h3 id="build-rs-bi-dui-v8-de-yuan-shi-ma"><code>build.rs</code> 比對 V8 的原始碼</h3>
+<p>可以讓 build script 讀 V8 的原始碼，檢查論證依賴的那幾段還在不在。例如 cppgc 的 <code>allocation.h</code> 是不是還「先建構、再標記」，<code>TracedReference::Reset</code> 是不是還是 <code>kAssigningStore</code>。找不到就編譯失敗：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #61AFEF;">assert!</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    text</span><span>.</span><span style="color: #61AFEF;">contains</span><span>(&amp;</span><span style="color: #61AFEF;">normalize</span><span>(</span><span style="color: #E06C75;">snippet</span><span>)),</span></span>
+<span class="giallo-l"><span style="color: #98C379;">    &quot;{} no longer contains `{snippet}`; review the safety notes against it&quot;</span><span>,</span></span>
+<span class="giallo-l"><span>    ...</span></span>
+<span class="giallo-l"><span>);</span></span></code></pre>
+<p>錯誤訊息直接要你回頭審查文件。這不是要你把字串換成新的內容就結束，而是要重讀對應的 C++ 函式，確認語意沒有變。</p>
+<h3 id="ding-si-de-v8-flag">釘死的 V8 flag</h3>
+<p>讀 V8 原始碼時發現了一條很隱蔽的路徑：一輪 GC 如果在 efficiency mode 下開始，V8 之後會呼叫 <code>CppHeap::ReEnableConcurrentMarking</code>，<strong>不檢查 heap 的設定</strong>，就把一個 incremental 的 <code>CppHeap</code> 升級成 concurrent。也就是說，就算你建立 heap 時說只要 incremental，V8 還是可能自己開 concurrent。</p>
+<p>所以初始化 V8 時，一律在所有 flag 的最後面加上兩個 flag，讓使用者傳入的 flag 也蓋不掉：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">const</span><span style="color: #D19A66;"> PINNED_FLAGS</span><span>: &amp;</span><span style="color: #E5C07B;">str</span><span style="color: #56B6C2;"> =</span><span style="color: #98C379;"> &quot;--no-single-threaded-gc-in-background --no-cppgc-young-generation&quot;</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">let</span><span style="color: #E06C75;"> flags</span><span style="color: #56B6C2;"> =</span><span style="color: #61AFEF;"> format!</span><span>(</span><span style="color: #98C379;">&quot;{flags} {user_flags} {PINNED_FLAGS}&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">v8</span><span>::</span><span style="color: #E5C07B;">V8</span><span>::</span><span style="color: #61AFEF;">set_flags_from_string</span><span>(&amp;</span><span style="color: #E06C75;">flags</span><span>);</span></span></code></pre>
+<ul>
+<li><code>--no-single-threaded-gc-in-background</code> 關掉上面那條升級路徑。<code>CppHeap::SelectMarkingType</code> 只會降級、不會升級，所以這是唯一的升級路徑。</li>
+<li><code>--no-cppgc-young-generation</code> 確保 cppgc 不會開 young generation。V8 開了 caged heap 時（x64 和 arm64 的預設），young generation 會一起編進 cppgc，只要一個實驗性的 flag 就能在執行時打開它，帶來 minor GC、generational barrier，以及按位址記住 <code>TracedReference</code> slot 的行為。整個安全論證只涵蓋 full GC，所以它一律關掉。</li>
+</ul>
+<p>這樣一來，concurrent marking 就只會在建立 heap 時明確要求才打開：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #E5C07B;">v8</span><span>::</span><span style="color: #E5C07B;">cppgc</span><span>::</span><span style="color: #E5C07B;">HeapCreateParams</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    marking_support</span><span>:</span><span style="color: #E5C07B;"> v8</span><span>::</span><span style="color: #E5C07B;">cppgc</span><span>::</span><span style="color: #E5C07B;">MarkingType</span><span>::</span><span style="color: #E5C07B;">IncrementalAndConcurrent</span><span>,</span></span>
+<span class="giallo-l"><span>    ...</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h3 id="zhi-xing-qi-de-zi-wo-jian-cha">執行期的自我檢查</h3>
+<p>有些假設在編譯期檢查不了，就在啟動時檢查。例如 wrap 的 tag：V8 在 <code>unwrap</code> 時會檢查 tag，用一個 tag wrap 的物件用另一個 tag <code>unwrap</code> 只會拿到 null。但這只有開了 pointer compression 的 V8 才檢查，rusty_v8 預設的 prebuilt 沒開，會直接回傳物件裡的欄位。所以在建立第一個 isolate 時，先用一個 tag wrap、再用另一個 tag <code>unwrap</code>，拿到東西就 panic。換成不檢查的 V8 會在啟動時就停下，而不是一路跑下去。這也是為什麼最好連結自己編的、開了 pointer compression 的 V8。</p>
+<h2 id="zen-mo-yan-zheng">怎麼驗證</h2>
+<p>這整套東西是<strong>論證，不是證明</strong>。Miri 不能執行 V8 的 C++ 程式碼，把 cppgc 的行為形式化又不切實際。所以做法是把假設和不變式明確寫成一份 soundness 文件（我的版本列了十條對 V8 的假設、十四條不變式，以及 concurrent 額外需要的四條假設），再分別用不同的方式守住：</p>
+<ul>
+<li>
+<p><strong>編譯期</strong>：每條規則一個 compile-fail 測試，用 trybuild 比對錯誤訊息；<code>Trace: Sync</code>；clippy 的 <code>disallowed-types</code>、<code>disallowed-methods</code> 和 <code>undocumented_unsafe_blocks</code>；workspace 的 <code>unsafe_code = "deny"</code>，只有負責 GC 的 crate 和 rusty_v8 的 fork 能寫 <code>unsafe</code>。</p>
+</li>
+<li>
+<p><strong>執行期</strong>：debug build 的每個節點有一個 canary，讀到已經被 finalize 的節點就 panic；計數器記錄 finalizer 和 <code>trace()</code> 在哪個 thread 上執行，背景 thread 上的 finalizer 數量必須是 0。</p>
+</li>
+<li>
+<p><strong>一步一步控制的 marking</strong>：在沒接 isolate 的 heap 上手動推進 marking，把修改放在 marking 的特定時間點。concurrent 的測試會關掉 main thread 的 marking，讓背景 thread 在 main thread 修改的同時 trace，最後還斷言背景 thread 真的 trace 過，避免「測試跑了，但其實沒有 concurrent」：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #E06C75;">dom</span><span>.</span><span style="color: #61AFEF;">start_incremental_gc_for_testing</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">dom</span><span>.</span><span style="color: #61AFEF;">set_main_thread_marking_for_testing</span><span>(</span><span style="color: #D19A66;">false</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">for</span><span style="color: #E06C75;"> _</span><span style="color: #C678DD;"> in</span><span style="color: #D19A66;"> 0</span><span>..</span><span style="color: #D19A66;">50</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    work</span><span>.</span><span style="color: #61AFEF;">batch</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E06C75;"> dom</span><span>.</span><span style="color: #61AFEF;">mutate</span><span>(),</span><span style="color: #D19A66;"> 50</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    dom</span><span>.</span><span style="color: #61AFEF;">marking_step_for_testing</span><span>();</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">dom</span><span>.</span><span style="color: #61AFEF;">set_main_thread_marking_for_testing</span><span>(</span><span style="color: #D19A66;">true</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">dom</span><span>.</span><span style="color: #61AFEF;">finalize_gc_for_testing</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">work</span><span>.</span><span style="color: #61AFEF;">check</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E06C75;"> dom</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// ...</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">assert!</span><span>(</span><span style="color: #E06C75;">after</span><span style="color: #56B6C2;"> &gt;</span><span style="color: #E06C75;"> before</span><span>,</span><span style="color: #98C379;"> &quot;no edge was traced on a marker thread&quot;</span><span>);</span></span></code></pre></li>
+<li>
+<p><strong>Stress 和 fuzz</strong>：每次配置都強制 GC，隨機修改 DOM 並對照 Rust 端的模型；<code>--stress-incremental-marking</code> 讓修改和 marking 交錯；CI 再隨機組合種子、thread 數、marking 模式和 GC flag。寫這類測試有個陷阱：不能用 root 保住要檢查的節點，因為 GC 最後的 pause 會從 root 重新標記，漏掉 write barrier 也不會出錯。</p>
+</li>
+<li>
+<p><strong>V8 自己的 DCHECK</strong>：連結 debug 版的 V8，讓 V8 內部的檢查也一起跑。它抓到過一個測試在建立 heap 之前就建立 slot。</p>
+</li>
+<li>
+<p><strong>Mutation test</strong>：暫時把實作弄壞，例如讓 <code>MemberSlot::trace</code> 什麼都不做、拿掉 barrier、把 weak 當成強指標、讓 derive 漏掉一個 enum variant，確認一定有測試失敗。</p>
+</li>
+</ul>
+<h2 id="jie-yu">結語</h2>
+<p>把 GC 接進 Rust，最困難的部分其實不是 FFI，而是 GC 的規則和 Rust 的所有權模型是兩套不同的語言。cppgc 假設你會遵守它的規則：什麼時候能持有指標、什麼時候要寫 barrier、finalizer 能做什麼。我們要做的，就是把這些規則一條一條翻譯成 Rust 的型別和 lifetime，讓 borrow checker 替我們檢查。</p>
+<p>Concurrent marking 則多了一層：C++ 只要求 atomic，Rust 還要求 aliasing 正確。這需要重新設計 slot 型別，並修正上游 rusty_v8 的三個問題：slot 的對齊、<code>&amp;mut self</code> 寫入造成的 aliasing，以及新物件發布前的同步。之後我會整理成 issue 或 PR 回報給上游，希望其他用 rusty_v8 cppgc 的專案也能受益。</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/wasmtime-script-engine/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Can we use Wasmtime to build web script engine?
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

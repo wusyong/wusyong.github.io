@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="Many enum types like Option and Result provide method like unwrap to retrieve the field immediately. It panics if it can not get the value we want. This gives m…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="Waker Practice: Attempt to Unwrap a Future" />
+  <meta property="og:description" content="Many enum types like Option and Result provide method like unwrap to retrieve the field immediately. It panics if it can not get the value we want. This gives m…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/future-unwrap/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/future-unwrap/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | Waker Practice: Attempt to Unwrap a Future
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Waker Practice: Attempt to Unwrap a Future
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2020-03-15T16:13:00+08:00">March 15, 2020</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>2 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>422 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/research/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Research</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/async/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>async</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Many enum types like <code>Option</code> and <code>Result</code> provide method like <code>unwrap</code> to retrieve the field immediately. It panics if it can not get the value we want. This gives me an idea to do a silly exercise. What if we can also unwrap a future? "But why?" you said. Because why not. Consider when we use <code>.await</code> syntax on futures from <code>async</code> blocks or functions, it will poll the future and see if it is ready. The compiler transforms the whole block into some sort of state machine, and each <code>.await</code> represents a potential state transition. And now I would like to make this exit to be <code>unwrap</code> which attempts to resolve a future immediately.</p>
+<h2 id="wake-up-mr-freeman">Wake up Mr. Freeman</h2>
+<p>The entire method is quite easy actually, we just need to match the poll and then return the value. But the missing puzzle is the waker. In real executor system, it will provide all required contexts for us. But we are going to poll it manually ourselves, we need to define our waker function. Fortunately, the standard library already provide all the components we want. We just have to assemble them, so let's wake up and smell the ashes!</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">pub fn</span><span style="color: #61AFEF;"> waker</span><span>&lt;</span><span style="color: #E5C07B;">F</span><span>:</span><span style="color: #61AFEF;"> Fn</span><span>() +</span><span style="color: #E5C07B;"> Send</span><span> +</span><span style="color: #E5C07B;"> Sync</span><span> + &#39;</span><span style="color: #E5C07B;">static</span><span>&gt;(</span><span style="color: #E06C75;">f</span><span>:</span><span style="color: #E5C07B;"> F</span><span>) -&gt;</span><span style="color: #E5C07B;"> Waker</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    let</span><span style="color: #E06C75;"> raw</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> Arc</span><span>::</span><span style="color: #61AFEF;">into_raw</span><span>(</span><span style="color: #E5C07B;">Arc</span><span>::</span><span style="color: #61AFEF;">new</span><span>(</span><span style="color: #E06C75;">f</span><span>))</span><span style="color: #C678DD;"> as</span><span> *</span><span style="color: #C678DD;">const</span><span> ();</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    let</span><span style="color: #E06C75;"> vtable</span><span style="color: #56B6C2;"> =</span><span> &amp;</span><span style="color: #E5C07B;">RawWakerHelper</span><span>::&lt;</span><span style="color: #E5C07B;">F</span><span>&gt;::</span><span style="color: #D19A66;">VTABLE</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    unsafe</span><span> {</span><span style="color: #E5C07B;"> Waker</span><span>::</span><span style="color: #61AFEF;">from_raw</span><span>(</span><span style="color: #E5C07B;">RawWaker</span><span>::</span><span style="color: #61AFEF;">new</span><span>(</span><span style="color: #E06C75;">raw</span><span>,</span><span style="color: #E06C75;"> vtable</span><span>)) }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>We create a waker function which outputs, well, a <code>Waker</code>. This type is a wrapper of inner instance <code>RawWaker</code> which provides customized wakeup behavior. It consists of a pointer to data and vtable to customize the behavior we mentioned before. Since there's a method in vtable for cloning and we want the waker and future we are dealing with are still the same one, we wrap up with <code>Arc</code> and turn it back to raw pointer. I will show you what's going to be next.</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">struct</span><span style="color: #E5C07B;"> RawWakerHelper</span><span>&lt;</span><span style="color: #E5C07B;">F</span><span>&gt;(</span><span style="color: #E5C07B;">F</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">impl</span><span>&lt;</span><span style="color: #E5C07B;">F</span><span>:</span><span style="color: #61AFEF;"> Fn</span><span>() +</span><span style="color: #E5C07B;"> Send</span><span> +</span><span style="color: #E5C07B;"> Sync</span><span> + &#39;</span><span style="color: #E5C07B;">static</span><span>&gt;</span><span style="color: #E5C07B;"> RawWakerHelper</span><span>&lt;</span><span style="color: #E5C07B;">F</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    const</span><span style="color: #D19A66;"> VTABLE</span><span>:</span><span style="color: #E5C07B;"> RawWakerVTable</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> RawWakerVTable</span><span>::</span><span style="color: #61AFEF;">new</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        Self</span><span>::</span><span style="color: #E06C75;">clone_waker</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        Self</span><span>::</span><span style="color: #E06C75;">wake</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        Self</span><span>::</span><span style="color: #E06C75;">wake_by_ref</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        Self</span><span>::</span><span style="color: #E06C75;">drop_waker</span><span>,</span></span>
+<span class="giallo-l"><span>    );</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">    unsafe fn</span><span style="color: #61AFEF;"> clone_waker</span><span>(</span><span style="color: #E06C75;">ptr</span><span>: *</span><span style="color: #C678DD;">const</span><span> ()) -&gt;</span><span style="color: #E5C07B;"> RawWaker</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">        let</span><span style="color: #E06C75;"> arc</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> ManuallyDrop</span><span>::</span><span style="color: #61AFEF;">new</span><span>(</span><span style="color: #E5C07B;">Arc</span><span>::</span><span style="color: #61AFEF;">from_raw</span><span>(</span><span style="color: #E06C75;">ptr</span><span style="color: #C678DD;"> as</span><span> *</span><span style="color: #C678DD;">const</span><span style="color: #E5C07B;"> F</span><span>));</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        mem</span><span>::</span><span style="color: #61AFEF;">forget</span><span>(</span><span style="color: #E06C75;">arc</span><span>.</span><span style="color: #61AFEF;">clone</span><span>());</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        RawWaker</span><span>::</span><span style="color: #61AFEF;">new</span><span>(</span><span style="color: #E06C75;">ptr</span><span>, &amp;</span><span style="color: #E5C07B;">Self</span><span>::</span><span style="color: #D19A66;">VTABLE</span><span>)</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">    unsafe fn</span><span style="color: #61AFEF;"> wake</span><span>(</span><span style="color: #E06C75;">ptr</span><span>: *</span><span style="color: #C678DD;">const</span><span> ()) {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">        let</span><span style="color: #E06C75;"> arc</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> Arc</span><span>::</span><span style="color: #61AFEF;">from_raw</span><span>(</span><span style="color: #E06C75;">ptr</span><span style="color: #C678DD;"> as</span><span> *</span><span style="color: #C678DD;">const</span><span style="color: #E5C07B;"> F</span><span>);</span></span>
+<span class="giallo-l"><span>        (</span><span style="color: #E06C75;">arc</span><span>)();</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">    unsafe fn</span><span style="color: #61AFEF;"> wake_by_ref</span><span>(</span><span style="color: #E06C75;">ptr</span><span>: *</span><span style="color: #C678DD;">const</span><span> ()) {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">        let</span><span style="color: #E06C75;"> arc</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> ManuallyDrop</span><span>::</span><span style="color: #61AFEF;">new</span><span>(</span><span style="color: #E5C07B;">Arc</span><span>::</span><span style="color: #61AFEF;">from_raw</span><span>(</span><span style="color: #E06C75;">ptr</span><span style="color: #C678DD;"> as</span><span> *</span><span style="color: #C678DD;">const</span><span style="color: #E5C07B;"> F</span><span>));</span></span>
+<span class="giallo-l"><span>        (</span><span style="color: #E06C75;">arc</span><span>)();</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">    unsafe fn</span><span style="color: #61AFEF;"> drop_waker</span><span>(</span><span style="color: #E06C75;">ptr</span><span>: *</span><span style="color: #C678DD;">const</span><span> ()) {</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">        drop</span><span>(</span><span style="color: #E5C07B;">Arc</span><span>::</span><span style="color: #61AFEF;">from_raw</span><span>(</span><span style="color: #E06C75;">ptr</span><span style="color: #C678DD;"> as</span><span> *</span><span style="color: #C678DD;">const</span><span style="color: #E5C07B;"> F</span><span>));</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>As you can see the rest parameters that <code>RawWakerVTable</code> requires are here. Since it demands raw pointers which already touch the unsafe field. We are able to play around out <code>Arc</code> pointer in several way and still be sound. Take a look a little bit more if needed, all methods and modules used are documented in standard library.</p>
+<h2 id="time-to-uwrap">Time to <code>uwrap</code></h2>
+<p>Once our waker is done, the last thing left to do is to write out one and only function <code>unwrap</code>. And it's way simpler than you thought:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">pub fn</span><span style="color: #61AFEF;"> unwrap</span><span>&lt;</span><span style="color: #E5C07B;">F</span><span>:</span><span style="color: #E5C07B;"> Future</span><span>&gt;(</span><span style="color: #E06C75;">f</span><span>:</span><span style="color: #E5C07B;"> F</span><span>) -&gt;</span><span style="color: #E5C07B;"> F</span><span>::</span><span style="color: #E5C07B;">Output</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    let</span><span style="color: #E06C75;"> waker</span><span style="color: #56B6C2;"> =</span><span style="color: #61AFEF;"> waker</span><span>(</span><span style="color: #56B6C2;">||</span><span> ());</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    let mut</span><span style="color: #E06C75;"> f</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> Box</span><span>::</span><span style="color: #61AFEF;">pin</span><span>(</span><span style="color: #E06C75;">f</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    match</span><span style="color: #E06C75;"> f</span><span>.</span><span style="color: #61AFEF;">as_mut</span><span>().</span><span style="color: #61AFEF;">poll</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> Context</span><span>::</span><span style="color: #61AFEF;">from_waker</span><span>(&amp;</span><span style="color: #E06C75;">waker</span><span>)) {</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        Poll</span><span>::</span><span style="color: #61AFEF;">Ready</span><span>(</span><span style="color: #E06C75;">output</span><span>) =&gt;</span><span style="color: #E06C75;"> output</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        Poll</span><span>::</span><span style="color: #E5C07B;">Pending</span><span>       =&gt;</span><span style="color: #61AFEF;"> panic!</span><span>(</span><span style="color: #98C379;">&quot;future not ready&quot;</span><span>),</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>That's it! Although this is probably very useless unless you are prototyping some executor or reactor systems. Still a good practice imho. Here's the <a rel="external" href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=7bad9f4c80261dc1f46b76abd251dba9">link to the playground</a>. Hope you can get more familiar with modules beneath the future system.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/dst-zst/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              DST 和 ZST 兩種願望一次滿足
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/arch-dual-boot/">
+              Arch Linux 與 Windows 雙系統安裝方法<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

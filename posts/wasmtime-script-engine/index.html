@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="A few years ago, there was a discussion around Servo community about using alternative Javascript engine instead of SpiderMonkey. While Servo has a solid bindin…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="Can we use Wasmtime to build web script engine?" />
+  <meta property="og:description" content="A few years ago, there was a discussion around Servo community about using alternative Javascript engine instead of SpiderMonkey. While Servo has a solid bindin…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/wasmtime-script-engine/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/wasmtime-script-engine/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | Can we use Wasmtime to build web script engine?
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Can we use Wasmtime to build web script engine?
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-07-09T16:55:00+08:00">July 09, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>9 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1974 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/research/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Research</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/webassembly/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Webassembly</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>A few years ago, there was a discussion around Servo community about using alternative Javascript engine instead of
+SpiderMonkey. While Servo has a solid bindings to SpiderMonkey, we have to deal with several issues along with it.
+Servo creates its own fork called <a rel="external" href="https://github.com/servo/mozjs">mozjs</a> with patches it needs. At that time, people
+were wondering if there could be a better option. Or, even better, to see if Servo can make script engine pluggable and
+switch to others like V8. But in the end, we stick to existing choice and keep maintaining mozjs.</p>
+<p>For me, I had a wilder idea in my mind back then: What if we could use a Webassembly runtime directly to build a script
+engine? I know mojarity of browsers can load Webassembly modules already. However, they can't access to most DOM
+objects and WebAPIs directly. You will need to add bindings to Webassembly modules to actually obtain those features.
+What if there's a script engine built on top of Webassembly directly? This way, all languages could be the first
+class citizen when using Web browsers!</p>
+<p>Unfortunately, at that time, I found out Webassembly hasn't completed the spec of <a rel="external" href="https://github.com/WebAssembly/gc">GC</a> yet. It is
+necessary for building DOM node tree due to its design nature. DOM objects can reference each other pretty
+easily. It's pretty common to see a node link to its child, while its child link to its parent. So we must have a
+garbage collector that can trace these objects. So eventually, I kept the idea for future me to worry.</p>
+<p>And a couple of weeks ago, I found that Wasmtime has completed the <a rel="external" href="https://bytecodealliance.org/articles/wasmtime-27.0">Wasm GC support</a>
+already! So I believe it's time to explore this idea again. In this post, I'll share my current progress, explain
+possible design, and what's next for future roadmap.</p>
+<h2 id="dom-objects-in-wasm-gc">DOM <code>Object</code>s in Wasm GC</h2>
+<p>If you want to understand Wasmtime's GC types in details, Their <a rel="external" href="https://github.com/bytecodealliance/rfcs/blob/main/accepted/wasm-gc.md">RFC repository</a>
+has a whole page to explain them exhaustively. What we want to know here is what will the definition of DOM object look
+like when using these GC types. And the choice is its reference types, more precisely, <a rel="external" href="https://docs.rs/wasmtime/latest/wasmtime/struct.ExternRef.html">ExternRef</a> type.
+The usage of <code>ExternRef</code> is pretty straight forward. We call the <code>new</code> method with provided value and we will get
+<code>Rooted&lt;ExternRef&gt;</code>. The only problem is the type annotation will be eliminated upon <code>ExternRef</code> creation. You can see
+this type doesn't hold any generic. So in my attempt, I create a new type for it to contain the type information along
+with several utility methods:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span>#[derive(</span><span style="color: #E5C07B;">Copy</span><span>,</span><span style="color: #E5C07B;"> Debug</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">pub struct</span><span style="color: #E5C07B;"> Object</span><span>&lt;</span><span style="color: #E5C07B;">T</span><span>: &#39;</span><span style="color: #E5C07B;">static</span><span> +</span><span style="color: #E5C07B;"> Any</span><span> +</span><span style="color: #E5C07B;"> Send</span><span> +</span><span style="color: #E5C07B;"> Sync</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    object</span><span>:</span><span style="color: #E5C07B;"> Rooted</span><span>&lt;</span><span style="color: #E5C07B;">ExternRef</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    _phantom</span><span>:</span><span style="color: #E5C07B;"> PhantomData</span><span>&lt;</span><span style="color: #E5C07B;">T</span><span>&gt;,</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>Note that we can still access <code>Rooted&lt;ExternRef&gt;</code> through dereference. But this type helps us understand underlying
+implementation when defining new DOM objects. We will see more examples with it in later section of the post.</p>
+<h2 id="reflector-in-wasm-component">Reflector in Wasm Component</h2>
+<p>Before we can dive deeper into DOM object implementation details, we need to determine how reflector in Wasm works. When
+a browser creates a DOM object, it needs a reflector object that can be used in script side. For Servo, you can read its
+<a rel="external" href="https://github.com/servo/servo/blob/main/components/script/docs/JS-Servos-only-GC.md">script crate's documentation</a> to
+understand how Servo uses SpiderMonkey's types to achieve it. For Wasm, each language usually provide codegen or binding
+libraries to help us instantiate the Wasm module. Take Rust's <code>wasm-bindgen</code> as an example. When we build a wasm module
+through <code>wasm-bindgen</code>, it will also generate Javascript/Typescript bindings script to instantiage the module. But
+there's a major issue, these binding codes can vary between different libraries. And this kind of defeat the purpose to
+make every language as first class citizen of the script engine. We can't just choose certain framework to define the
+reflector bindings.</p>
+<p>Fortunately, this seems to be what WebAssembly community faces as well, and they propose another concept called
+<a rel="external" href="https://component-model.bytecodealliance.org/design/why-component-model.html">Wasm Component Model</a>. You can think it's
+like another kind of Wasm module, but it has a pre-defined set called <a rel="external" href="https://component-model.bytecodealliance.org/design/wit.html">WIT(Wasm Interface Type)</a>.
+Let's say we want to define <a rel="external" href="https://dom.spec.whatwg.org/#document">Document</a> WebIDL interface. We can define it through
+<code>resource</code> type. This is a type that only exposes behaviour through methods. We can think it as a object that implement
+an interface. To define <code>Document</code> in <code>resource</code> type, it can be listed as following:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="wit"><span class="giallo-l"><span style="color: #C678DD;">interface</span><span style="color: #E5C07B;"> node</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    resource</span><span style="color: #E5C07B;"> node</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">        append-child</span><span>:</span><span style="color: #C678DD;"> func</span><span>(</span><span style="color: #E06C75;font-style: italic;">child</span><span>:</span><span style="color: #E5C07B;"> node</span><span>) -&gt;</span><span style="color: #E5C07B;"> node</span><span>;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">    resource</span><span style="color: #E5C07B;"> document</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">        constructor</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">        url</span><span>:</span><span style="color: #C678DD;"> func</span><span>() -&gt;</span><span style="color: #E5C07B;"> string</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">        document-element</span><span>:</span><span style="color: #C678DD;"> func</span><span>() -&gt;</span><span style="color: #E5C07B;"> option</span><span>&lt;</span><span style="color: #E5C07B;">element</span><span>&gt;;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">    resource</span><span style="color: #E5C07B;"> element</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">        has-attributes</span><span>:</span><span style="color: #C678DD;"> func</span><span>() -&gt;</span><span style="color: #E5C07B;"> bool</span><span>;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>Since this is for demo purpose, I won't explain all concepts of WIT and every steps on how to use it. Instead,
+I'll only list out the necessary methods that could explain our proof of concept. In this
+example, we define resources <code>node</code>, <code>document</code> and <code>element</code>. They are corresponding to <code>Node</code>, <code>Document</code> and <code>Element</code> as
+DOM objects. I would like to showcase that once we get a <code>document</code>, we can use it to call several methods, including
+methods that can get another DOM objects linked to it. The <code>document-element</code> will return <code>option&lt;element&gt;</code> which <code>element</code>
+is another <code>resource</code> represent as another DOM object. Next, we will demonstrate how to
+implement the detail in <strong>Host side</strong>, and then use it in the script side. Or in Wasm's term, script side is usually called
+<strong>Guest side</strong>.</p>
+<h2 id="implement-resources-in-host-side">Implement Resources in Host Side</h2>
+<p>To get the bindings from the host side, Wasmtime provides <code>bindgen!</code> macro to generate the code based on provided WIT
+files. What we care the most is what are the exact type of each <code>resource</code> we will define. Let's we already have a few
+types called <code>Node</code>, <code>Document</code>, <code>Element</code> (We will further explain their details later). They can be specified in the
+macro as following:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #E5C07B;">wasmtime</span><span>::</span><span style="color: #E5C07B;">component</span><span>::</span><span style="color: #61AFEF;">bindgen!</span><span>({</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    path</span><span>:</span><span style="color: #98C379;"> &quot;wit&quot;</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    with</span><span>: {</span></span>
+<span class="giallo-l"><span style="color: #98C379;">        &quot;ohim:dom/node/node&quot;</span><span>:</span><span style="color: #E5C07B;"> Node</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #98C379;">        &quot;ohim:dom/node/document&quot;</span><span>:</span><span style="color: #E5C07B;"> Document</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #98C379;">        &quot;ohim:dom/node/element&quot;</span><span>:</span><span style="color: #E5C07B;"> Element</span><span>,</span></span>
+<span class="giallo-l"><span>    },</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    trappable_imports</span><span>:</span><span style="color: #D19A66;"> true</span><span>,</span></span>
+<span class="giallo-l"><span>});</span></span></code></pre>
+<p><code>"ohim:dom/node/node"</code> is the full path to <code>node</code> resource we defined in WIT file. In the bindgen macro, we
+specify the exact implementation type of <code>document</code> is <code>Document</code>. And then the macro will generate a <code>HostDocument</code>
+trait with all related method defined. Our job is to fulfill all these resource traits. Now, it's time to see what's
+inside of the DOM objects and how do we implement to those resource traits.</p>
+<h3 id="node-and-nodeimpl"><code>Node</code> and <code>NodeImpl</code></h3>
+<p>As we mentioned above, we intend to use <code>Object&lt;T&gt;</code> to define DOM Object. For <code>Node</code> type, it will basically be a new
+type of <code>Object&lt;T&gt;</code> with <code>NodeImpl</code> as the actual data:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">pub struct</span><span style="color: #E5C07B;"> Node</span><span>(</span><span style="color: #E5C07B;">Object</span><span>&lt;</span><span style="color: #E5C07B;">NodeImpl</span><span>&gt;);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">pub struct</span><span style="color: #E5C07B;"> NodeImpl</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    event_target</span><span>:</span><span style="color: #E5C07B;"> EventTarget</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    parent_node</span><span>:</span><span style="color: #E5C07B;"> Option</span><span>&lt;</span><span style="color: #E5C07B;">Node</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    first_child</span><span>:</span><span style="color: #E5C07B;"> Option</span><span>&lt;</span><span style="color: #E5C07B;">Node</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    last_child</span><span>:</span><span style="color: #E5C07B;"> Option</span><span>&lt;</span><span style="color: #E5C07B;">Node</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    next_sibling</span><span>:</span><span style="color: #E5C07B;"> Option</span><span>&lt;</span><span style="color: #E5C07B;">Node</span><span>&gt;,</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    pub</span><span>(</span><span style="color: #C678DD;">crate</span><span>)</span><span style="color: #E06C75;"> data</span><span>:</span><span style="color: #E5C07B;"> NodeTypeData</span><span>,</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>Let's focus on fields related to <code>Node</code> and itself first. <code>Node</code> is a GC object which can be created by <code>Object::new</code>.
+And this method is essentially a <code>ExterRef::new</code>. All the implement details are in <code>NodeImpl</code>. <code>Node</code> will
+become an opaque GC rooted reference to the public, so users can have confident to link it to anywhere without worrying
+circular reference. You can see <code>NodeImpl</code>'s node fields like <code>parent_node</code> would take a <code>Option&lt;Node&gt;</code>. When we
+implement the methods, we just need to get the <a rel="external" href="https://github.com/wusyong/ohim/blob/9540476082be776eb4804cf77788a7fcfda9e66c/src/node.rs#L66"><code>NodeImpl</code> data</a>
+from one <code>Node</code> and link the other one to it.</p>
+<h3 id="inherent-node">Inherent <code>Node</code></h3>
+<p>Next, let's talk about inherence. We know <code>Document</code> and <code>Element</code> need to inherent <code>Node</code>, but neither Rust nor Wasm
+component have builtin support to it. I've thought about similar casting mechanism like Servo did based on SpiderMonkey.
+However, it resolves with tons of unsafe usage and it still bothers us when we need to implement some complicated types
+in script crate. Wasmtime already provide pretty safe and ergonomic APIs to use. I feel like we should chase for same
+direction as well. So I decided to make types who inherent ancestor type as a sum type which is the <code>NodeTypeData</code>
+listed in <code>NodeImpl</code>'s definition:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">pub enum</span><span style="color: #E5C07B;"> NodeTypeData</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">    /// `ELEMENT_NODE`</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">    Element</span><span>(</span><span style="color: #E5C07B;">ElementImpl</span><span>),</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">    /// `DOCUMENT_NODE`</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">    Document</span><span>(</span><span style="color: #E5C07B;">DocumentImpl</span><span>),</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">    /// Similar to `Option::None`.</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">    None</span><span>,</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>With <code>From</code> trait implements to related DOM Object new types and methods that are exclusive to these
+types to get the deeper Impl types, it should be possible for a DOM Object casts to correct type and use the right
+implementation data.</p>
+<h3 id="implement-resource-traits">Implement resource traits</h3>
+<p>Now we have explained the definition of DOM Objects and their implementation details. It's time to implement to resource
+traits generated from <code>bindgen!</code>, so the Guest script side can actually use these types. Let's use <code>HostDocument</code> to
+demonstrate because it can showcase how to implement the constructor and also showcase how to link an object to the other:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #7F848E;font-style: italic;">/// `Store` states to use when `[Exposed=Window]`</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">pub struct</span><span style="color: #E5C07B;"> WindowStates</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    table</span><span>:</span><span style="color: #E5C07B;"> ResourceTable</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    ctx</span><span>:</span><span style="color: #E5C07B;"> WasiCtx</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    store</span><span>:</span><span style="color: #E5C07B;"> Store</span><span>&lt;()&gt;,</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">impl</span><span style="color: #E5C07B;"> HostDocument</span><span style="color: #C678DD;"> for</span><span style="color: #E5C07B;"> WindowStates</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    fn</span><span style="color: #61AFEF;"> new</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> self</span><span>) -&gt;</span><span style="color: #E5C07B;"> Result</span><span>&lt;</span><span style="color: #E5C07B;">Resource</span><span>&lt;</span><span style="color: #E5C07B;">Document</span><span>&gt;&gt; {</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">        // This is only for demo purpose</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">        let</span><span style="color: #E06C75;"> element</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> Element</span><span>::</span><span style="color: #61AFEF;">new</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> self</span><span>.store)?;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">        let</span><span style="color: #E06C75;"> document</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> Document</span><span>::</span><span style="color: #61AFEF;">new</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> self</span><span>.store)?;</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">        document</span></span>
+<span class="giallo-l"><span>            .</span><span style="color: #61AFEF;">data_mut</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> self</span><span>.store)</span></span>
+<span class="giallo-l"><span>            .</span><span style="color: #61AFEF;">as_document_mut</span><span>()</span></span>
+<span class="giallo-l"><span>            .document_element </span><span style="color: #56B6C2;">=</span><span style="color: #E5C07B;"> Some</span><span>(</span><span style="color: #E06C75;">element</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        Ok</span><span>(</span><span style="color: #E5C07B;">self</span><span>.table.</span><span style="color: #61AFEF;">push</span><span>(</span><span style="color: #E06C75;">document</span><span>)?)</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">    fn</span><span style="color: #61AFEF;"> drop</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> self</span><span>,</span><span style="color: #E06C75;"> rep</span><span>:</span><span style="color: #E5C07B;"> Resource</span><span>&lt;</span><span style="color: #E5C07B;">Document</span><span>&gt;) -&gt;</span><span style="color: #E5C07B;"> Result</span><span>&lt;()&gt; {</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        self</span><span>.table.</span><span style="color: #61AFEF;">delete</span><span>(</span><span style="color: #E06C75;">rep</span><span>)?;</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        Ok</span><span>(())</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">    // ...other methods</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>To implement traits, we need to define a state data that can put into Wasmtime's <a rel="external" href="https://docs.rs/wasmtime/latest/wasmtime/struct.Store.html">Store</a>.
+I found this is perfect match to WebIDL's extend attribute <code>Exposed</code> as we can decide which WebIDL interfaces can
+expose to certain target. In this example, we want to expose to <code>Window</code>.</p>
+<p>If you look at the signature of <code>new</code> and <code>drop</code>, you can see what Wasm component provides to guest side isn't the
+actual object. Instead, it returns a <code>Resource&lt;T&gt;</code>. You can think this type as a handle. We will put the actual data
+that say <code>Document</code> into <code>ResourceTable</code>, and it will return <code>Resource&lt;Document&gt;</code>. And the guest will use it to call
+all methods related to this resource. For example, if the guest want to call <code>document-element</code>, it will use this
+handle to call the method. What we need to do is implement the trait method to get the actual object from the table,
+get the <code>Element</code> object it wants, and then return the <code>Resource&lt;Element&gt;</code> handle it needs:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">fn</span><span style="color: #61AFEF;"> document_element</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> self</span><span>,</span><span style="color: #E06C75;"> self_</span><span>:</span><span style="color: #E5C07B;"> Resource</span><span>&lt;</span><span style="color: #E5C07B;">Document</span><span>&gt;) -&gt;</span><span style="color: #E5C07B;"> Result</span><span>&lt;</span><span style="color: #E5C07B;">Option</span><span>&lt;</span><span style="color: #E5C07B;">Resource</span><span>&lt;</span><span style="color: #E5C07B;">Element</span><span>&gt;&gt;&gt; {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    let</span><span style="color: #E06C75;"> self_</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> self</span><span>.table.</span><span style="color: #61AFEF;">get</span><span>(&amp;</span><span style="color: #E06C75;">self_</span><span>)?;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    match</span><span style="color: #E06C75;"> self_</span><span>.</span><span style="color: #61AFEF;">document_element</span><span>(&amp;</span><span style="color: #E5C07B;">self</span><span>.store) {</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        Some</span><span>(</span><span style="color: #E06C75;">e</span><span>) =&gt;</span><span style="color: #E5C07B;"> Ok</span><span>(</span><span style="color: #E5C07B;">Some</span><span>(</span><span style="color: #E5C07B;">self</span><span>.table.</span><span style="color: #61AFEF;">push</span><span>(</span><span style="color: #E06C75;">e</span><span>)?)),</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        None</span><span> =&gt;</span><span style="color: #E5C07B;"> Ok</span><span>(</span><span style="color: #E5C07B;">None</span><span>),</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>With all necessary resource traits implemented, it's now possible to create a wasm component and use these host
+resources! There's <a rel="external" href="https://github.com/bytecodealliance/cargo-component">cargo-component</a> tool that can compile your
+crate into a Wasm component. In the code, we just need to use <code>wit_bindgen</code> to get all the WIT bindings we need:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #7F848E;font-style: italic;">// cargo component build</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">wit_bindgen</span><span>::</span><span style="color: #61AFEF;">generate!</span><span>({</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    path</span><span>:</span><span style="color: #98C379;"> &quot;../wit/&quot;</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">    world</span><span>:</span><span style="color: #98C379;"> &quot;imports&quot;</span><span>,</span></span>
+<span class="giallo-l"><span>});</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">struct</span><span style="color: #E5C07B;"> GuestComponent</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">export!</span><span>(</span><span style="color: #E5C07B;">GuestComponent</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">impl</span><span style="color: #E5C07B;"> Guest</span><span style="color: #C678DD;"> for</span><span style="color: #E5C07B;"> GuestComponent</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    fn</span><span style="color: #61AFEF;"> test</span><span>() -&gt;</span><span style="color: #E5C07B;"> String</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">        let</span><span style="color: #E06C75;"> document</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> dom</span><span>::</span><span style="color: #E5C07B;">node</span><span>::</span><span style="color: #E5C07B;">Document</span><span>::</span><span style="color: #61AFEF;">new</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">        let</span><span style="color: #E06C75;"> element</span><span style="color: #56B6C2;"> =</span><span style="color: #E06C75;"> document</span><span>.</span><span style="color: #61AFEF;">document_element</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">        format!</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #98C379;">            &quot;Document has url: {} with element has attributes: {}&quot;</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">            document</span><span>.</span><span style="color: #61AFEF;">url</span><span>(),</span></span>
+<span class="giallo-l"><span style="color: #E06C75;">            element</span><span>.</span><span style="color: #61AFEF;">unwrap</span><span>().</span><span style="color: #61AFEF;">has_attributes</span><span>()</span></span>
+<span class="giallo-l"><span>        )</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h3 id="eventtarget-as-a-field"><code>EventTarget</code> As a field</h3>
+<p>Last, we need to talk about <code>EventTarget</code>. If you look at the definition of <code>NodeImpl</code> mentioned above. you can see I
+treat <code>EventTarget</code> as a field instead of making all other <code>Impl</code> types into a sum type of <code>EventTarget</code>. The reason of
+this choice is because there are <a rel="external" href="https://dontcallmedom.github.io/webidlpedia/names/EventTarget.html">hundreds of WebIDL interfaces</a>
+inherent <code>EventTarget</code>. The main reason they need <code>EventTarget</code> is because they can be added to <code>EventListner</code>.
+Otherwise, they don't share any similarity with each other. So I decided to make it as a field instead to prevent endless
+casting starting from it. <code>Node</code>, on the other hand, has more frequent requirement to update its <code>Node</code> tree. Many
+interfaces who inherent it will usually edit its node pretty oftehn. So I think defining sum type for it is more justified.
+<code>EventTarget</code> will probably be the only special case here.</p>
+<p>There's also another issue that WIT spec currently hasn't support <a rel="external" href="https://github.com/WebAssembly/component-model/issues/223">function callback</a> yet.
+The closest thing is scoped callbacks mentioned from the link, but it's still far away. So right now, I define <code>EventListner</code>
+as good old <code>FnMut</code> that can import/export to Wasm module. Hopefully, WIT reference can be expanded in the near future.
+Or perhaps Wasm component can get some features from Wasm module that can pass <code>func</code> directly.</p>
+<h2 id="next-steps">Next steps</h2>
+<p>So that's all the code I'd like to explain. Full example can be viewed in <a rel="external" href="https://github.com/wusyong/ohim">Ohim</a> repository.
+For the next steps, I wish to collect feedback and starting to evolve current example into full <a rel="external" href="https://dom.spec.whatwg.org/#concept-node-tree">Node tree</a>.
+Either it can be an alternative script backend or not, I plan to reuse as many Servo components as possible. Once we
+have minimum functioning script engine, I would try to pass the tree to Servo's <a rel="external" href="https://github.com/servo/servo/tree/main/components/layout">layout</a>.
+And hopefully, it can generate the display list and ask Servo's <a rel="external" href="https://github.com/servo/webrender">webrender</a> to render the webpage!
+The road is still far far away. But it seems to be the time to kick-start the journey!</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/verso-ui/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Behind the Scenes of Verso Browser Development
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/v8-concurrent-gc/">
+              如何使用 V8 並安全地開啟 concurrent GC<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="In the past few months, we are trying to evaluate Servo web engine and see if we could build a proper web browser application. In this post, I’d like to share s…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="Behind the Scenes of Verso Browser Development" />
+  <meta property="og:description" content="In the past few months, we are trying to evaluate Servo web engine and see if we could build a proper web browser application. In this post, I’d like to share s…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/verso-ui/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/verso-ui/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | Behind the Scenes of Verso Browser Development
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Behind the Scenes of Verso Browser Development
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-05-13T12:17:07+08:00">May 13, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>6 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1269 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/research/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Research</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/web/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Web</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/browser/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Browser</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>In the past few months, we are trying to evaluate Servo web engine and see if we could build a proper web browser application. In this post, I’d like to share some insights into the challenges we’re tackling, and where we are in the journey to transform Servo from a web engine into a fully functional, user-friendly browser.</p>
+<hr />
+<h2 id="why-build-verso-from-servo-minibrowser-to-a-stable-application">Why Build Verso? From Servo Minibrowser to a Stable Application</h2>
+<p>Servo itself is a powerful and modern web engine, but it has traditionally not been treated as a fully functioning browser. Instead, the Servo project provides a minimum working example called <strong>servoshell</strong>, often described as a mini-browser, mainly serving as a testing ground for the engine’s capabilities.</p>
+<p>Our vision with <strong>Verso</strong> is to take this starting point and gradually expand it into a formal, stable, and feature-rich browser — something that ordinary users would comfortably use as their daily web browser. The goal is to build an application on top of Servo that delivers a native, complete browsing experience.</p>
+<p>By attempting to implement a fully functional browser with Verso, we also identify gaps and missing features in Servo itself. This creates a <strong>win-win situation</strong>: as we build out needed capabilities in Verso, we contribute improved implementations and bug fixes back upstream to Servo, strengthening the engine for the entire community.</p>
+<p>This long-term ambition is why you’re seeing the broad scope of features we’ve implemented recently—from window management and menus to prompt dialogs and notifications.</p>
+<hr />
+<h2 id="the-big-picture-engine-versus-browser-responsibilities">The Big Picture: Engine Versus Browser Responsibilities</h2>
+<p>One key motivation behind building Verso as its own separate repository is to <strong>cleanly separate concerns</strong>:</p>
+<ul>
+<li>
+<p><strong>Servo</strong> should stay focused primarily on what it does best—the web engine itself. This includes implementing web standards, improving style, layout, and web APIs.</p>
+</li>
+<li>
+<p>Everything else that builds a full browser experience — windowing, UI, user interactions, menus, file dialogs, bookmarks, history, notifications, and more — should left for embedders to decide.</p>
+</li>
+</ul>
+<p>This approach not only prevents Servo from being bogged down with application-level chores but also helps distribute resources and responsibilities clearly across projects and teams.</p>
+<hr />
+<h2 id="recent-development-highlights-from-our-perspective">Recent Development Highlights from Our Perspective</h2>
+<p>Working on Verso, I’ve had the opportunity to collaborate closely with Jason, TeKai, and others. Here are some key features and improvements we’ve tackled recently, reflecting our progress toward a full-fledged browser.</p>
+<hr />
+<h3 id="borderless-window-dragging">Borderless Window Dragging</h3>
+<p>A simple but critical UX feature was missing from the minibrowser — the ability to drag and maximize a borderless window smoothly across platforms.</p>
+<p>The tricky part is that borderless windows lose native dragging features on <strong>Linux and Windows</strong>, and on <strong>macOS</strong>, the draggable area was limited and inconsistent.</p>
+<p>We had to <strong>reimplement dragging from scratch</strong>, carefully ensuring the drag functionality wouldn’t interfere with dynamic UI elements like panels. On macOS, we tracked down subtle bugs to provide a reliable, uniform dragging experience (issue <a rel="external" href="https://github.com/versotile-org/verso/issues/192">#192</a>).</p>
+<hr />
+<h3 id="context-menus">Context Menus</h3>
+<p>Context menus are a cornerstone of desktop usability. But context menu support across OSes is fragmented:</p>
+<ul>
+<li>
+<p>Windows/macOS offer native context menu, for which we leveraged the <strong>muda crate</strong> — originally developed for Tauri — adapting and improving it to fit Verso’s context menu needs (PR <a rel="external" href="https://github.com/versotile-org/verso/pull/226">#226</a>).</p>
+</li>
+<li>
+<p>On Linux, especially with Wayland, native context menus are not available. We opted to draw menus inside Servo itself using an embedded webview (PR <a rel="external" href="https://github.com/versotile-org/verso/pull/237">#237</a>).</p>
+</li>
+</ul>
+<p>This hybrid approach took around three weeks of work and allows us to provide native-like context menus on all platforms.</p>
+<p>In the meantime, Working closely with the Servo upstream, we also marked the first pointer event API implementation inside Servo itself.</p>
+<p>This was a multi-month effort involving the team, laying a foundation for many UI features, including the later improved context menu (Servo PRs <a rel="external" href="https://github.com/servo/servo/pull/34437">#34437</a>, <a rel="external" href="https://github.com/servo/servo/pull/35364">#35364</a>).</p>
+<hr />
+<h3 id="prompt-dialog-support">Prompt Dialog Support</h3>
+<p>From simple confirm dialogue to authentications prompt dialogue is used everywhere, which makes it a fundamental API that users expect to work flawlessly.</p>
+<p>Jason took the lead on implementing these dialogs across platforms (PR <a rel="external" href="https://github.com/versotile-org/verso/pull/250">#250</a>).</p>
+<hr />
+<h3 id="tabs-for-multi-page-browsing">Tabs for Multi-Page Browsing</h3>
+<p>Tabs are a defining feature of any modern browser. Jason dived straight into adding tabs for Verso, building both the core logic and the panel UI (PR <a rel="external" href="https://github.com/versotile-org/verso/pull/260">#260</a>, panel PR <a rel="external" href="https://github.com/versotile-org/verso-panel/pull/10">#10</a>).</p>
+<p>With this we have tabs work smoothly on all desktop platforms, including creation via keyboard shortcuts.</p>
+<hr />
+<h3 id="ime-input-events">IME Input Events</h3>
+<p>Input Method Editor (IME) support is crucial for many users worldwide. Languages like Japanese and Chinese relied heavily on IME support.</p>
+<p>We contributed multiple PRs to Servo and Verso that handle pre-edit text, caret positioning, and related operations, ensuring IME input flows correctly and synchronizes with the UI (Servo PRs <a rel="external" href="https://github.com/servo/servo/pull/35535">#35535</a>, <a rel="external" href="https://github.com/servo/servo/pull/35623">#35623</a> and Verso PR <a rel="external" href="https://github.com/versotile-org/verso/pull/282">#282</a>.</p>
+<hr />
+<h3 id="file-input-dialog-support">File Input Dialog Support</h3>
+<p>File inputs require integration with native file pickers.</p>
+<p>We enhanced Servo’s FileSelection embedder message to properly display file counts and names, sorted out related testing issues, then integrated native file dialogs in Verso (Servo PR <a rel="external" href="https://github.com/servo/servo/pull/35789">#35789</a>, Verso PR <a rel="external" href="https://github.com/versotile-org/verso/pull/282">#286</a>).</p>
+<hr />
+<h3 id="notifications-with-webapi-support">Notifications with WebAPI Support</h3>
+<p>Notifications are an important part of modern web applications.</p>
+<p>We added basic Notification and NotificationEvent WebAPI support to Servo, including image caching for notification icons (Servo PRs <a rel="external" href="https://github.com/servo/servo/pull/34842">#34842</a>, <a rel="external" href="https://github.com/servo/servo/pull/35878">#35878</a>, <a rel="external" href="https://github.com/servo/servo/pull/36055">#36055</a>). On Verso, we integrated a third-party library to render platform-native notifications across Linux, Windows, and macOS (Merge Request <a rel="external" href="https://gitlab.com/verso-browser/verso/-/merge_requests/308">#308</a>).</p>
+<hr />
+<h3 id="caret-and-text-selection-display-in-text-input">Caret and Text Selection display in Text Input</h3>
+<p>We contributed to Servo’s text input and textarea elements to ensure caret and selection display matches the layout, (Servo PR <a rel="external" href="https://github.com/servo/servo/pull/35830">#35830</a>).</p>
+<hr />
+<h3 id="browsing-history-and-bookmarks-in-profile-config">Browsing History and Bookmarks in Profile Config</h3>
+<p>We started to build out essential browser infrastructure:</p>
+<ul>
+<li>
+<p>Adding a <strong>history menu</strong> accessible by long-pressing navigation buttons, rendered on top of Servo webviews for cross-platform consistency (Panel PR <a rel="external" href="https://github.com/versotile-org/verso-panel/pull/11">#11</a>, Verso MR <a rel="external" href="https://gitlab.com/verso-browser/verso/-/merge_requests/322">#322</a>).</p>
+</li>
+<li>
+<p>Implementing <strong>bookmark management</strong> through panel UI and backend interaction, allowing users quick access to favorite sites (Panel PR <a rel="external" href="https://github.com/versotile-org/verso-panel/pull/13">#13</a>, Verso MR <a rel="external" href="https://gitlab.com/verso-browser/verso/-/merge_requests/327">#327</a>).</p>
+</li>
+</ul>
+<hr />
+<h2 id="what-s-next">What's next?</h2>
+<p>Our work on Verso seeks for modularity of Servo and hope to improve its ecosystem. One of the major milestones we wish to achieve is to make more Servo components modular and able to be used in other projects. This is also why we have some <a rel="external" href="https://v2.tauri.app/blog/tauri-verso-integration/">good news</a> from Tauri community on Verso integration.</p>
+<p>Sine we've added multiple application features mentioned above, we are confident it's possible to evolve Verso into a mature application one day. But before that, I think it's also a good time to look back into windowing and rendering management again as we encountered some blockage from time to time.</p>
+<p>What's worrying me is Servo's webrender is still using OpenGL, while many other projects have moved to wgpu. I hope we could also get a solid wgpu backend one day, so Servo can collaborate with more projects. In the next few month, I'll share more info on my progress and see what we could do.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/webrender-wgpu/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Should we add wgpu support to webrender?
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/wasmtime-script-engine/">
+              Can we use Wasmtime to build web script engine?<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

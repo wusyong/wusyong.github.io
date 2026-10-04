@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="I&#39;ve been thinking about adding wgpu support whenever I need to mess around with rendering context and compositor of Servo. The core component of these parts is…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="Should we add wgpu support to webrender?" />
+  <meta property="og:description" content="I&#39;ve been thinking about adding wgpu support whenever I need to mess around with rendering context and compositor of Servo. The core component of these parts is…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/webrender-wgpu/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/webrender-wgpu/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | Should we add wgpu support to webrender?
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Should we add wgpu support to webrender?
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-04-21T12:17:07+08:00">April 21, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>3 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>640 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/research/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Research</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/servo/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Servo</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/webrender/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Webrender</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>I've been thinking about adding <a rel="external" href="https://wgpu.rs/">wgpu</a> support whenever I need to mess around with rendering context and compositor of Servo. The core component of these parts is <a rel="external" href="https://github.com/servo/webrender">webrender</a> and it uses OpenGL for graphics. While it works most of the time, it has many workarounds on different platforms. On Windows, it needs ANGLE to guarantee the GL version. On macOS, it stucks on version 4.1 forever since Metal has been the latest official support. It is also worrying that OpenGL hasn't been updated ever since because Khronos decideds to move on to Vulkan. Whenever I look into webrender, I also fear it will become the part that might be unable to maintain in one day. There are some solutions in my mind that we could take depending on the situations and the resources we could use.</p>
+<h2 id="build-on-top-of-angle">Build on top of ANGLE</h2>
+<p>The easiest and minimum effort we could take is, of course, extending the support of <a rel="external" href="https://github.com/google/angle">ANGLE</a>. Servo already uses it on Windows and has a fork called <a rel="external" href="https://github.com/servo/mozangle">mozangle</a>. It shouldn't be a problem to extend the support to other platforms. This should resolve the worry if macOS doesn't want to support CGL(legacy openGL) anymore.</p>
+<p>However, there are some disadvantages that will restrict Servo's development. First is the binary size. Building the shared libraries of ANGLE are around 20MB of DLLs on Windows. If we extend to all platforms, Servo will increase this amount of size. And Servo already needs to include GStreamer and SpiderMonkey already. Another issue is moudlarity, keep using OpenGL means anyone who wish to adopt Servo need to use this graphic library. If you browse through Rust's GUI ecosystem, you can see many frameworks are migrating to wgpu. Some even don't have OpenGL support anymore. It will be a growing problem for people who wish to integrate Servo and many other crates.</p>
+<h2 id="implement-compositor-trait">Implement Compositor trait</h2>
+<p>If we are able to spare some resources to look into, I think the experiment we could do is implementing the <a rel="external" href="https://doc.servo.org/webrender/composite/trait.Compositor.html">Compositor</a> trait. This is the trait for webrender managing surfaces and framebuffers. It can be <code>None</code> which is what Servo does, and it will let external usage to decide how to bind the buffers and surfaces. For Firefox, it does <a rel="external" href="https://github.com/mozilla-firefox/firefox/blob/acb55c58a88788dd71a1652d597cc5b73a1d78de/gfx/webrender_bindings/src/bindings.rs#L1351">implement</a> this trait instead.</p>
+<p>The only issue I found is webrender still use <a rel="external" href="https://github.com/servo/webrender/blob/c4bd5b47d8f5cd684334b445e67a1f945d106848/webrender/src/device/gl.rs#L1064">OpenGL APIs</a> internally. I'm not sure if wgpu has any interoperability to OpenGL. Perhaps it needs to lock into OpenGL backends as well. But this will circle back to the need of ANGLE or similar tools again.</p>
+<h2 id="add-wgpu-version-of-renderer">Add wgpu version of Renderer</h2>
+<p>The one true solution in my opinion is adding a wgpu version of Renderer to webrender if we have enough resource. While it sounds crazy because webrender is a huge project which is over 200k LOC, the GL usage is limited to <a rel="external" href="https://doc.servo.org/webrender/struct.Device.html">Device</a> and <a rel="external" href="https://doc.servo.org/webrender/struct.Renderer.html">Renderer</a>. Although they are still pretty large, I believe with someone who understand WebGPU, it can build the minimum support in reasonable amount of time. The only worrying is probably shader support. However, there're only a few shader in Servo. I also believe we are able to translate them.</p>
+<p>If we can get the wgpu support, I believe it can bring lots of benefits to Servo ecosystem. For maintainers, it's already fewer workarounds need to worry about. This also means we can obtain better WebGPU support, because the current one needs to copy the buffer to openGL which is not ideal in terms of performance. And for the cummunity, it will be easier for people to integrate into other projects.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/servo-ai-policy/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Why I voted for Servo&#39;s AI policy change despite I don&#39;t use those tools
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/verso-ui/">
+              Behind the Scenes of Verso Browser Development<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

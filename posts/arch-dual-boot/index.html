@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="Arch 其實我已經用好一陣子了，當時在安裝前就有想過裝好後就要寫個文章還願一下，畢竟在這過程中也受益於不少社群的幫助，但是安裝時忘了一一截圖所以後來就懶了。現在想起來覺得還是該寫一下算是有個交待。首先，如果你的電腦沒有啥特別的需求像是一定得玩遊戲之類的，我是覺得可以直接裝任一 Linux 發行版了，畢竟現在是個什麼都…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="Arch Linux 與 Windows 雙系統安裝方法" />
+  <meta property="og:description" content="Arch 其實我已經用好一陣子了，當時在安裝前就有想過裝好後就要寫個文章還願一下，畢竟在這過程中也受益於不少社群的幫助，但是安裝時忘了一一截圖所以後來就懶了。現在想起來覺得還是該寫一下算是有個交待。首先，如果你的電腦沒有啥特別的需求像是一定得玩遊戲之類的，我是覺得可以直接裝任一 Linux 發行版了，畢竟現在是個什麼都…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/arch-dual-boot/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/arch-dual-boot/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | Arch Linux 與 Windows 雙系統安裝方法
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Arch Linux 與 Windows 雙系統安裝方法
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2020-03-16T18:00:00+08:00">March 16, 2020</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>5 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1782 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/operating-system/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Operating System</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/linux/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Linux</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/arch/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Arch</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/dual-boot/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Dual Boot</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Arch 其實我已經用好一陣子了，當時在安裝前就有想過裝好後就要寫個文章還願一下，畢竟在這過程中也受益於不少社群的幫助，但是安裝時忘了一一截圖所以後來就懶了。現在想起來覺得還是該寫一下算是有個交待。首先，如果你的電腦沒有啥特別的需求像是一定得玩遊戲之類的，我是覺得可以直接裝任一 Linux 發行版了，畢竟現在是個什麼都是 Web app 或 Electron 的時代，你常用的各式程式像是 Spotify 或 Discord 等在 Linux 上都絕對都能安裝，你會用到的 IDE 通常在 Linux 上的支援都會更完備，想省麻煩的話就直上 Linux 吧！不過說到底有時還是會有些不得不保留 Windows 的需求在，如果你想體驗看看輕量化且十分彈性的 Arch 並參與它熱絡的社群的話，希望這篇能幫助到大家。</p>
+<h2 id="shi-qian-zhun-bei">事前準備</h2>
+<p>在開始之前，我誠心建議還是看一下 Arch 維基 <a rel="external" href="https://wiki.archlinux.org/title/Dual_boot_with_Windows">Dual boot with Windows</a> 的說明，下面等會會一一說明叫大家注意的，其實在這篇都有列舉出來。再來是兩個系統安裝的順序，我也是建議先安裝 Windows 在裝 Arch，而且在安裝 Windows 時最好將 <strong>boot partition 設為 512 MB</strong> 以上（預設好像會是 100 MB）。然後如果你是 Windows 8 以上應該都是用 UEFI，所以請記得<strong>關掉 Secure Boot</strong>，每家韌體的停用方法都會有點不一樣所以可能得自行搜尋一下。最後是到 Windows 控制台的的電源選項<strong>停用 Fast Startup 和 hibernation</strong>，這兩個預設應該都是開啟的。</p>
+<h2 id="zhi-zuo-arch-linux-an-zhuang-usb">製作 Arch Linux 安裝 USB</h2>
+<p>在這邊我預設大家是用 Windows 來製作，先到 <a rel="external" href="https://www.archlinux.org/download/">Arch 官網下載</a>，然後用 <a rel="external" href="https://rufus.ie/">Rufus</a> 製作安裝碟。如果你是 Linux 的話可以直接用 <code>dd</code> 。</p>
+<p>如果你的電腦是 UEFI 在燒錄時就選擇「GPT Partition」（大多數 Windows 7  以上 應該都是這個），如果還是不是的話就選「MBR partition」。如果你完全不清楚的話可以按下「開始鍵 + R」，然後輸入 <code>msinfo32</code>，按下去之後應該會看到你的 BIOS 模式，如果顯示 UEFI 就選「UEFI-GPT mode」，如果是 Legacy 就選「BIOS-MBR mode」。</p>
+<p>製作完後，就重開機然後開 BIOS 調整開機順序用讓 USB 先執行吧。一樣每個人開 BIOS 的按鍵通常也不一樣，就 del, F12, ESC 都按按看吧。</p>
+<p><img src="/images/del.webp" alt="" /></p>
+<h2 id="fen-ge-ci-qu">分割磁區</h2>
+<p>通常我們會開出三個 partition 給 Linux：<code>/</code>(root), <code>[swap]</code>, <code>/home</code>，<code>/boot</code> 在前面已經提過了而我建議是 512 MB 以上。這邊算是比較頭痛的地方，因為要開多少見仁見智。Arch 維基也有一篇在介紹該如何分割 <a rel="external" href="https://wiki.archlinux.org/title/Partitioning">Partitioning</a>，不太確定該怎麽開的話可以參考看看。基本上來說會建議 root 開至少 20 GB 以上，swap 開跟你的 RAM 一樣的大小，剩下的全給 home。在開始分割之前先用  <code>lsblk</code> 確定你的硬碟：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> lsblk</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">sda</span><span style="color: #98C379;">      8:0</span><span style="color: #D19A66;">    0</span><span style="color: #98C379;"> 465.8G</span><span style="color: #D19A66;">  0</span><span style="color: #98C379;"> disk</span><span> </span></span>
+<span class="giallo-l"><span>|</span><span style="color: #61AFEF;">-sda1</span><span style="color: #98C379;">   8:1</span><span style="color: #D19A66;">    0</span><span style="color: #98C379;">   512M</span><span style="color: #D19A66;">  0</span><span style="color: #98C379;"> part /boot</span></span>
+<span class="giallo-l"><span>|</span><span style="color: #61AFEF;">-sda2</span><span style="color: #98C379;">   8:2</span><span style="color: #D19A66;">    0</span><span style="color: #98C379;">    16M</span><span style="color: #D19A66;">  0</span><span style="color: #98C379;"> part</span><span> </span></span>
+<span class="giallo-l"><span style="color: #98C379;">`</span><span style="color: #61AFEF;">-sda3</span><span style="color: #98C379;">   8:3</span><span style="color: #D19A66;">    0</span><span style="color: #98C379;">   464G</span><span style="color: #D19A66;">  0</span><span style="color: #98C379;"> part </span></span></code></pre>
+<p>然後用 <code>cfdisk</code> 開始設置，以下是我設好後的樣子：</p>
+<p><img src="/images/cfdisk.png" alt="" /></p>
+<p>所以這些是我會用到的磁區，以下請依照你分割對應的磁區來輸入指令</p>
+<ul>
+<li>/dev/sda4 : root</li>
+<li>/dev/sda5 : swap</li>
+<li>/dev/sda6 : home</li>
+</ul>
+<h3 id="ge-shi-hua-linux-ci-qu">格式化 Linux 磁區</h3>
+<p>分割好後再來就是格式化我們的 root 和 home 磁區，我這邊會繼續用 ext4，如果你想要的話也可以試試潮潮的 <a rel="external" href="https://wiki.archlinux.org/title/Btrfs">Btrfs</a>:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> mkfs.ext4 /dev/sda4</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> mkfs.ext4 /dev/sda6</span></span></code></pre><h3 id="jian-li-swap">建立 swap</h3>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> mkswap /dev/sda5</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> swapon /dev/sda5</span></span></code></pre><h3 id="gua-zai-ci-qu">掛載磁區</h3>
+<p>所有磁區都設好後就可以掛仔他們了。</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> mount /dev/sda4 /mnt</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> mkdir /mnt/home</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> mount /dev/sda6 /mnt/home</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> mkdir /mnt/boot</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> mount /dev/sda1 /mnt/boot</span></span></code></pre><h2 id="kai-shi-an-zhuang">開始安裝</h2>
+<p>萬事就緒！開始來安裝 Arch Linux 吧！</p>
+<h3 id="wang-lu-lian-xian">網路連線</h3>
+<p>如果你要用 wifi 的話，先用 <code>wifi-menu</code> 來選擇連線，不然直接 <code>ping</code> 即可測試：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> wifi-menu</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> ping</span><span style="color: #D19A66;">  -c 3</span><span style="color: #98C379;"> www.google.com</span></span></code></pre><h3 id="yan-zheng-yu-geng-xin">驗證與更新</h3>
+<p>這邊更新 gpg key 好讓 pacman (Arch 的套件管理工具) 可以驗證安裝套件：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> pacman-key</span><span style="color: #D19A66;"> --refresh-keys</span></span></code></pre>
+<p>順便更新一下系統時間</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> timedatectl set-ntp</span><span style="color: #D19A66;"> true</span></span></code></pre><h3 id="kai-shi-an-zhuang-1">開始安裝</h3>
+<p>接著就可以一路按 Enter 或 Y 直到安裝進行。你也可以再多裝 <code>base-devel</code> 不過我打算需要的工具再裝就好：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> pacstrap /mnt base linux linux-firmware</span></span></code></pre><h3 id="chan-sheng-gua-zai-she-ding-dang">產生掛載設定檔</h3>
+<p>Linux 需要除存掛載以便之後自動掛載：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> genfstab</span><span style="color: #D19A66;"> -U</span><span style="color: #98C379;"> /mnt</span><span> &gt;&gt;</span><span style="color: #98C379;"> /mnt/etc/fstab</span></span></code></pre><h2 id="boot-loader-she-ding">Boot Loader 設定</h2>
+<p>接下來的步驟我們都可以切到我們的系統上進行了：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> arch-chroot /mnt</span></span></code></pre>
+<p>我一開始是用 systemd-boot，但為了省掉一些麻煩我們還是用大家耳熟能詳的 GRUB 吧。我們會需要 <a rel="external" href="https://www.archlinux.org/packages/?name=grub">grub</a> 和 <a rel="external" href="https://www.archlinux.org/packages/?name=efibootmgr">efibootmgr</a>。</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> pacman</span><span style="color: #D19A66;"> -S</span><span style="color: #98C379;"> grub efibootmgr</span></span></code></pre>
+<p>安裝 GRUB:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> grub-install</span><span style="color: #D19A66;"> --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB</span></span></code></pre>
+<p>安裝 os-prober 讓 Windows 可以出現在 GRUB 的選單中：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> pacman</span><span style="color: #D19A66;"> -S</span><span style="color: #98C379;"> os-prober</span></span></code></pre>
+<p>掛載 Windows 的磁區，像我的是 /dev/sda3：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> mkdir /mnt/windows10</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> mount /dev/sda2 /mnt/windows10</span></span></code></pre>
+<p>產生 grub 設定檔：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> grub-mkconfig</span><span style="color: #D19A66;"> -o</span><span style="color: #98C379;"> /boot/grub/grub.cfg</span></span></code></pre><h2 id="wang-lu-she-ding">網路設定</h2>
+<p>我們希望開機後能夠自動連上網路：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> pacman</span><span style="color: #D19A66;"> -S</span><span style="color: #98C379;"> netctl wpa_supplicant dialog</span></span></code></pre>
+<p>如果你是用 wifi 的話，跟之前一樣：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> wifi-menu</span></span></code></pre>
+<p>如果是用 LAN 的話：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> systemctl enable dhcpcd@enp0s31f6.service</span></span></code></pre>
+<p><code>dhcpcd@</code> 後面要輸入的是你的 interface name，你可以用 <code>ip link</code> 或 <code>ls /sys/class/net</code> 查到：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> ip link</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">1:</span><span style="color: #98C379;"> lo:</span><span> &lt;</span><span style="color: #98C379;">LOOPBACK,UP,LOWER_U</span><span>P&gt;</span><span style="color: #98C379;"> mtu</span><span style="color: #D19A66;"> 65536</span><span style="color: #98C379;"> qdisc noqueue state UNKNOWN mode DEFAULT group def</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">    link/loopback</span><span style="color: #98C379;"> 00:00:00:00:00:00 brd 00:00:00:00:00:00</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">2:</span><span style="color: #98C379;"> enp0s31f6:</span><span> &lt;</span><span style="color: #98C379;">BROADCAST,MULTICAST,UP,LOWER_U</span><span>P&gt;</span><span style="color: #98C379;"> mtu</span><span style="color: #D19A66;"> 1500</span><span style="color: #98C379;"> qdisc fq_codel state UP mode DEFAult qlen</span><span style="color: #D19A66;"> 1000</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">    link/ether</span><span style="color: #98C379;"> 4c:cc:6a:ba:86:bb brd ff:ff:ff:ff:ff:ff</span></span></code></pre><h2 id="xi-tong-she-ding">系統設定</h2>
+<p>在設定其他東西之前，推薦裝一下自動補完，方便你輸入指令</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> pacman</span><span style="color: #D19A66;"> -S</span><span style="color: #98C379;"> bash-completion</span></span></code></pre><h3 id="root-yu-shi-yong-zhe-mi-ma">root 與使用者密碼</h3>
+<p>先設定 root 的密碼</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> passwd</span></span></code></pre>
+<p>到這邊為止你已經可以直接重開機了，不過想將設定一次到位的話，我們可以繼續下去</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> reboot</span></span></code></pre>
+<p>再來建立一個新的使用者並加入相對應的 group，這個會是你平時用來登入的使用者</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> useradd</span><span style="color: #D19A66;"> -m -g</span><span style="color: #98C379;"> users</span><span style="color: #D19A66;"> -G</span><span style="color: #98C379;"> wheel,storage,power</span><span style="color: #D19A66;"> -s</span><span style="color: #98C379;"> /bin/bash yourusername</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> passwd yourusername</span></span></code></pre>
+<p>接著我們要讓 wheel group 的使用者可以用 sudo 執行管理員相關的任務，如果你不熟悉 vim 的話也可以用 nano 就好</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> EDITOR=vim visudo</span></span></code></pre>
+<p>找到這行並解除留言（去掉 # 符號）</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="plain"><span class="giallo-l"><span>%wheel ALL=(ALL) ALL</span></span></code></pre><h3 id="she-ding-shi-jian-yu-yu-xi">設定時間與語系</h3>
+<p>編輯語系檔案(一樣選你熟悉的編輯器)然後解除留言<code>en_US.UTF-8 UTF-8</code>，你也可以再選擇其他語系，以台灣來說的話就是找到 <code>zh_TW.UTF-8 UTF-8</code> 解除這行的留言：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="plain"><span class="giallo-l"><span>$ vim /etc/locale.gen</span></span></code></pre>
+<p>接著用此檔案產生語系</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> locale-gen</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> echo LANG=en_US.UTF-8</span><span> &gt;</span><span style="color: #98C379;"> /etc/locale.conf</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> export LANG=en_US.UTF-8</span></span></code></pre><h4 id="shi-qu">時區</h4>
+<p>你可以用這個指令搜尋時區</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> ls /usr/share/zoneinfo/</span></span></code></pre>
+<p>當然你要是就在台北時區這樣設定就好了</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> ln</span><span style="color: #D19A66;"> -s</span><span style="color: #98C379;"> /usr/share/zoneinfo/Asia/Taipei /etc/localtime</span></span></code></pre><h4 id="ying-ti-shi-zhong">硬體時鐘</h4>
+<p>讓硬體時鐘在作業系統之間一致，以防它去複寫改變了顯示的時間</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> hwclock</span><span style="color: #D19A66;"> --systohc</span></span></code></pre><h3 id="hostname">Hostname</h3>
+<p>命名你的主機名稱，這邊我就只叫做 arch 就好：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> echo arch</span><span> &gt;</span><span style="color: #98C379;"> /etc/hostname</span></span></code></pre><h3 id="diao-zheng-mirror-list">調整 mirror list</h3>
+<p><code>pacman-contrib</code> 這個套件有個腳本 <code>/usr/bin/rankmirrors</code> 可以幫你排出最快的 mirror，不過要是嫌太麻煩的話就用 <a rel="external" href="https://www.archlinux.org/mirrorlist/">Pacman Mirrorlist Generator</a> 吧！然後寫進這邊：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> vim /etc/pacman.d/mirrorlist</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">Server</span><span style="color: #98C379;"> = http://archlinux.cs.nctu.edu.tw/</span><span style="color: #E06C75;">$repo</span><span style="color: #98C379;">/os/</span><span style="color: #E06C75;">$arch</span></span></code></pre><h2 id="zhuo-mian-huan-jing">桌面環境</h2>
+<p>桌面環境想用那家一樣見仁見智，如果這些你打算自己摸索的話，那麽到這邊我們就算是告一段落了，已經可以開始你的 arch 探索之旅！不然這邊我們將還是先裝最大宗的 gnome，想找更多可以參考 <a rel="external" href="https://wiki.archlinux.org/title/Desktop_environment">Desktop environment</a>，裡面也有台灣之光號稱最輕量的 LXDE/LXQT。</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> pacman</span><span style="color: #D19A66;"> -S</span><span style="color: #98C379;"> gnome gnome-extra</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> systemctl enable gdm.service</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">$</span><span style="color: #98C379;"> systemctl start gdm.service</span></span></code></pre>
+<p>大功告成！恭喜！</p>
+<h4 id="references">References</h4>
+<ul>
+<li>https://wiki.archlinux.org/title/Dual_boot_with_Windows</li>
+<li>https://gist.github.com/xtrymind/b895c640231adde21598d5188c75d4b5</li>
+<li>http://lampjs.com/easy-installing-arch-linux-dual-boot-with-windows-uefi-for-beginners/</li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/future-unwrap/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Waker Practice: Attempt to Unwrap a Future
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/grcov/">
+              用 grcov 收集整合 code coverage<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

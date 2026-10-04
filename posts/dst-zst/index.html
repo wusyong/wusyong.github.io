@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="我們知道 Rust 大部分情況下要求要知道型態的 size 與 alignment，不過同時也支援一些特殊的型態可以忽視這些條件。首先我們最常遇見的就是 Dynamically Sized Types (DSTs) 它們就不會靜態地知道 size 與 alignment，所以它們得透過指標 (pointer) 指向它們…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="DST 和 ZST 兩種願望一次滿足" />
+  <meta property="og:description" content="我們知道 Rust 大部分情況下要求要知道型態的 size 與 alignment，不過同時也支援一些特殊的型態可以忽視這些條件。首先我們最常遇見的就是 Dynamically Sized Types (DSTs) 它們就不會靜態地知道 size 與 alignment，所以它們得透過指標 (pointer) 指向它們…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/dst-zst/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/dst-zst/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | DST 和 ZST 兩種願望一次滿足
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            DST 和 ZST 兩種願望一次滿足
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2020-01-25T18:40:07+08:00">January 25, 2020</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>3 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1068 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/research/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Research</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/dst/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Dst</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/zst/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Zst</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>我們知道 Rust 大部分情況下要求要知道型態的 size 與 alignment，不過同時也支援一些特殊的型態可以忽視這些條件。首先我們最常遇見的就是 Dynamically Sized Types (DSTs) 它們就不會靜態地知道 size 與 alignment，所以它們得透過指標 (pointer) 指向它們才得以存在，這樣的指標是一個寬指標包含一個指針以及一些額外資訊來滿足 Rust 的要求。而這樣的型態也許沒察覺到但其實我們已經遇到而且也用到非常多次，其中最主要的兩大型態就是 trait object 和 slice，更多詳情可以參考 <a rel="external" href="https://doc.rust-lang.org/nomicon/exotic-sizes.html">Rustonomicon</a> 的解釋。在平時使用泛型時我們可以用 <code>?Sized</code> 來指定 DST，以下是將 trait 的 associate type 指定為 DST 的範例：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">trait</span><span style="color: #E5C07B;"> EncodedBuf</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">  type</span><span style="color: #E5C07B;"> Slice</span><span>: ?</span><span style="color: #E5C07B;">Sized</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">  fn</span><span style="color: #61AFEF;"> new</span><span>() -&gt;</span><span style="color: #E5C07B;"> Self</span><span style="color: #C678DD;"> where</span><span style="color: #E5C07B;"> Self</span><span>:</span><span style="color: #E5C07B;"> Sized</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">  /// View the bytes in this buffer as a slice</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">  fn</span><span style="color: #61AFEF;"> as_slice</span><span>(&amp;</span><span style="color: #E5C07B;">self</span><span>) -&gt; &amp;</span><span style="color: #E5C07B;">Self</span><span>::</span><span style="color: #E5C07B;">Slice</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">  //...</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>當然 DST 實際上在很多函式庫中的使用都是很受限的，大部分當然對型態的要求都是 <code>Sized</code>。在標準函式庫中我們也不乏看到諸多類似的設計像是 <code>&amp;str</code> 之於 <code>String</code>、 <code>&amp;[]</code> 之於 <code>Vec</code> 、 <code>Path</code> 之於 <code>PathBuf</code> 等等。前者均為 DST 都是設計成不擁有其數據的引用 (reference) 型態，需要用後者才能獲得所有權並作為可變 ( mutable) 數據來使用。</p>
+<p>而另一方面 Rust 也還支援 Zero Sized Types (ZSTs) 顧名思義就是沒有大小的型態，當然一開始想到的話的確沒有任何意義。當然對於編譯也是如此，所以 Rust 在編譯時可以將一些型態轉為 ZST 並讓它們的動作最終變成只有 <code>nop</code>。原因很簡單，一來是它沒有大小，開空間給它們來儲存沒有任何意義，二來它們也只會有一種值甚至可以憑空產生，所以直接轉為 <code>nop</code> 的確很合適。我們最常用到的 ZST 大概就非 empty tuple <code>()</code> 莫屬，常常用在 Enum 像是 <code>Result</code> 的 match 配對等等。</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">fn</span><span style="color: #61AFEF;"> return_ok</span><span>() -&gt;</span><span style="color: #E5C07B;"> Result</span><span>&lt;(),</span><span style="color: #E06C75;"> io</span><span>::</span><span style="color: #E5C07B;">Error</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">  Ok</span><span>(())</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>既然知道有這兩種型態後，現在就讓我們用上面的 <code>EncodedBuf</code> trait 嘗試一些有趣的東西，當然還有很多方法和 trait 沒寫上去，不過實作均類似所以不贅述：</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">pub struct</span><span style="color: #E5C07B;"> NewByte</span><span>([()]);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">impl</span><span style="color: #E5C07B;"> NewByte</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    unsafe fn</span><span style="color: #61AFEF;"> make</span><span>(</span><span style="color: #E06C75;">ptr</span><span>: *</span><span style="color: #C678DD;">const</span><span style="color: #E5C07B;"> u8</span><span>,</span><span style="color: #E06C75;"> offset</span><span>:</span><span style="color: #E5C07B;"> usize</span><span>,</span><span style="color: #E06C75;"> len</span><span>:</span><span style="color: #E5C07B;"> usize</span><span>) -&gt; *</span><span style="color: #C678DD;">const</span><span style="color: #E5C07B;"> Self</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        std</span><span>::</span><span style="color: #E5C07B;">mem</span><span>::</span><span style="color: #61AFEF;">transmute</span><span>((</span><span style="color: #E06C75;">ptr</span><span>.</span><span style="color: #61AFEF;">offset</span><span>(</span><span style="color: #E06C75;">offset</span><span style="color: #C678DD;"> as</span><span style="color: #E5C07B;"> isize</span><span>),</span><span style="color: #E06C75;"> len</span><span>))</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">    unsafe fn</span><span style="color: #61AFEF;"> ptr</span><span>(&amp;</span><span style="color: #E5C07B;">self</span><span>,</span><span style="color: #E06C75;"> index</span><span>:</span><span style="color: #E5C07B;"> usize</span><span>) -&gt; *</span><span style="color: #C678DD;">const</span><span style="color: #E5C07B;"> u8</span><span> {</span></span>
+<span class="giallo-l"><span>        (</span><span style="color: #E5C07B;">self</span><span>.</span><span style="color: #D19A66;">0.</span><span style="color: #61AFEF;">as_ptr</span><span>()</span><span style="color: #C678DD;"> as</span><span> *</span><span style="color: #C678DD;">const</span><span style="color: #E5C07B;"> u8</span><span>).</span><span style="color: #61AFEF;">offset</span><span>(</span><span style="color: #E06C75;">index</span><span style="color: #C678DD;"> as</span><span style="color: #E5C07B;"> isize</span><span>)</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">    pub fn</span><span style="color: #61AFEF;"> slice</span><span>(&amp;</span><span style="color: #E5C07B;">self</span><span>,</span><span style="color: #E06C75;"> range</span><span>:</span><span style="color: #E5C07B;"> Range</span><span>&lt;</span><span style="color: #E5C07B;">usize</span><span>&gt;) -&gt; &amp;</span><span style="color: #E5C07B;">Self</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">        assert!</span><span>(</span><span style="color: #E06C75;">range</span><span>.end </span><span style="color: #56B6C2;">&gt;=</span><span style="color: #E06C75;"> range</span><span>.start </span><span style="color: #56B6C2;">&amp;&amp;</span><span style="color: #E06C75;"> range</span><span>.end </span><span style="color: #56B6C2;">&lt;=</span><span style="color: #E5C07B;"> self</span><span>.</span><span style="color: #61AFEF;">len</span><span>());</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">        unsafe</span><span> { &amp;*</span><span style="color: #E5C07B;">Self</span><span>::</span><span style="color: #61AFEF;">make</span><span>(</span><span style="color: #E5C07B;">self</span><span>.</span><span style="color: #61AFEF;">ptr</span><span>(</span><span style="color: #D19A66;">0</span><span>),</span><span style="color: #E06C75;"> range</span><span>.start,</span><span style="color: #E06C75;"> range</span><span>.end -</span><span style="color: #E06C75;"> range</span><span>.start) }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">    //...</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">pub struct</span><span style="color: #E5C07B;"> NewByteBuf</span><span>(</span><span style="color: #E5C07B;">Vec</span><span>&lt;</span><span style="color: #E5C07B;">u8</span><span>&gt;);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">impl</span><span style="color: #E5C07B;"> EncodedBuf</span><span style="color: #C678DD;"> for</span><span style="color: #E5C07B;"> NewByteBuf</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    type</span><span style="color: #E5C07B;"> Slice</span><span style="color: #56B6C2;"> =</span><span style="color: #E5C07B;"> NewByte</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">    fn</span><span style="color: #61AFEF;"> new</span><span>() -&gt;</span><span style="color: #E5C07B;"> Self</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #E5C07B;">        Self</span><span>(</span><span style="color: #E5C07B;">Vec</span><span>::</span><span style="color: #61AFEF;">new</span><span>())</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">    pub fn</span><span style="color: #61AFEF;"> as_slice</span><span>(&amp;</span><span style="color: #E5C07B;">self</span><span>) -&gt; &amp;</span><span style="color: #E5C07B;">Self</span><span>::</span><span style="color: #E5C07B;">Slice</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">        unsafe</span><span> { &amp;*</span><span style="color: #E5C07B;">Self</span><span>::</span><span style="color: #E5C07B;">Slice</span><span>::</span><span style="color: #61AFEF;">make</span><span>(</span><span style="color: #E5C07B;">self</span><span>.</span><span style="color: #D19A66;">0.</span><span style="color: #61AFEF;">as_ptr</span><span>()</span><span style="color: #C678DD;"> as</span><span style="color: #E06C75;"> _</span><span>,</span><span style="color: #D19A66;"> 0</span><span>,</span><span style="color: #E5C07B;"> self</span><span>.</span><span style="color: #D19A66;">0.</span><span style="color: #61AFEF;">len</span><span>()) }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #7F848E;font-style: italic;">    //...</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>簡單來說，我們嘗試定義兩種新的型態而他們的關係就類似 <code>Path</code>/<code>PathBuf</code>，它們的長度可能就不是一般的 byte，也許是 3 bits 就一個 byte，不過為了方變我們還是先用 8 bits = 1 byte 作為範例。接著有趣的地方是 <code>NewByte</code>，這是一個 DST 包住了 <code>[()]</code>：一個只包含 zero-sized item 的陣列而且沒有定義長度。由於對 DST 的引用是個胖指針 (我們可以下 <code>assert_eq!(16, std::mem::size_of::&lt;&amp;[u8]&gt;());</code> 來確認這點)，也就是 8 bytes 的指標加上 8 bytes 的長度，我們可以利用這點來儲存 bit offset。我們拿了一個 zero-sized 的 slice 型態，Rust 不必知道 slice 的長度，因為對 ZST 而言永遠會是 0 且 constant，所以長度這欄位變成沒有使用到，我們便能用此來位我們的型態來定義自己想要的長度了。所以神奇的事情發生了 <code>NewByte</code> 同時是 dynamically-sized 以及 zero-sized！</p>
+<p>DST 與 ZST 個別都會帶來一些有趣的特性，舉例來說有 DST 的性質的話，因為本身是指標這樣一來 <code>NewTypeBuf</code> 想要 deref 的話就可能變成 <code>NewType</code>，標準函式庫中的 <code>PathBuf</code> 與 <code>Path</code> 就是這種關係。而如果 ZST 的話，由於很多動作最終能夠成為 <code>nop</code>，這讓我們能更直接地存取到我們想使用的位置。當然這在一般狀況下的確不須用，而且用到這樣子的黑魔法的確需要處理並確保能解決 unsound 的問題，像是使用 <a rel="external" href="https://github.com/rust-lang/miri">miri</a> 反覆確認。不過當我們要處理的資料屬於非常低階，當占用到一點空間都成為關鍵性的考量時，這的確是非常有趣的使用方法之一。我們可以在像是 <a rel="external" href="https://crates.io/crates/bitvec"><code>bitvec</code></a> 或 <a rel="external" href="https://crates.io/crates/dashmap"><code>dashmap</code></a> 等這類的 crate 看到這樣子類似的實作應用。</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/error-handling-study/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Rust 錯誤處理函式庫推薦：Anyhow + thiserror
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/future-unwrap/">
+              Waker Practice: Attempt to Unwrap a Future<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

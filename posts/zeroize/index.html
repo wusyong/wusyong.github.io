@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="要安全地清空記憶體通常不是我們會在意的事情，在 Rust 因為所有物件都有其生命週期並會在 scope 結束時就被釋放掉，但如果今天的對象是敏感的資訊像是 secret 的話我們就得另當別論了。編譯器一直以來都會自動幫我們最佳化，所以他們很可能會把一些他們認為不必要的呼叫給優化掉，另外如果是在 stack 上的變數則是…" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="100% 確定清空並釋放記憶體" />
+  <meta property="og:description" content="要安全地清空記憶體通常不是我們會在意的事情，在 Rust 因為所有物件都有其生命週期並會在 scope 結束時就被釋放掉，但如果今天的對象是敏感的資訊像是 secret 的話我們就得另當別論了。編譯器一直以來都會自動幫我們最佳化，所以他們很可能會把一些他們認為不必要的呼叫給優化掉，另外如果是在 stack 上的變數則是…" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/zeroize/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/zeroize/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | 100% 確定清空並釋放記憶體
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            100% 確定清空並釋放記憶體
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2020-05-21T17:35:00+08:00">May 21, 2020</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>2 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>455 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/research/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Research</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/memory/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>memory</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>要<a rel="external" href="http://www.daemonology.net/blog/2014-09-04-how-to-zero-a-buffer.html">安全地清空記憶體</a>通常不是我們會在意的事情，在 Rust 因為所有物件都有其生命週期並會在 scope 結束時就被釋放掉，但如果今天的對象是敏感的資訊像是 secret 的話我們就得另當別論了。編譯器一直以來都會自動幫我們最佳化，所以他們很可能會把一些他們認為不必要的呼叫給優化掉，另外如果是在 stack 上的變數則是直到下一次存取才會覆蓋掉。而且當你想交叉編譯的話情況會變得更複雜，當然如果你願意的話可以在 regression 特地編出所有目標然後用 valgrind 之類的檢查有沒有記憶體洩漏，但這似乎太大費周章了。通常這樣的情形我們可以簡單有幾行程式顯式地確定有被清空釋放掉。</p>
+<p>首先我們知道有 <a rel="external" href="https://doc.rust-lang.org/std/ops/trait.Drop.html"><code>Drop</code></a> trait 讓物件在 drop 時可以多作一些事，可以把這個想成相當於 Destructor 的概念。再來 Rust 雖然還沒有 volatile 的語法，但是在標準函式庫中的 <code>ptr</code> 模組就已經有 volatile 的方法可以使用，而我們可以在釋放前用 <a rel="external" href="https://doc.rust-lang.org/core/ptr/fn.write_volatile.html"><code>ptr::write_volatile</code></a> 清掉我們的敏感資訊，而且確定不會被編譯器重新排列或者優化掉。最後我們加上 <a rel="external" href="https://doc.rust-lang.org/stable/core/sync/atomic/fn.compiler_fence.html"><code>atomic::compiler_fence</code></a> 來確保所有的存取在這時看到的 secret 已經是被清掉的訊息了。這樣一來就能 100% 確定我們想釋放的記憶體是真的會被 drop 掉。</p>
+<p><a rel="external" href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=5017c1b927f2441554a23e629aa83091">Playground link</a></p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="rust"><span class="giallo-l"><span style="color: #C678DD;">use</span><span style="color: #E5C07B;"> std</span><span>::</span><span style="color: #E5C07B;">sync</span><span>::</span><span style="color: #E5C07B;">atomic</span><span>::compiler_fence;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">use</span><span style="color: #E5C07B;"> std</span><span>::</span><span style="color: #E5C07B;">sync</span><span>::</span><span style="color: #E5C07B;">atomic</span><span>::</span><span style="color: #E5C07B;">Ordering</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">use</span><span style="color: #E5C07B;"> std</span><span>::</span><span style="color: #E5C07B;">ptr</span><span>::write_volatile;</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">use</span><span style="color: #E5C07B;"> std</span><span>::</span><span style="color: #E5C07B;">ops</span><span>::</span><span style="color: #E5C07B;">Drop</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>#[derive(</span><span style="color: #E5C07B;">Default</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">struct</span><span style="color: #E5C07B;"> Secret</span><span>(</span><span style="color: #E5C07B;">String</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">impl</span><span style="color: #E5C07B;"> Drop</span><span style="color: #C678DD;"> for</span><span style="color: #E5C07B;"> Secret</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    fn</span><span style="color: #61AFEF;"> drop</span><span>(&amp;</span><span style="color: #C678DD;">mut</span><span style="color: #E5C07B;"> self</span><span>) {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">        unsafe</span><span>{</span><span style="color: #61AFEF;"> write_volatile</span><span>(</span><span style="color: #E5C07B;">self</span><span>,</span><span style="color: #E5C07B;"> Default</span><span>::</span><span style="color: #61AFEF;">default</span><span>()); }</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">        compiler_fence</span><span>(</span><span style="color: #E5C07B;">Ordering</span><span>::</span><span style="color: #E5C07B;">SeqCst</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">        println!</span><span>(</span><span style="color: #98C379;">&quot;Secret is dropped for sure!&quot;</span><span>);</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #C678DD;">fn</span><span style="color: #61AFEF;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #C678DD;">    let</span><span style="color: #E06C75;"> _secret</span><span style="color: #56B6C2;"> =</span><span style="color: #61AFEF;"> Secret</span><span>(</span><span style="color: #E5C07B;">String</span><span>::</span><span style="color: #61AFEF;">from</span><span>(</span><span style="color: #98C379;">&quot;Sensitive info&quot;</span><span>));</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/grcov/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              用 grcov 收集整合 code coverage
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/poj-lite/">
+              Peh-oe-ji Lite<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+  <meta name="description" content="ESP series are the targets I always want to explore in Rust. Because they have many convenient built-in features like integrated Wi-Fi and dual mode Bluetooth. …" />
+  <meta property="og:site_name" content="Wu Yuwei" />
+  <meta property="og:title" content="Environment Setup for ESP Development in Rust" />
+  <meta property="og:description" content="ESP series are the targets I always want to explore in Rust. Because they have many convenient built-in features like integrated Wi-Fi and dual mode Bluetooth. …" />
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://wusyong.github.io/posts/rust-esp/" />
+  <link rel="canonical" href="https://wusyong.github.io/posts/rust-esp/" />
+  
+  <meta name="twitter:card" content="summary" />
+  
+  <link rel="alternate" type="application/atom+xml" title="Wu Yuwei" href="https://wusyong.github.io/atom.xml" />
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://wusyong.github.io/deep-thought.css" rel="stylesheet" />
+  <link href="https://wusyong.github.io/giallo.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Wu Yuwei | Environment Setup for ESP Development in Rust
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https://wusyong.github.io">Wu Yuwei</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https://wusyong.github.io/categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Environment Setup for ESP Development in Rust
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Wu Yuwei published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2020-08-24T12:01:00+08:00">August 24, 2020</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  
+  
+  <span>4 min,</span>
+  
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>799 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/categories/devops/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Devops</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/embedded/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Embedded</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://wusyong.github.io/tags/esp/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>ESP</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>ESP series are the targets I always want to explore in Rust. Because they have many convenient built-in features like integrated Wi-Fi and dual mode Bluetooth. Unfortunately, both rustc and llvm don’t provide the build target for xtensa by default which means usually we must build the xtensa version for both. Furthermore, it’s not just about the compiler. There’s the whole toolchain from original ecosystem needs to be setup too. In our case, this means installing <a rel="external" href="https://docs.espressif.com/projects/esp-idf/en/release-v3.0/get-started/linux-setup.html">xtensa-esp32-elf toolchain</a>, <a rel="external" href="https://github.com/espressif/esptool">esptool</a>, and maybe <a rel="external" href="https://github.com/espressif/esp-idf">esp-idf</a> properly. This post is going to provide a guide to setup the development environment with esp32 as an example.</p>
+<h2 id="docker-image-for-xtensa">Docker image for xtensa</h2>
+<p>In order to make cross compilation easier, the rust embedded community proposes a crate called <a rel="external" href="https://github.com/rust-embedded/cross"><code>cross</code></a> which can build the docker image to setup required components for your targets and then build/flash your project from it. While original <code>cross</code> doesn’t have the Dockerfile for xtensa targets, there’s a fork for it thanks to <a rel="external" href="https://github.com/reitermarkus">@reitermarkus</a>. Before building the docker image, I highly recommend adding your user to docker group to prevent any environment variable issue. <strong>Also make sure you already have <a rel="external" href="https://docs.docker.com/get-docker/">Docker</a> and <a rel="external" href="https://stedolan.github.io/jq/"><code>jq</code></a> installed.</strong> If you already have them, just follow instructions below to install the custom cross and required image:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">git</span><span style="color: #98C379;"> clone</span><span style="color: #D19A66;"> -b</span><span style="color: #98C379;"> xtensa https://github.com/reitermarkus/cross</span></span>
+<span class="giallo-l"><span style="color: #56B6C2;">cd</span><span style="color: #98C379;"> cross</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">cargo</span><span style="color: #98C379;"> install</span><span style="color: #D19A66;"> --path</span><span style="color: #98C379;"> .</span><span style="color: #D19A66;"> --force</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">./build-docker-image.sh</span><span style="color: #98C379;"> xtensa-esp32-none-elf</span></span></code></pre><h3 id="project-template">Project Template</h3>
+<p>Next, we want to setup the project template that can build and flash our binary to the chip on the fly. Before we start, <strong>make sure you have <a rel="external" href="https://github.com/espressif/esptool"><code>esptool.py</code></a> installed</strong>, this is how we going to flash the binary. Once you have it installed, we can clone the template and start building:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">git</span><span style="color: #98C379;"> clone https://github.com/wusyong/esp32-hello.git</span></span>
+<span class="giallo-l"><span style="color: #61AFEF;">git</span><span style="color: #98C379;"> submodule update</span><span style="color: #D19A66;"> --init --recursive</span></span></code></pre>
+<p>This template also provides the ffi of <code>esp-idf</code> and wraps some basic functions to the <code>esp-idf-hal</code>. The main application is right under the <code>app/</code> directory, there are more examples in the <code>app/examples</code>. To build and flash the application, we could just use the build script:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">./build.sh</span><span> [--chip &lt;</span><span style="color: #98C379;">chi</span><span>p&gt; (default:</span><span style="color: #98C379;"> esp32</span><span>)] [--release] [--package </span><span style="color: #56B6C2;">&lt;</span><span>package</span><span style="color: #56B6C2;">&gt;</span><span> (</span><span style="color: #E06C75;">default</span><span style="color: #56B6C2;">:</span><span style="color: #E06C75;"> app</span><span>)] [--example </span><span style="color: #56B6C2;">&lt;</span><span>example</span><span style="color: #56B6C2;">&gt;</span><span>] [--flash-baudrate </span><span style="color: #56B6C2;">&lt;</span><span>baud</span><span style="color: #56B6C2;">&gt;</span><span> (</span><span style="color: #E06C75;">default</span><span style="color: #56B6C2;">:</span><span style="color: #D19A66;"> 460800</span><span>)] [--erase-flash]</span></span></code></pre>
+<p>As you can see it's basically calling <code>cross</code> to build and <code>esptool</code> to flash. If you are also using esp32, you probably don't need to edit environment variables in the script. <strong>But make sure the <code>SERIAL_PORT</code> is correct</strong> just in case (it's <code>/dev/ttyUSB0</code> for my device), or it's not going to flash successfully. To build the application in release, simply call:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">./build.sh</span></span></code></pre>
+<p>And if you want to build any example:</p>
+<pre class="giallo" style="color: #ABB2BF; background-color: #282C34;" ><code data-lang="shellscript"><span class="giallo-l"><span style="color: #61AFEF;">./build.sh</span><span style="color: #D19A66;"> --release --example</span><span style="color: #98C379;"> thread_local</span></span></code></pre><h3 id="state-of-the-esp-ecosystem-in-rust">State of the ESP ecosystem in Rust</h3>
+<p>In this section, I would like to talk about the ecosystem of it and evaluate is it worth it for ESP development using Rust. You don't need to proceed if you just want to setup the environment. It is basically complete.</p>
+<p>I do consider ESP series are not the first-class citizen among the rust embedded community. You can’t simply cross compile it like other targets (stm, nrf for instance). And despite there’s an <a rel="external" href="https://github.com/esp-rs"><code>esp-rs</code></a> organization which provides many helpful crates and even a quick start repository, there are still some obstacles and missing parts I can image many people would just give up if they cannot resolve. Building the compiler for xtensa is not trivial already, it is also very time consuming. It took me an hour or two to build the llvm and rustc.  And toolchains can be outdated too! A while ago I have a dockerfile for me to build the imagine. But many tools have changed, and some are not compatible anymore. Even llvm asked me to use new variable <code>LLVM_EXPERIMENTAL_TARGETS_TO_BUILD</code> which is ** undocumented**! Furthermore, many crates are so difficult to seek and acquire.  You think something so straight forward like <code>esp32-hal</code> should already on crates.io but it’s actually not. Other crates often scatter across the community, and you have to do the search yourself. But on the other hand, I feel like this is inevitable nature in FOSS. The community is moving for sure, just slowly. We saw that AVR target was merged into Rust recently. It definitely could also happen to ESP in the future.</p>
+<p>The reason for me to keep going is probably the potential to develop in Rust. Here’s the example for Wi-Fi scanning in the esp-hello template. You can see how elegant and ergonomic it is. It’s even possible to use async programming to achieve the goal! Indeed, it still depends on <code>esp-idf</code> and FreeRTOS. But it is totally possible to just build an async runtime for it. I know some developers are already exploring this. I am exciting to see more powerful crates and tools for embedded in the future.</p>
+<p><img src="https://pbs.twimg.com/media/EgGxlsOU8AAk0FW?format=jpg&amp;name=large" alt="" /></p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/option/">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Option 的大小
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https://wusyong.github.io/posts/wasm/">
+              Webassembly 與它們的產地<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://wusyong.github.io/search_index.en.js"></script><script src="https://wusyong.github.io/js/site.js"></script>
+  <script type="module" src="https://wusyong.github.io/js/search.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>
